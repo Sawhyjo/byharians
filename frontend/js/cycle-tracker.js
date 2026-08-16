@@ -1,62 +1,471 @@
 /**
- * BYHARIANS MENSTRUAL CYCLE TRACKER MODULE
+ * BYHARIANS FLO HEALTH-STYLE MENSTRUAL CYCLE TRACKER & CALENDAR ENGINE
  */
+let currentCalYear = new Date().getFullYear();
+let currentCalMonth = new Date().getMonth(); // 0-indexed
+
+let activeCycleConfig = {
+  startDate: new Date().toISOString().split('T')[0],
+  cycleLength: 28,
+  periodLength: 5
+};
+
+// Persistent User Logs (Flow, Mood, Symptoms, Notes per date)
+let userLoggedNotes = {};
+
+try {
+  const savedNotes = localStorage.getItem('byharians_cycle_notes');
+  if (savedNotes) userLoggedNotes = JSON.parse(savedNotes);
+  const savedConfig = localStorage.getItem('byharians_cycle_config');
+  if (savedConfig) activeCycleConfig = { ...activeCycleConfig, ...JSON.parse(savedConfig) };
+} catch (e) {
+  console.warn('Cycle storage init note:', e);
+}
+
 function renderCycleTrackerView() {
-  const container = document.getElementById('cycle-tracker-container');
-  if (!container) return;
+  const startDateInput = document.getElementById('cycle-start-date-input');
+  const avgLenInput = document.getElementById('cycle-avg-length-input');
+  const durationInput = document.getElementById('cycle-duration-input');
 
-  const lastDate = store.userAccount?.lastCycleDate || '2026-07-28';
-  const cycleLen = store.userAccount?.cycleLengthDays || 28;
-  const periodLen = store.userAccount?.periodLengthDays || 5;
-
-  const startDate = new Date(lastDate);
-  const nextDate = new Date(startDate);
-  nextDate.setDate(startDate.getDate() + cycleLen);
-
-  const today = new Date();
-  const diffTime = Math.abs(today - startDate);
-  const currentDayInCycle = (Math.floor(diffTime / (1000 * 60 * 60 * 24)) % cycleLen) + 1;
-
-  let currentPhase = 'Follicular Phase';
-  let phaseDescription = 'Rising estrogen levels bringing energy, skin glow, and mental clarity.';
-
-  if (currentDayInCycle <= periodLen) {
-    currentPhase = 'Menstrual Phase';
-    phaseDescription = 'Time for rest, hydration, and gentle soothing care with BYHARIANS organic bamboo pads.';
-  } else if (currentDayInCycle >= 12 && currentDayInCycle <= 16) {
-    currentPhase = 'Ovulation Phase';
-    phaseDescription = 'Peak fertility window with maximum energy and confidence.';
-  } else if (currentDayInCycle > 16) {
-    currentPhase = 'Luteal Phase';
-    phaseDescription = 'Progesterone dominates. Ideal for relaxing rituals and warm tea.';
+  if (startDateInput && !startDateInput.value) {
+    startDateInput.value = activeCycleConfig.startDate;
+  }
+  if (avgLenInput && !avgLenInput.value) {
+    avgLenInput.value = activeCycleConfig.cycleLength;
+  }
+  if (durationInput && !durationInput.value) {
+    durationInput.value = activeCycleConfig.periodLength;
   }
 
-  container.innerHTML = `
-    <div style="background:#fff; border-radius:var(--radius-xl); padding:32px; border:1px solid var(--color-border); box-shadow:var(--shadow-md);">
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:28px;">
-        <div>
-          <span class="section-tag">PERSONAL CYCLE INSIGHTS</span>
-          <h2 style="font-size:1.8rem; color:var(--color-primary);">Haid & Siklus Anda</h2>
-        </div>
-        <button class="btn btn-secondary btn-sm" onclick="openCycleLogModal()">+ Catat Gejala Hari Ini</button>
-      </div>
+  updateCycleCalculation();
+}
 
-      <div class="cycle-today-status-bar" style="background:var(--color-bg-subtle); border-radius:var(--radius-lg); padding:20px 24px; margin-bottom:28px; display:grid; grid-template-columns: repeat(3, 1fr); gap:20px; text-align:center;">
-        <div>
-          <small style="color:var(--color-text-muted); font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; font-weight:700;">Hari Dalam Siklus</small>
-          <div style="font-size:1.8rem; font-weight:800; color:var(--color-primary); margin-top:4px;">Hari ke-${currentDayInCycle}</div>
-        </div>
-        <div>
-          <small style="color:var(--color-text-muted); font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; font-weight:700;">Fase Saat Ini</small>
-          <div style="font-size:1.1rem; font-weight:800; color:var(--color-secondary); margin-top:8px;">${currentPhase}</div>
-        </div>
-        <div>
-          <small style="color:var(--color-text-muted); font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; font-weight:700;">Haid Berikutnya</small>
-          <div style="font-size:1.1rem; font-weight:800; color:var(--color-primary); margin-top:8px;">${nextDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
-        </div>
-      </div>
+function updateCycleCalculation() {
+  const startDateInput = document.getElementById('cycle-start-date-input');
+  const avgLenInput = document.getElementById('cycle-avg-length-input');
+  const durationInput = document.getElementById('cycle-duration-input');
 
-      <p style="color:var(--color-text-muted); font-size:0.9rem; line-height:1.6; margin-bottom:24px;">${phaseDescription}</p>
+  if (startDateInput?.value) activeCycleConfig.startDate = startDateInput.value;
+  if (avgLenInput?.value) activeCycleConfig.cycleLength = parseInt(avgLenInput.value) || 28;
+  if (durationInput?.value) activeCycleConfig.periodLength = parseInt(durationInput.value) || 5;
+
+  try {
+    localStorage.setItem('byharians_cycle_config', JSON.stringify(activeCycleConfig));
+  } catch (e) {}
+
+  renderTodayStatusBar();
+  renderCalendarDaysGrid();
+  renderPhaseTimelineCards();
+  renderRecommendedPads();
+}
+
+function handleCalculateCycle() {
+  updateCycleCalculation();
+  if (typeof showToast === 'function') {
+    showToast('Prediksi siklus Flo Health Anda berhasil diperbarui!', 'success');
+  }
+}
+
+function prefillCycleDemoData() {
+  const startDateInput = document.getElementById('cycle-start-date-input');
+  const avgLenInput = document.getElementById('cycle-avg-length-input');
+  const durationInput = document.getElementById('cycle-duration-input');
+
+  const now = new Date();
+  now.setDate(now.getDate() - 3); // 3 days ago
+  const dateStr = now.toISOString().split('T')[0];
+
+  if (startDateInput) startDateInput.value = dateStr;
+  if (avgLenInput) avgLenInput.value = '28';
+  if (durationInput) durationInput.value = '5';
+
+  updateCycleCalculation();
+  if (typeof showToast === 'function') {
+    showToast('Contoh siklus 28 hari dimuat!', 'info');
+  }
+}
+
+function getCyclePhaseForDay(dayInCycle, periodLen) {
+  if (dayInCycle <= periodLen) {
+    return {
+      name: 'Fase Menstruasi (Pendarahan)',
+      shortName: 'Menstruasi',
+      color: '#e74c3c',
+      badgeClass: 'period',
+      icon: '🩸',
+      tip: 'Waktu untuk istirahat, hidrasi air hangat, dan perawatan lembut dengan pembalut bambu organik ultra-lembut.'
+    };
+  } else if (dayInCycle >= 12 && dayInCycle <= 16) {
+    return {
+      name: 'Masa Subur & Ovulasi',
+      shortName: 'Ovulasi / Subur',
+      color: '#f1c40f',
+      badgeClass: 'fertile',
+      icon: '✨',
+      tip: 'Puncak masa subur & sel telur matang. Energi, suasana hati, dan kepercayaan diri berada di level tertinggi.'
+    };
+  } else if (dayInCycle > 16) {
+    return {
+      name: 'Fase Luteal (Progesteron)',
+      shortName: 'Luteal (PMS)',
+      color: '#8e44ad',
+      badgeClass: 'luteal',
+      icon: '🌙',
+      tip: 'Hormon Progesteron mendominasi. Tubuh bersiap untuk siklus berikutnya. Cocok untuk tehh hangat & relaksasi.'
+    };
+  } else {
+    return {
+      name: 'Fase Folikular (Estrogen Naik)',
+      shortName: 'Folikular',
+      color: '#27ae60',
+      badgeClass: 'follicular',
+      icon: '🌱',
+      tip: 'Hormon Estrogen meningkat pesat. Energi tubuh, stamina olahraga, dan daya fokus Anda berkembang.'
+    };
+  }
+}
+
+function renderTodayStatusBar() {
+  const statusBar = document.getElementById('cycle-today-status-bar');
+  if (!statusBar) return;
+
+  const start = new Date(activeCycleConfig.startDate);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  start.setHours(0, 0, 0, 0);
+
+  const diffTime = today.getTime() - start.getTime();
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  const cycleLen = activeCycleConfig.cycleLength;
+  const periodLen = activeCycleConfig.periodLength;
+
+  let currentDay = (diffDays % cycleLen);
+  if (currentDay < 0) currentDay += cycleLen;
+  currentDay += 1; // 1-indexed
+
+  const phaseInfo = getCyclePhaseForDay(currentDay, periodLen);
+
+  const daysToNextPeriod = cycleLen - currentDay + 1;
+  const nextPeriodDate = new Date(today);
+  nextPeriodDate.setDate(today.getDate() + daysToNextPeriod - 1);
+
+  statusBar.innerHTML = `
+    <div style="background: #FFF9F5; border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; align-items: center; box-shadow: var(--shadow-sm);">
+      <div style="text-align: center; border-right: 1px solid var(--color-border); padding-right: 10px;">
+        <span style="color: var(--color-text-muted); font-size: 0.76rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.06em;">Hari Dalam Siklus</span>
+        <div style="font-size: 2.2rem; font-weight: 900; color: var(--color-primary); margin-top: 4px;">Hari ke-${currentDay}</div>
+        <small style="color: var(--color-text-muted); font-size: 0.78rem;">dari ${cycleLen} hari siklus</small>
+      </div>
+      <div>
+        <span style="color: var(--color-text-muted); font-size: 0.76rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.06em;">Fase Biologis Tubuh</span>
+        <div style="font-size: 1.15rem; font-weight: 800; color: ${phaseInfo.color}; margin-top: 6px; display: flex; align-items: center; gap: 6px;">
+          <span>${phaseInfo.icon}</span> <span>${phaseInfo.name}</span>
+        </div>
+        <p style="font-size: 0.82rem; color: var(--color-text-muted); margin-top: 6px; line-height: 1.4;">${phaseInfo.tip}</p>
+      </div>
+      <div style="text-align: center; border-left: 1px solid var(--color-border); padding-left: 10px;">
+        <span style="color: var(--color-text-muted); font-size: 0.76rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.06em;">Prediksi Haid Berikutnya</span>
+        <div style="font-size: 1.2rem; font-weight: 800; color: var(--color-primary); margin-top: 6px;">${daysToNextPeriod} Hari Lagi</div>
+        <small style="color: var(--color-secondary); font-weight: 700;">${nextPeriodDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</small>
+      </div>
     </div>
   `;
+}
+
+function renderCalendarDaysGrid() {
+  const grid = document.getElementById('calendar-days-grid');
+  const label = document.getElementById('calendar-month-year-label');
+  if (!grid) return;
+
+  const monthNames = [
+    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+  ];
+
+  if (label) {
+    label.innerText = `${monthNames[currentCalMonth]} ${currentCalYear}`;
+  }
+
+  const firstDay = new Date(currentCalYear, currentCalMonth, 1);
+  const lastDay = new Date(currentCalYear, currentCalMonth + 1, 0);
+  const daysInMonth = lastDay.getDate();
+
+  // 0 = Sunday, convert to Monday-first (0 = Mon, 6 = Sun)
+  let startingDayOfWeek = firstDay.getDay() - 1;
+  if (startingDayOfWeek < 0) startingDayOfWeek = 6;
+
+  const cycleStart = new Date(activeCycleConfig.startDate);
+  cycleStart.setHours(0, 0, 0, 0);
+  const cycleLen = activeCycleConfig.cycleLength;
+  const periodLen = activeCycleConfig.periodLength;
+
+  let html = '';
+
+  // Blank slots for days before 1st of month
+  for (let i = 0; i < startingDayOfWeek; i++) {
+    html += `<div class="cal-day empty"></div>`;
+  }
+
+  const todayStr = new Date().toISOString().split('T')[0];
+
+  // Render days
+  for (let day = 1; day <= daysInMonth; day++) {
+    const thisDate = new Date(currentCalYear, currentCalMonth, day);
+    thisDate.setHours(0, 0, 0, 0);
+    const dateStr = `${currentCalYear}-${String(currentCalMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+    const diffDays = Math.floor((thisDate.getTime() - cycleStart.getTime()) / (1000 * 60 * 60 * 24));
+    let dayInCycle = (diffDays % cycleLen);
+    if (dayInCycle < 0) dayInCycle += cycleLen;
+    dayInCycle += 1;
+
+    const phaseInfo = getCyclePhaseForDay(dayInCycle, periodLen);
+
+    const isToday = dateStr === todayStr;
+    const logData = userLoggedNotes[dateStr] || {};
+    const hasNote = logData.notes || logData.flow || (logData.symptoms && logData.symptoms.length > 0) || logData.mood;
+
+    let badgeText = '';
+    if (dayInCycle <= periodLen) badgeText = `Haid ${dayInCycle}`;
+    else if (dayInCycle === 14) badgeText = 'Ovulasi';
+    else if (dayInCycle >= 12 && dayInCycle <= 16) badgeText = 'Subur';
+
+    html += `
+      <div class="cal-day ${phaseInfo.badgeClass} ${isToday ? 'today' : ''} ${hasNote ? 'has-note' : ''}" onclick="openCycleDatePopup('${dateStr}')" style="cursor: pointer; position: relative;">
+        <span class="day-num" style="font-weight: 700;">${day}</span>
+        ${badgeText ? `<span class="day-badge" style="font-size: 0.65rem;">${badgeText}</span>` : ''}
+        ${hasNote ? `<span class="note-indicator" title="Ada catatan/gejala" style="position: absolute; bottom: 4px; right: 6px; font-size: 8px; color: var(--color-primary);">●</span>` : ''}
+      </div>
+    `;
+  }
+
+  grid.innerHTML = html;
+}
+
+function changeCalendarMonth(delta) {
+  currentCalMonth += delta;
+  if (currentCalMonth > 11) {
+    currentCalMonth = 0;
+    currentCalYear += 1;
+  } else if (currentCalMonth < 0) {
+    currentCalMonth = 11;
+    currentCalYear -= 1;
+  }
+  renderCalendarDaysGrid();
+}
+
+function goToCurrentMonth() {
+  const now = new Date();
+  currentCalYear = now.getFullYear();
+  currentCalMonth = now.getMonth();
+  renderCalendarDaysGrid();
+}
+
+function renderPhaseTimelineCards() {
+  const container = document.getElementById('cycle-phases-cards-grid');
+  if (!container) return;
+
+  const phases = [
+    { title: '1. Fase Menstruasi', days: `Hari 1–${activeCycleConfig.periodLength}`, desc: 'Pendarahan meluruhkan dinding rahim. Istirahat cukup & gunakan pembalut bambu organik hypoallergenic.', color: '#e74c3c' },
+    { title: '2. Fase Folikular', days: `Hari ${activeCycleConfig.periodLength + 1}–11`, desc: 'Estrogen naik pesat. Energi tubuh, metabolisme, dan daya fokus berada di puncaknya.', color: '#27ae60' },
+    { title: '3. Ovulasi & Masa Subur', days: 'Hari 12–16', desc: 'Sel telur matang (Ovulasi hari ke-14). Puncak fertilitas dan kepercayaan diri maksimal.', color: '#f1c40f' },
+    { title: '4. Fase Luteal (PMS)', days: `Hari 17–${activeCycleConfig.cycleLength}`, desc: 'Progesteron mendominasi. Waktu sempurna untuk teh herbal hangat dan relaksasi alami.', color: '#8e44ad' }
+  ];
+
+  container.innerHTML = phases.map(p => `
+    <div class="phase-card" style="background:#fff; padding:20px; border-radius:var(--radius-lg); border:1px solid var(--color-border); border-top:4px solid ${p.color}; box-shadow: var(--shadow-sm);">
+      <span style="font-size:0.75rem; font-weight:700; color:${p.color}; text-transform:uppercase;">${p.days}</span>
+      <h4 style="font-size:1.05rem; color:var(--color-primary); margin:6px 0 8px;">${p.title}</h4>
+      <p style="font-size:0.82rem; color:var(--color-text-muted); line-height:1.5;">${p.desc}</p>
+    </div>
+  `).join('');
+}
+
+function renderRecommendedPads() {
+  const container = document.getElementById('recommended-pad-breakdown');
+  if (!container) return;
+
+  const periodLen = activeCycleConfig.periodLength;
+  const dayPadsNeeded = periodLen * 3;
+  const nightPadsNeeded = periodLen * 2;
+  const linersNeeded = 10;
+
+  container.innerHTML = `
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:14px; margin-bottom:16px;">
+      <div style="background:#FFF9F5; padding:14px; border-radius:var(--radius-md); border:1px solid var(--color-border); text-align:center;">
+        <strong style="color:var(--color-primary); display:block;">${dayPadsNeeded}x Ultra-Thin Day Pads</strong>
+        <span style="font-size:0.76rem; color:var(--color-text-muted);">Siang & Aktivitas (240mm)</span>
+      </div>
+      <div style="background:#FFF9F5; padding:14px; border-radius:var(--radius-md); border:1px solid var(--color-border); text-align:center;">
+        <strong style="color:var(--color-primary); display:block;">${nightPadsNeeded}x Overnight Heavy Pads</strong>
+        <span style="font-size:0.76rem; color:var(--color-text-muted);">Malam & Tidur Nyenyak (330mm)</span>
+      </div>
+      <div style="background:#FFF9F5; padding:14px; border-radius:var(--radius-md); border:1px solid var(--color-border); text-align:center;">
+        <strong style="color:var(--color-primary); display:block;">${linersNeeded}x Daily Panty Liners</strong>
+        <span style="font-size:0.76rem; color:var(--color-text-muted);">Flek & Perawatan Harian (155mm)</span>
+      </div>
+    </div>
+  `;
+}
+
+// Flo Health Popup Logger state
+let activePopupDate = null;
+let activeSelectedFlow = 'none';
+let activeSelectedMood = '';
+let activeSelectedSymptoms = [];
+
+function openCycleDatePopup(dateStr) {
+  activePopupDate = dateStr;
+  const modal = document.getElementById('cycle-date-popup-modal');
+  const title = document.getElementById('popup-date-title');
+  const phaseBadge = document.getElementById('popup-phase-badge');
+  const notesInput = document.getElementById('popup-notes-input');
+
+  const logData = userLoggedNotes[dateStr] || {};
+  activeSelectedFlow = logData.flow || 'none';
+  activeSelectedMood = logData.mood || '';
+  activeSelectedSymptoms = Array.isArray(logData.symptoms) ? [...logData.symptoms] : [];
+
+  if (title) {
+    const d = new Date(dateStr);
+    title.innerText = d.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+  if (phaseBadge) {
+    const start = new Date(activeCycleConfig.startDate);
+    const thisDate = new Date(dateStr);
+    const diffDays = Math.floor((thisDate - start) / (1000 * 60 * 60 * 24));
+    let dayInCycle = (diffDays % activeCycleConfig.cycleLength);
+    if (dayInCycle < 0) dayInCycle += activeCycleConfig.cycleLength;
+    dayInCycle += 1;
+
+    const phaseInfo = getCyclePhaseForDay(dayInCycle, activeCycleConfig.periodLength);
+    phaseBadge.innerText = `${phaseInfo.name} • Hari ke-${dayInCycle}`;
+  }
+
+  if (notesInput) {
+    notesInput.value = logData.notes || '';
+  }
+
+  setPopupFlow(activeSelectedFlow);
+  renderSymptomsChips();
+
+  if (modal) modal.style.display = 'flex';
+}
+
+function closeCycleDatePopup() {
+  const modal = document.getElementById('cycle-date-popup-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+function handleCyclePopupBackdropClick(e) {
+  if (e.target.id === 'cycle-date-popup-modal') {
+    closeCycleDatePopup();
+  }
+}
+
+function setPopupFlow(flow) {
+  activeSelectedFlow = flow;
+  const flowLabel = document.getElementById('popup-flow-selected-label');
+  const flowMap = {
+    none: 'Tidak Haid',
+    spotting: 'Flek / Spotting',
+    light: 'Pendarahan Ringan',
+    medium: 'Pendarahan Sedang',
+    heavy: 'Pendarahan Deras'
+  };
+  if (flowLabel) flowLabel.innerText = flowMap[flow] || 'Tidak Haid';
+
+  document.querySelectorAll('#popup-flow-grid .flow-pill-btn').forEach(btn => {
+    const f = btn.getAttribute('data-flow');
+    btn.classList.toggle('active', f === flow);
+  });
+}
+
+function togglePopupMood(mood) {
+  activeSelectedMood = activeSelectedMood === mood ? '' : mood;
+  document.querySelectorAll('#popup-mood-grid .mood-pill-btn').forEach(btn => {
+    const m = btn.getAttribute('data-mood');
+    btn.classList.toggle('active', m === activeSelectedMood);
+  });
+}
+
+function renderSymptomsChips() {
+  const container = document.getElementById('popup-symptoms-chips');
+  if (!container) return;
+
+  const defaultSymptoms = [
+    'Kram Perut', 'Sakit Kepala / Migrain', 'Jerawat Hormonal',
+    'Nyeri Payudara', 'Kembung / Begah', 'Sensitif / Emosional',
+    'Badan Pegal', 'Ngidam Makanan Manis', 'Sulit Tidur'
+  ];
+
+  container.innerHTML = defaultSymptoms.map(sym => {
+    const isSelected = activeSelectedSymptoms.includes(sym);
+    return `
+      <button type="button" class="symptom-chip ${isSelected ? 'active' : ''}" onclick="toggleSymptom('${sym}', this)" style="padding: 6px 12px; font-size: 0.78rem; border-radius: var(--radius-full); border: 1px solid var(--color-border); background: ${isSelected ? 'var(--color-primary)' : '#fff'}; color: ${isSelected ? '#fff' : 'var(--color-text-main)'}; cursor: pointer;">
+        ${sym}
+      </button>
+    `;
+  }).join('');
+}
+
+function toggleSymptom(sym, btn) {
+  if (activeSelectedSymptoms.includes(sym)) {
+    activeSelectedSymptoms = activeSelectedSymptoms.filter(s => s !== sym);
+    if (btn) {
+      btn.style.background = '#fff';
+      btn.style.color = 'var(--color-text-main)';
+    }
+  } else {
+    activeSelectedSymptoms.push(sym);
+    if (btn) {
+      btn.style.background = 'var(--color-primary)';
+      btn.style.color = '#fff';
+    }
+  }
+}
+
+function savePopupDataDirectly() {
+  const notesInput = document.getElementById('popup-notes-input');
+  if (activePopupDate) {
+    userLoggedNotes[activePopupDate] = {
+      flow: activeSelectedFlow,
+      mood: activeSelectedMood,
+      symptoms: [...activeSelectedSymptoms],
+      notes: notesInput ? notesInput.value.trim() : ''
+    };
+
+    try {
+      localStorage.setItem('byharians_cycle_notes', JSON.stringify(userLoggedNotes));
+    } catch (e) {}
+  }
+
+  closeCycleDatePopup();
+  renderCalendarDaysGrid();
+  if (typeof showToast === 'function') {
+    showToast('Catatan & gejala harian Flo Health berhasil disimpan!', 'success');
+  }
+}
+
+function setPopupDateAsCycleStart() {
+  if (activePopupDate) {
+    const startDateInput = document.getElementById('cycle-start-date-input');
+    if (startDateInput) startDateInput.value = activePopupDate;
+    updateCycleCalculation();
+    closeCycleDatePopup();
+    if (typeof showToast === 'function') {
+      showToast(`Hari pertama haid baru diset ke ${activePopupDate}!`, 'success');
+    }
+  }
+}
+
+function addCycleBundleToCart() {
+  if (typeof addToCart === 'function') {
+    addToCart('byh-pad-day-reg');
+    addToCart('byh-pad-night-heavy');
+    if (typeof showToast === 'function') {
+      showToast('Paket Pembalut Sesuai Siklus telah ditambahkan ke Keranjang!', 'success');
+    }
+  }
 }
