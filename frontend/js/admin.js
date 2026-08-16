@@ -35,9 +35,15 @@ function renderAdminKPIs() {
   const baseSubs = 142;
   const basePlasticKg = 1312;
 
+  const globalOrders = store.getGlobalOrders();
+  const allOrdersMap = new Map();
+  (store.orders || []).forEach(o => allOrdersMap.set(o.id, o));
+  globalOrders.forEach(o => allOrdersMap.set(o.id, o));
+  const ordersList = Array.from(allOrdersMap.values());
+
   // Calculate live dynamic metrics from completed transactions
-  const liveRevenueSum = (store.orders || []).reduce((sum, o) => sum + (o.total || 0), 0);
-  const liveOrderCount = (store.orders || []).length;
+  const liveRevenueSum = ordersList.filter(o => o.status !== 'cancelled').reduce((sum, o) => sum + (o.total || 0), 0);
+  const liveOrderCount = ordersList.filter(o => o.status !== 'cancelled').length;
   
   const totalRevenue = baseRevenue + liveRevenueSum;
   const totalOrders = baseOrders + liveOrderCount;
@@ -57,34 +63,104 @@ function renderAdminOrders() {
   const container = document.getElementById('admin-orders-tbody');
   if (!container) return;
 
-  const orders = store.orders || [];
+  const globalOrders = store.getGlobalOrders();
+  const allOrdersMap = new Map();
+  (store.orders || []).forEach(o => allOrdersMap.set(o.id, o));
+  globalOrders.forEach(o => allOrdersMap.set(o.id, o));
+  const orders = Array.from(allOrdersMap.values());
+
   if (orders.length === 0) {
     container.innerHTML = `
       <tr>
         <td colspan="6" style="text-align:center; padding:24px; color:var(--color-text-muted);">
-          Belum ada pesanan baru terdaftar hari ini.
+          Belum ada pesanan pelanggan terdaftar di sistem.
         </td>
       </tr>
     `;
     return;
   }
 
-  container.innerHTML = orders.map(o => `
-    <tr>
-      <td><strong>#${o.id}</strong><br><code style="font-size:0.7rem; background:rgba(15,48,29,0.06); padding:2px 6px; border-radius:4px;">${o.trackingNumber || 'N/A'}</code></td>
-      <td>${o.date || new Date().toISOString().split('T')[0]}</td>
-      <td><strong>${o.customer?.name || 'Pelanggan'}</strong><br><small style="color:var(--color-text-muted);">${o.customer?.email || ''}</small></td>
-      <td>
-        <ul style="margin:0; padding-left:14px; font-size:0.78rem;">
-          ${(o.items || []).map(i => `<li>${i.name} x${i.qty || i.quantity || 1} (${i.size || i.packName || ''})</li>`).join('')}
-        </ul>
-      </td>
-      <td><strong>${store.formatPrice(o.total || 0)}</strong><br><small style="color:var(--color-success); font-weight:700;">${o.paymentMethod || 'QRIS'}</small></td>
-      <td>
-        <span class="status-badge status-delivered">${(o.status || 'PROSES').toUpperCase()}</span>
-      </td>
-    </tr>
-  `).join('');
+  container.innerHTML = orders.map(o => {
+    const isCancelReq = o.status === 'cancellation_requested';
+    return `
+      <tr style="${isCancelReq ? 'background:#FEF2F2;' : ''}">
+        <td>
+          <strong>#${o.id}</strong><br>
+          <code style="font-size:0.7rem; background:rgba(15,48,29,0.06); padding:2px 6px; border-radius:4px;">${o.trackingNumber || 'SIC-ECO-LIVE'}</code>
+        </td>
+        <td>${o.date || new Date().toISOString().split('T')[0]}</td>
+        <td>
+          <strong>${o.customer?.name || 'Pelanggan'}</strong><br>
+          <small style="color:var(--color-text-muted);">${o.customer?.email || ''}</small><br>
+          <small style="font-size:0.72rem; color:var(--color-text-muted);">${o.customer?.city || ''}</small>
+        </td>
+        <td>
+          <ul style="margin:0; padding-left:14px; font-size:0.78rem;">
+            ${(o.items || []).map(i => `<li>${i.name} x${i.qty || i.quantity || 1} (${i.size || i.packName || ''})</li>`).join('')}
+          </ul>
+        </td>
+        <td>
+          <strong>${store.formatPrice(o.total || 0)}</strong><br>
+          <small style="color:var(--color-success); font-weight:700;">${o.paymentMethod || 'QRIS'}</small>
+        </td>
+        <td>
+          ${isCancelReq ? `
+            <div style="display:flex; flex-direction:column; gap:6px;">
+              <span class="status-badge status-pending" style="background:#FEE2E2; color:#991B1B;">⚠️ PENGAJUAN BATAL</span>
+              <small style="font-size:0.7rem; color:#7F1D1D;">Alasan: ${o.cancellationReason || 'Permintaan User'}</small>
+              <div style="display:flex; gap:4px; margin-top:4px;">
+                <button class="btn btn-sm" style="background:#EF4444; color:#fff; padding:2px 8px; font-size:0.72rem;" onclick="adminApproveCancellation('${o.id}')">✅ ACC Batal</button>
+                <button class="btn btn-outline btn-sm" style="padding:2px 8px; font-size:0.72rem;" onclick="adminChangeOrderStatus('${o.id}', 'shipped')">❌ Tolak & Kirim</button>
+              </div>
+            </div>
+          ` : `
+            <div style="display:flex; align-items:center; gap:6px;">
+              <select id="admin-status-select-${o.id}" class="form-select" style="padding:4px 8px; font-size:0.78rem; width:130px;">
+                <option value="processing" ${o.status === 'processing' ? 'selected' : ''}>Di Proses</option>
+                <option value="shipped" ${o.status === 'shipped' ? 'selected' : ''}>Di Jalan (Sent)</option>
+                <option value="delivered" ${o.status === 'delivered' ? 'selected' : ''}>Sampai (Tiba)</option>
+                <option value="cancelled" ${o.status === 'cancelled' ? 'selected' : ''}>Batal (Void)</option>
+              </select>
+              <button class="btn btn-secondary btn-sm" style="padding:4px 8px; font-size:0.75rem;" onclick="adminUpdateStatusFromSelect('${o.id}')">Simpan</button>
+            </div>
+          `}
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function adminUpdateStatusFromSelect(orderId) {
+  const select = document.getElementById(`admin-status-select-${orderId}`);
+  if (!select) return;
+  const newStatus = select.value;
+  adminChangeOrderStatus(orderId, newStatus);
+}
+
+function adminChangeOrderStatus(orderId, newStatus) {
+  store.updateOrderStatusInStorage(orderId, newStatus);
+
+  renderAdminKPIs();
+  renderAdminOrders();
+  if (typeof updateAccountDashboardUI === 'function') updateAccountDashboardUI();
+
+  const labelMap = {
+    processing: 'Di Proses',
+    shipped: 'Di Jalan (Pengiriman)',
+    delivered: 'Sampai (Tiba di Alamat)',
+    cancelled: 'Dibatalkan'
+  };
+
+  if (typeof showToast === 'function') {
+    showToast(`Status pesanan #${orderId} berhasil diubah menjadi: ${labelMap[newStatus] || newStatus}`, 'success');
+  }
+}
+
+function adminApproveCancellation(orderId) {
+  adminChangeOrderStatus(orderId, 'cancelled');
+  if (typeof showToast === 'function') {
+    showToast(`Pembatalan pesanan #${orderId} telah disetujui Admin.`, 'info');
+  }
 }
 
 function renderAdminCustomerGroceries(list) {

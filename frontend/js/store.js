@@ -192,6 +192,69 @@ class StoreEngine {
     }
   }
 
+  getGlobalOrders() {
+    try {
+      const saved = localStorage.getItem('byharians_global_orders');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  saveGlobalOrder(order) {
+    try {
+      const allOrders = this.getGlobalOrders();
+      const existingIdx = allOrders.findIndex(o => o.id === order.id);
+      if (existingIdx >= 0) {
+        allOrders[existingIdx] = { ...allOrders[existingIdx], ...order };
+      } else {
+        allOrders.unshift(order);
+      }
+      localStorage.setItem('byharians_global_orders', JSON.stringify(allOrders));
+    } catch (e) {
+      console.warn('Failed to save global order:', e);
+    }
+  }
+
+  updateOrderStatusInStorage(orderId, newStatus, trackingNum) {
+    try {
+      // 1. Update in Global Master Registry
+      const allGlobal = this.getGlobalOrders();
+      const targetG = allGlobal.find(o => o.id === orderId);
+      if (targetG) {
+        targetG.status = newStatus;
+        if (trackingNum) targetG.trackingNumber = trackingNum;
+        localStorage.setItem('byharians_global_orders', JSON.stringify(allGlobal));
+      }
+
+      // 2. Update in current store.orders
+      const targetCur = (this.orders || []).find(o => o.id === orderId);
+      if (targetCur) {
+        targetCur.status = newStatus;
+        if (trackingNum) targetCur.trackingNumber = trackingNum;
+      }
+
+      // 3. Update in customer's scoped orders key if email exists
+      const targetEmail = targetG?.customer?.email || targetCur?.customer?.email;
+      if (targetEmail) {
+        const emailKey = targetEmail.toLowerCase().replace(/[^a-z0-9]/g, '_');
+        const userOrderKey = `byharians_orders_${emailKey}`;
+        const savedUserOrders = localStorage.getItem(userOrderKey);
+        if (savedUserOrders) {
+          const parsed = JSON.parse(savedUserOrders);
+          const userOrder = parsed.find(o => o.id === orderId);
+          if (userOrder) {
+            userOrder.status = newStatus;
+            if (trackingNum) userOrder.trackingNumber = trackingNum;
+            localStorage.setItem(userOrderKey, JSON.stringify(parsed));
+          }
+        }
+      }
+    } catch (err) {
+      console.warn('Failed to update order status in storage:', err);
+    }
+  }
+
   loadUserCartAndOrders() {
     try {
       const emailKey = (this.isLoggedIn && this.userAccount?.email)
@@ -202,9 +265,14 @@ class StoreEngine {
       const savedCart = localStorage.getItem(cartKey);
       this.cart = savedCart ? JSON.parse(savedCart) : [];
 
-      const orderKey = `byharians_orders_${emailKey}`;
-      const savedOrders = localStorage.getItem(orderKey);
-      this.orders = savedOrders ? JSON.parse(savedOrders) : [];
+      if (this.isAdmin) {
+        // Admin sees all customer orders globally!
+        this.orders = this.getGlobalOrders();
+      } else {
+        const orderKey = `byharians_orders_${emailKey}`;
+        const savedOrders = localStorage.getItem(orderKey);
+        this.orders = savedOrders ? JSON.parse(savedOrders) : [];
+      }
     } catch (err) {
       console.warn('Failed to load user cart & orders:', err);
       this.cart = [];
