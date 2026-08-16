@@ -1464,38 +1464,6 @@
         </div>
       </div>
 
-      <!-- Customer Package & Subscription Management Module -->
-      <div class="admin-table-card" id="admin-section-packages">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 12px;">
-          <div>
-            <span class="section-tag" style="background: var(--color-banana); color: var(--color-primary); margin-bottom: 4px;">CUSTOMER PACKAGES & DISPATCHES</span>
-            <h3 style="font-size: 1.35rem; color: var(--color-primary); font-weight: 800; margin-top: 4px;">Kelola, Lacak, & Edit Paket Pelanggan</h3>
-          </div>
-          <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
-            <input type="text" id="admin-package-search-input" class="form-input" placeholder="Cari nama, email, resi..." oninput="filterAdminPackagesList()" style="padding: 6px 14px; font-size: 0.82rem; width: 220px; border-radius: var(--radius-full);">
-            <button class="btn btn-primary btn-sm" onclick="adminOpenCreatePackageModal()">+ Tambah Paket Baru</button>
-          </div>
-        </div>
-
-        <div style="overflow-x: auto;">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>ID Paket & Pelanggan</th>
-                <th>Detail Paket & Produk</th>
-                <th>Frekuensi & Jadwal Kirim</th>
-                <th>Kurir & No. Resi</th>
-                <th>Status Paket</th>
-                <th>Aksi Kelola (Track / Edit / Pause)</th>
-              </tr>
-            </thead>
-            <tbody id="admin-packages-tbody">
-              <!-- Populated dynamically by app.js -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-
       <!-- Product Catalog & Inventory Pricing Editor -->
       <div class="admin-table-card" id="admin-section-inventory">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
