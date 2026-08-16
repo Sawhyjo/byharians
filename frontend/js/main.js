@@ -108,6 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initial Route
   const initialHash = window.location.hash.replace('#', '') || 'home';
+  if (typeof closeCartDrawer === 'function') closeCartDrawer();
   navigateTo(initialHash);
   renderCatalogGrid();
   updateCartBadgeAndDrawer();
