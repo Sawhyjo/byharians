@@ -401,22 +401,7 @@ async function updateAccountDashboardUI() {
         .order('created_at', { ascending: false });
 
       if (!error && Array.isArray(data)) {
-        customerOrders = data.map(row => ({
-          id: row.id || row.order_id,
-          date: row.created_at ? row.created_at.split('T')[0] : new Date().toISOString().split('T')[0],
-          customer: {
-            name: row.customer_name || store.userAccount.name,
-            email: row.customer_email || userEmail,
-            phone: row.customer_phone || store.userAccount.phone,
-            city: row.shipping_address || ''
-          },
-          items: typeof row.items === 'string' ? JSON.parse(row.items) : (row.items || []),
-          total: row.total_price || row.total || 0,
-          paymentMethod: (row.payment_method || 'QRIS').toUpperCase(),
-          status: row.status || 'processing',
-          trackingNumber: row.tracking_number || `SIC-ECO-LIVE`,
-          courier: row.courier || 'SiCepat BEST Eco-Fleet'
-        }));
+        customerOrders = data.map(row => store.normalizeOrder(row)).filter(Boolean);
         store.orders = customerOrders;
         store.save();
       }

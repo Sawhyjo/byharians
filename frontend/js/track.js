@@ -30,24 +30,8 @@ async function lookupOrder(customQuery) {
         .or(`id.ilike.%${query}%,tracking_number.ilike.%${query}%`);
 
       if (!error && Array.isArray(data) && data.length > 0) {
-        const row = data[0];
-        order = {
-          id: row.id || row.order_id,
-          date: row.created_at ? row.created_at.split('T')[0] : new Date().toISOString().split('T')[0],
-          customer: {
-            name: row.customer_name || 'Pelanggan BYHARIANS',
-            email: row.customer_email || '',
-            phone: row.customer_phone || '',
-            city: row.shipping_address || 'DKI Jakarta'
-          },
-          items: typeof row.items === 'string' ? JSON.parse(row.items) : (row.items || []),
-          total: row.total_price || row.total || 0,
-          paymentMethod: (row.payment_method || 'QRIS').toUpperCase(),
-          status: row.status || 'processing',
-          trackingNumber: row.tracking_number || `SIC-ECO-LIVE`,
-          courier: row.courier || 'SiCepat BEST Eco-Fleet'
-        };
-        store.saveGlobalOrder(order);
+        order = store.normalizeOrder(data[0]);
+        if (order) store.saveGlobalOrder(order);
       }
     } catch (err) {
       console.warn('Supabase lookup order error:', err);

@@ -1,7 +1,7 @@
 /**
  * BYHARIANS OPERATIONS & ADMIN MANAGEMENT MODULE
  */
-async function switchAdminSubTab(tabName = 'all') {
+function switchAdminSubTab(tabName = 'all') {
   const secKpis = document.getElementById('admin-section-kpis');
   const secChart = document.getElementById('admin-section-chart');
   const secGroc = document.getElementById('admin-section-groceries');
@@ -16,11 +16,12 @@ async function switchAdminSubTab(tabName = 'all') {
   if (secOrders) secOrders.style.display = 'block';
   if (secInv) secInv.style.display = 'block';
 
-  await syncAdminDatabaseOrders();
-  renderAdminKPIs();
-  renderAdminOrders();
-  renderAdminCustomerGroceries();
-  renderAdminCustomerPackages();
+  syncAdminDatabaseOrders().then(() => {
+    renderAdminKPIs();
+    renderAdminOrders();
+    renderAdminCustomerGroceries();
+    renderAdminCustomerPackages();
+  });
 }
 
 let isSupabaseRealtimeSubscribed = false;
@@ -34,25 +35,9 @@ async function syncAdminDatabaseOrders() {
         .order('created_at', { ascending: false });
 
       if (!error && Array.isArray(data) && data.length > 0) {
-        data.forEach(row => {
-          const formatted = {
-            id: row.id || row.order_id || `BYH-${row.id_num || '89421'}`,
-            date: row.created_at ? row.created_at.split('T')[0] : new Date().toISOString().split('T')[0],
-            customer: {
-              name: row.customer_name || row.user_name || 'Pelanggan BYHARIANS',
-              email: row.customer_email || row.user_email || '',
-              phone: row.customer_phone || '',
-              city: row.shipping_address || 'DKI Jakarta'
-            },
-            items: typeof row.items === 'string' ? JSON.parse(row.items) : (row.items || []),
-            total: row.total_price || row.total || 0,
-            paymentMethod: (row.payment_method || 'QRIS').toUpperCase(),
-            status: row.status || 'processing',
-            trackingNumber: row.tracking_number || `SIC-ECO-${row.id || 'LIVE'}`,
-            courier: row.courier || 'SiCepat BEST Eco-Fleet'
-          };
-          store.saveGlobalOrder(formatted);
-        });
+        const normalized = data.map(r => store.normalizeOrder(r)).filter(Boolean);
+        normalized.forEach(o => store.saveGlobalOrder(o));
+        store.orders = normalized;
       }
 
       // Setup Supabase Realtime Order Listener
@@ -63,26 +48,13 @@ async function syncAdminDatabaseOrders() {
           .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, (payload) => {
             console.log('⚡ Supabase Realtime Order Event:', payload);
             if (payload.new) {
-              const row = payload.new;
-              const formatted = {
-                id: row.id || row.order_id,
-                date: row.created_at ? row.created_at.split('T')[0] : new Date().toISOString().split('T')[0],
-                customer: {
-                  name: row.customer_name || 'Pelanggan BYHARIANS',
-                  email: row.customer_email || '',
-                  phone: row.customer_phone || '',
-                  city: row.shipping_address || 'DKI Jakarta'
-                },
-                items: typeof row.items === 'string' ? JSON.parse(row.items) : (row.items || []),
-                total: row.total_price || row.total || 0,
-                paymentMethod: (row.payment_method || 'QRIS').toUpperCase(),
-                status: row.status || 'processing',
-                trackingNumber: row.tracking_number || `SIC-ECO-LIVE`,
-                courier: row.courier || 'SiCepat BEST Eco-Fleet'
-              };
-              store.saveGlobalOrder(formatted);
-              renderAdminKPIs();
-              renderAdminOrders();
+              const formatted = store.normalizeOrder(payload.new);
+              if (formatted) {
+                store.saveGlobalOrder(formatted);
+                renderAdminKPIs();
+                renderAdminOrders();
+                if (typeof updateAccountDashboardUI === 'function') updateAccountDashboardUI();
+              }
             }
           })
           .subscribe();
@@ -97,12 +69,15 @@ async function syncAdminDatabaseOrders() {
     if (resp.ok) {
       const dbOrders = await resp.json();
       if (Array.isArray(dbOrders) && dbOrders.length > 0) {
-        dbOrders.forEach(o => store.saveGlobalOrder(o));
+        const normalized = dbOrders.map(r => store.normalizeOrder(r)).filter(Boolean);
+        normalized.forEach(o => store.saveGlobalOrder(o));
       }
     }
   } catch (err) {
     console.warn('Database orders sync warning:', err);
   }
+
+  return store.orders || [];
 }
 
 function renderAdminKPIs() {
@@ -120,8 +95,8 @@ function renderAdminKPIs() {
 
   const globalOrders = store.getGlobalOrders();
   const allOrdersMap = new Map();
-  (store.orders || []).forEach(o => allOrdersMap.set(o.id, o));
-  globalOrders.forEach(o => allOrdersMap.set(o.id, o));
+  (store.orders || []).forEach(o => { if (o && o.id) allOrdersMap.set(o.id, o); });
+  globalOrders.forEach(o => { if (o && o.id) allOrdersMap.set(o.id, o); });
   const ordersList = Array.from(allOrdersMap.values());
 
   // Calculate live dynamic metrics from completed transactions
@@ -148,15 +123,15 @@ function renderAdminOrders() {
 
   const globalOrders = store.getGlobalOrders();
   const allOrdersMap = new Map();
-  (store.orders || []).forEach(o => allOrdersMap.set(o.id, o));
-  globalOrders.forEach(o => allOrdersMap.set(o.id, o));
+  (store.orders || []).forEach(o => { if (o && o.id) allOrdersMap.set(o.id, o); });
+  globalOrders.forEach(o => { if (o && o.id) allOrdersMap.set(o.id, o); });
   const orders = Array.from(allOrdersMap.values());
 
   if (orders.length === 0) {
     container.innerHTML = `
       <tr>
         <td colspan="6" style="text-align:center; padding:24px; color:var(--color-text-muted);">
-          Belum ada pesanan pelanggan terdaftar di sistem.
+          Belum ada pesanan pelanggan terdaftar di database Supabase.
         </td>
       </tr>
     `;
@@ -179,7 +154,7 @@ function renderAdminOrders() {
         </td>
         <td>
           <ul style="margin:0; padding-left:14px; font-size:0.78rem;">
-            ${(o.items || []).map(i => `<li>${i.name} x${i.qty || i.quantity || 1} (${i.size || i.packName || ''})</li>`).join('')}
+            ${(o.items || []).map(i => `<li>${i.name || 'Produk BYHARIANS'} x${i.qty || i.quantity || 1} (${i.size || i.packName || ''})</li>`).join('')}
           </ul>
         </td>
         <td>
@@ -221,8 +196,20 @@ function adminUpdateStatusFromSelect(orderId) {
 }
 
 async function adminChangeOrderStatus(orderId, newStatus) {
-  store.updateOrderStatusInStorage(orderId, newStatus);
+  // 1. Update in Supabase Database directly
+  if (supabaseClient) {
+    try {
+      const { error } = await supabaseClient
+        .from('orders')
+        .update({ status: newStatus })
+        .or(`id.eq.${orderId},order_id.eq.${orderId}`);
+      if (error) console.warn('Supabase status update error:', error);
+    } catch (err) {
+      console.warn('Supabase status update warning:', err);
+    }
+  }
 
+  // 2. Update via API fallback
   try {
     await fetch(`${CONFIG.API_BASE_URL}/orders/status`, {
       method: 'POST',
@@ -233,9 +220,16 @@ async function adminChangeOrderStatus(orderId, newStatus) {
     console.warn('Backend order status update warning:', err);
   }
 
+  // 3. Update local store state
+  store.updateOrderStatusInStorage(orderId, newStatus);
+
+  // 4. Re-render UI everywhere
   renderAdminKPIs();
   renderAdminOrders();
   if (typeof updateAccountDashboardUI === 'function') updateAccountDashboardUI();
+  if (typeof lookupOrder === 'function' && activeTrackingOrder?.id === orderId) {
+    lookupOrder(orderId);
+  }
 
   const labelMap = {
     processing: 'Di Proses',
@@ -245,7 +239,7 @@ async function adminChangeOrderStatus(orderId, newStatus) {
   };
 
   if (typeof showToast === 'function') {
-    showToast(`Status pesanan #${orderId} berhasil diubah menjadi: ${labelMap[newStatus] || newStatus}`, 'success');
+    showToast(`Status pesanan #${orderId} berhasil diubah di database Supabase menjadi: ${labelMap[newStatus] || newStatus}`, 'success');
   }
 }
 
@@ -288,14 +282,14 @@ function renderAdminCustomerGroceries(list) {
 }
 
 function renderAdminCustomerPackages(list) {
-  const container = document.getElementById('admin-packages-table-body');
+  const container = document.getElementById('admin-packages-tbody') || document.getElementById('admin-packages-table-body');
   if (!container) return;
   const items = list || store.customerPackages;
 
   if (items.length === 0) {
     container.innerHTML = `
       <tr>
-        <td colspan="7" style="text-align:center; padding:20px; color:var(--color-text-muted);">
+        <td colspan="6" style="text-align:center; padding:20px; color:var(--color-text-muted);">
           Belum ada paket langganan siklus terdaftar.
         </td>
       </tr>
@@ -305,11 +299,10 @@ function renderAdminCustomerPackages(list) {
 
   container.innerHTML = items.map(p => `
     <tr>
-      <td><strong>#${p.id}</strong></td>
-      <td><strong>${p.customerName}</strong><br><small style="color:var(--color-text-muted);">${p.customerEmail}</small></td>
+      <td><strong>#${p.id}</strong><br><small style="color:var(--color-text-muted);">${p.customerEmail || ''}</small></td>
       <td>${p.packageName}</td>
-      <td><code style="background:rgba(15,48,29,0.06); padding:2px 6px; border-radius:4px;">${p.trackingNumber}</code></td>
-      <td>${p.nextDeliveryDate}</td>
+      <td>${p.frequency || 'Bulanan'} (${p.nextDeliveryDate || '-'})</td>
+      <td><code style="background:rgba(15,48,29,0.06); padding:2px 6px; border-radius:4px;">${p.trackingNumber || 'N/A'}</code></td>
       <td><span class="badge badge-primary">${p.statusText || 'Aktif'}</span></td>
       <td>
         <button class="btn btn-secondary btn-sm" onclick="adminOpenEditPackageModal('${p.id}')">Edit</button>

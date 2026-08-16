@@ -192,6 +192,40 @@ class StoreEngine {
     }
   }
 
+  normalizeOrder(row) {
+    if (!row) return null;
+    let parsedItems = [];
+    if (typeof row.items === 'string') {
+      try { parsedItems = JSON.parse(row.items); } catch(e) { parsedItems = []; }
+    } else if (Array.isArray(row.items)) {
+      parsedItems = row.items;
+    } else if (row.items) {
+      parsedItems = [row.items];
+    }
+
+    const rawEmail = row.customer_email || row.customer?.email || row.user_email || '';
+    const rawName = row.customer_name || row.customer?.name || row.user_name || 'Pelanggan BYHARIANS';
+    const rawPhone = row.customer_phone || row.customer?.phone || '';
+    const rawAddress = row.shipping_address || row.customer?.city || 'Jakarta, Indonesia';
+
+    return {
+      id: row.id || row.order_id || `BYH-${row.id_num || '89421'}`,
+      date: row.created_at ? row.created_at.split('T')[0] : (row.date || new Date().toISOString().split('T')[0]),
+      customer: {
+        name: rawName,
+        email: rawEmail.toLowerCase().trim(),
+        phone: rawPhone,
+        city: rawAddress
+      },
+      items: parsedItems,
+      total: Number(row.total_price || row.total || 0),
+      paymentMethod: (row.payment_method || row.paymentMethod || 'QRIS').toUpperCase(),
+      status: row.status || 'processing',
+      trackingNumber: row.tracking_number || row.trackingNumber || `SIC-ECO-${row.id || 'LIVE'}`,
+      courier: row.courier || 'SiCepat BEST Eco-Fleet'
+    };
+  }
+
   getGlobalOrders() {
     try {
       const saved = localStorage.getItem('byharians_global_orders');
