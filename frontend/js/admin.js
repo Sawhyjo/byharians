@@ -1,7 +1,7 @@
 /**
  * BYHARIANS OPERATIONS & ADMIN MANAGEMENT MODULE
  */
-function switchAdminSubTab(tabName = 'all') {
+async function switchAdminSubTab(tabName = 'all') {
   const secKpis = document.getElementById('admin-section-kpis');
   const secChart = document.getElementById('admin-section-chart');
   const secGroc = document.getElementById('admin-section-groceries');
@@ -16,10 +16,25 @@ function switchAdminSubTab(tabName = 'all') {
   if (secOrders) secOrders.style.display = 'block';
   if (secInv) secInv.style.display = 'block';
 
+  await syncAdminDatabaseOrders();
   renderAdminKPIs();
   renderAdminOrders();
   renderAdminCustomerGroceries();
   renderAdminCustomerPackages();
+}
+
+async function syncAdminDatabaseOrders() {
+  try {
+    const resp = await fetch(`${CONFIG.API_BASE_URL}/orders`);
+    if (resp.ok) {
+      const dbOrders = await resp.json();
+      if (Array.isArray(dbOrders) && dbOrders.length > 0) {
+        dbOrders.forEach(o => store.saveGlobalOrder(o));
+      }
+    }
+  } catch (err) {
+    console.warn('Database orders sync warning:', err);
+  }
 }
 
 function renderAdminKPIs() {
@@ -137,8 +152,18 @@ function adminUpdateStatusFromSelect(orderId) {
   adminChangeOrderStatus(orderId, newStatus);
 }
 
-function adminChangeOrderStatus(orderId, newStatus) {
+async function adminChangeOrderStatus(orderId, newStatus) {
   store.updateOrderStatusInStorage(orderId, newStatus);
+
+  try {
+    await fetch(`${CONFIG.API_BASE_URL}/orders/status`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: orderId, status: newStatus })
+    });
+  } catch (err) {
+    console.warn('Backend order status update warning:', err);
+  }
 
   renderAdminKPIs();
   renderAdminOrders();
