@@ -38,22 +38,67 @@ function renderProductCardHTML(p) {
 function renderCatalogGrid(productsToRender) {
   const list = productsToRender || store.products;
   const featuredGrid = document.getElementById('home-featured-grid');
-  const shopGrid = document.getElementById('shop-products-grid');
+  const shopGrid = document.getElementById('products-grid-container') || document.getElementById('shop-products-grid');
   const html = list.map(p => renderProductCardHTML(p)).join('');
   if (featuredGrid) featuredGrid.innerHTML = html;
   if (shopGrid) shopGrid.innerHTML = html;
 }
 
 function filterCategory(cat, btn) {
-  if (btn) {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-  }
+  filterByCategory(cat, btn);
+}
+
+function filterByCategory(cat, btn) {
+  document.querySelectorAll('.cat-tab-btn, .filter-btn').forEach(b => {
+    if (b.getAttribute('data-category') === cat) b.classList.add('active');
+    else b.classList.remove('active');
+  });
+
   if (cat === 'all') {
     renderCatalogGrid(store.products);
   } else {
     const filtered = store.products.filter(p => p.category === cat);
     renderCatalogGrid(filtered);
+  }
+}
+
+function filterByFlow(flowVal) {
+  if (flowVal === 'all') {
+    renderCatalogGrid(store.products);
+  } else {
+    const targetLevel = parseInt(flowVal);
+    const filtered = store.products.filter(p => p.flowLevel === targetLevel);
+    renderCatalogGrid(filtered);
+  }
+}
+
+function filterByPrice(maxPrice) {
+  const valDisplay = document.getElementById('price-val-display');
+  if (valDisplay) valDisplay.innerText = store.formatPrice(maxPrice);
+
+  const filtered = store.products.filter(p => p.price <= parseInt(maxPrice));
+  renderCatalogGrid(filtered);
+}
+
+function resetFilters() {
+  const priceSlider = document.getElementById('price-slider-input');
+  if (priceSlider) priceSlider.value = 350000;
+  const valDisplay = document.getElementById('price-val-display');
+  if (valDisplay) valDisplay.innerText = store.formatPrice(350000);
+
+  const allFlowRadio = document.querySelector('input[name="flow-filter"][value="all"]');
+  if (allFlowRadio) allFlowRadio.checked = true;
+
+  filterByCategory('all');
+}
+
+function toggleShopFilter() {
+  const sidebar = document.getElementById('shop-filter-sidebar');
+  const btnText = document.getElementById('filter-toggle-btn-text');
+  if (sidebar) {
+    const isHidden = sidebar.style.display === 'none';
+    sidebar.style.display = isHidden ? 'block' : 'none';
+    if (btnText) btnText.innerText = isHidden ? 'Sembunyikan Filter' : 'Tampilkan Filter';
   }
 }
 
