@@ -196,6 +196,7 @@ async function submitCheckoutOrder(e) {
 
   if (typeof renderAdminKPIs === 'function') renderAdminKPIs();
   if (typeof renderAdminOrders === 'function') renderAdminOrders();
+  if (typeof updateAccountDashboardUI === 'function') updateAccountDashboardUI();
 
   if (completeBtn) {
     completeBtn.disabled = false;

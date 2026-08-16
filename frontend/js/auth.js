@@ -407,6 +407,59 @@ function updateAccountDashboardUI() {
       </div>
     `;
   }
+
+  // Render Past Orders List
+  const ordersListEl = document.getElementById('acc-orders-list');
+  if (ordersListEl) {
+    const userOrders = store.orders || [];
+    if (userOrders.length === 0) {
+      ordersListEl.innerHTML = `
+        <div style="text-align:center; padding: 32px 16px; color: var(--color-text-muted);">
+          <div style="font-size: 2rem; margin-bottom: 8px;">📦</div>
+          <p style="font-weight: 700; color: var(--color-primary); font-size: 0.95rem; margin-bottom: 4px;">Belum Ada Riwayat Pesanan</p>
+          <small>Pesanan yang Anda buat akan muncul di sini secara otomatis.</small>
+        </div>
+      `;
+    } else {
+      ordersListEl.innerHTML = userOrders.map(order => `
+        <div style="border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 18px 20px; margin-bottom: 14px; background: #fff;">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--color-border); padding-bottom: 12px; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+            <div>
+              <span style="font-size: 0.74rem; color: var(--color-text-muted); text-transform: uppercase;">Nomor Pesanan</span>
+              <strong style="font-size: 1.05rem; color: var(--color-primary); display: block;">#${order.id}</strong>
+            </div>
+            <div>
+              <span style="font-size: 0.74rem; color: var(--color-text-muted); text-transform: uppercase;">Tanggal</span>
+              <div style="font-weight: 700; font-size: 0.88rem; color: var(--color-primary);">${order.date || new Date().toISOString().split('T')[0]}</div>
+            </div>
+            <div>
+              <span style="font-size: 0.74rem; color: var(--color-text-muted); text-transform: uppercase;">No. Resi Pengiriman</span>
+              <code style="background: rgba(15,48,29,0.06); padding: 2px 8px; border-radius: 4px; font-weight: 700; color: var(--color-primary); font-size: 0.8rem;">${order.trackingNumber || 'SIC-ECO-LIVE'}</code>
+            </div>
+            <div>
+              <span class="status-badge status-shipped" style="text-transform: uppercase;">${order.status === 'processing' ? 'DIPROSES' : order.status.toUpperCase()}</span>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <div style="font-size: 0.84rem; font-weight: 700; color: var(--color-primary); margin-bottom: 4px;">Daftar Item:</div>
+              <ul style="margin: 0; padding-left: 18px; font-size: 0.8rem; color: var(--color-text-muted);">
+                ${(order.items || []).map(item => `<li><strong>${item.name}</strong> x${item.qty || item.quantity || 1} (${item.size || item.packName || ''})</li>`).join('')}
+              </ul>
+            </div>
+            <div style="text-align: right;">
+              <span style="font-size: 0.78rem; color: var(--color-text-muted); display: block;">Total Bayar (${order.paymentMethod || 'QRIS'})</span>
+              <strong style="font-size: 1.15rem; color: var(--color-primary);">${store.formatPrice(order.total || 0)}</strong>
+              <div style="margin-top: 6px;">
+                <button class="btn btn-outline btn-sm" onclick="navigateTo('track/${order.id}')" style="padding: 4px 10px; font-size: 0.76rem;">Lacak Pengiriman →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+  }
 }
 
 function openForgotPasswordModal() {
