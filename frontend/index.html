@@ -2608,6 +2608,41 @@
           <button type="submit" class="btn btn-primary btn-sm">Kirim Ulasan & Klaim +50 Pts</button>
         </div>
       </form>
+  <!-- ==========================================
+       MODAL: ORDER CANCELLATION REQUEST (CONFIRM TO ADMIN)
+       ========================================== -->
+  <div id="cancel-order-modal" class="modal-backdrop" style="display: none;">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="color: var(--color-error);">🚫 Pengajuan Pembatalan Pesanan</h3>
+        <button class="modal-close-btn" onclick="closeCancelOrderModal()">×</button>
+      </div>
+      <p style="font-size: 0.84rem; color: var(--color-text-muted); margin-bottom: 18px;">
+        Setiap pembatalan pesanan memerlukan verifikasi dan konfirmasi dari Admin Operations. Silakan pilih alasan dan kirim pengajuan ke Admin.
+      </p>
+
+      <form onsubmit="submitCancelOrderRequest(event)">
+        <div class="form-group">
+          <label for="cancel-reason-select">Alasan Pembatalan</label>
+          <select id="cancel-reason-select" class="form-select">
+            <option value="Ingin Mengubah Alamat Pengiriman">Ingin Mengubah Alamat Pengiriman</option>
+            <option value="Salah Memilih Varian / Paket Produk">Salah Memilih Varian / Paket Produk</option>
+            <option value="Ingin Menambah Jumlah Item Belanja">Ingin Menambah Jumlah Item Belanja</option>
+            <option value="Salah Memilih Metode Pembayaran">Salah Memilih Metode Pembayaran</option>
+            <option value="Lainnya (Perlu Konfirmasi Admin)">Lainnya (Perlu Konfirmasi Admin)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="cancel-note-input">Catatan Tambahan untuk Admin</label>
+          <textarea id="cancel-note-input" class="form-input" rows="3" placeholder="Tuliskan catatan tambahan untuk admin terkait pembatalan ini..." required></textarea>
+        </div>
+
+        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; flex-wrap: wrap;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="closeCancelOrderModal()">Batal</button>
+          <button type="submit" class="btn btn-primary btn-sm" style="background: var(--color-error); border-color: var(--color-error);">📩 Kirim Pengajuan & Konfirmasi Admin WA</button>
+        </div>
+      </form>
     </div>
   </div>
 

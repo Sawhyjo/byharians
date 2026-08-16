@@ -1,5 +1,5 @@
 /**
- * BYHARIANS ORDER TRACKING & CUSTOMER RESOLUTION MODULE
+ * BYHARIANS ORDER TRACKING, DELIVERY STATUS & RESOLUTION ENGINE
  */
 
 let activeTrackingOrder = null;
@@ -71,12 +71,14 @@ function lookupOrder(customQuery) {
     const statusTextMap = {
       processing: 'DI PROSES (DI KEMAS)',
       shipped: 'DI JALAN (PENGIRIMAN)',
-      delivered: 'SAMPAI (SUDAH DITERIMA)'
+      delivered: 'SAMPAI (SUDAH DITERIMA)',
+      cancellation_requested: 'PENGAJUAN BATAL'
     };
     const statusClassMap = {
       processing: 'status-processing',
       shipped: 'status-shipped',
-      delivered: 'status-delivered'
+      delivered: 'status-delivered',
+      cancellation_requested: 'status-pending'
     };
     dispStatus.innerText = statusTextMap[order.status] || order.status.toUpperCase();
     dispStatus.className = `status-badge ${statusClassMap[order.status] || 'status-shipped'}`;
@@ -107,7 +109,7 @@ function lookupOrder(customQuery) {
     `;
   }
 
-  // Render Delivery Action Controls Box
+  // Render Delivery Action Controls Box based on Admin status
   renderTrackingActionButtons(order);
 }
 
@@ -145,24 +147,44 @@ function renderTrackingActionButtons(order) {
   if (!container) return;
 
   if (order.status === 'delivered') {
+    // Condition A: Admin has updated status to 'delivered' / Sampai
     container.innerHTML = `
-      <div style="background: rgba(39, 154, 94, 0.08); border: 1.5px solid var(--color-success); border-radius: var(--radius-lg); padding: 20px; margin-top: 24px; text-align: center;">
-        <h4 style="font-size: 1.1rem; color: var(--color-primary); margin-bottom: 6px;">🎉 Pesanan Telah Diterima!</h4>
-        <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 14px;">Terima kasih telah menggunakan produk ramah lingkungan BYHARIANS.</p>
-        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-          <button class="btn btn-primary btn-sm" onclick="openProductReviewModal()">⭐ Berikan Ulasan Produk (+50 Pts)</button>
-          <button class="btn btn-outline btn-sm" onclick="openDeliveryIssueModal()" style="color: var(--color-error); border-color: rgba(186, 50, 50, 0.3);">⚠️ Kendala Produk / Rusak?</button>
+      <div style="background: rgba(39, 154, 94, 0.08); border: 1.5px solid var(--color-success); border-radius: var(--radius-lg); padding: 22px; margin-top: 24px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:10px;">
+          <h4 style="font-size: 1.05rem; color: var(--color-primary); margin:0;">🏡 Admin / Kurir Melaporkan Barang Telah Sampai</h4>
+          <span class="status-badge status-delivered">SAMPAI DI ALAMAT</span>
+        </div>
+        <p style="font-size: 0.84rem; color: var(--color-text-muted); margin-bottom: 16px;">
+          Silakan periksa paket Anda. Jika sudah diterima dengan baik, klik konfirmasi di bawah ini untuk mengklaim <strong>+50 Eco-Points</strong>. Jika terdapat kerusakan, hubungi Admin.
+        </p>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <button class="btn btn-primary btn-sm" onclick="confirmOrderReceipt()" style="flex: 1; font-weight:800;">✅ Konfirmasi Pesanan Sudah Diterima</button>
+          <button class="btn btn-outline btn-sm" onclick="openDeliveryIssueModal()" style="color: var(--color-error); border-color: rgba(186, 50, 50, 0.35);">⚠️ Barang Belum Sampai / Rusak?</button>
         </div>
       </div>
     `;
-  } else {
+  } else if (order.status === 'cancellation_requested') {
+    // Condition B: Cancellation pending Admin confirmation
     container.innerHTML = `
-      <div style="background: #FFFDF4; border: 1.5px solid var(--color-border); border-radius: var(--radius-lg); padding: 20px; margin-top: 24px;">
-        <h4 style="font-size: 1rem; color: var(--color-primary); margin-bottom: 6px;">Konfirmasi & Bantuan Pengiriman</h4>
-        <p style="font-size: 0.83rem; color: var(--color-text-muted); margin-bottom: 16px;">Jika paket telah sampai di tangan Anda, silakan konfirmasi pesanan diterima di bawah ini.</p>
+      <div style="background: #FEF3C7; border: 1.5px solid #F59E0B; border-radius: var(--radius-lg); padding: 20px; margin-top: 24px;">
+        <h4 style="font-size: 1rem; color: #92400E; margin-bottom: 6px;">⏳ Pengajuan Pembatalan Dalam Proses Verifikasi Admin</h4>
+        <p style="font-size: 0.83rem; color: #78350F; margin-bottom: 14px;">
+          Pengajuan pembatalan pesanan <strong>#${order.id}</strong> telah dikirim ke Admin. Silakan klik di bawah ini untuk konfirmasi cepat via WhatsApp Admin.
+        </p>
+        <button class="btn btn-secondary btn-sm" onclick="openCancelOrderModal()">💬 Chat Admin WA Konfirmasi Pembatalan</button>
+      </div>
+    `;
+  } else {
+    // Condition C: Order is 'processing' or 'shipped' (Barang Belum Sampai)
+    container.innerHTML = `
+      <div style="background: #FFFDF4; border: 1.5px solid var(--color-border); border-radius: var(--radius-lg); padding: 22px; margin-top: 24px;">
+        <h4 style="font-size: 1.05rem; color: var(--color-primary); margin-bottom: 6px;">Bantuan Pemesanan & Pengajuan Pembatalan</h4>
+        <p style="font-size: 0.83rem; color: var(--color-text-muted); margin-bottom: 16px;">
+          Pesanan Anda sedang diproses/dalam pengiriman. Jika terdapat pertanyaan kendala atau ingin membatalkan pesanan, silakan pilih opsi di bawah ini (memerlukan konfirmasi Admin).
+        </p>
         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-          <button class="btn btn-primary btn-sm" onclick="confirmOrderReceipt()" style="flex: 1;">✅ Konfirmasi Pesanan Sudah Diterima</button>
-          <button class="btn btn-outline btn-sm" onclick="openDeliveryIssueModal()" style="color: var(--color-error); border-color: rgba(186, 50, 50, 0.4);">⚠️ Barang Belum Sampai / Rusak?</button>
+          <button class="btn btn-outline btn-sm" onclick="openDeliveryIssueModal()" style="flex: 1; color: var(--color-primary); border-color: var(--color-border);">❓ Tanya Kendala Pemesanan / Chat Admin</button>
+          <button class="btn btn-outline btn-sm" onclick="openCancelOrderModal()" style="color: var(--color-error); border-color: rgba(186, 50, 50, 0.4);">🚫 Pengajuan Pembatalan (Cancel Pesanan)</button>
         </div>
       </div>
     `;
@@ -218,6 +240,42 @@ function submitDeliveryComplaintTicket(e) {
   // Trigger direct WhatsApp support chat
   const orderId = activeTrackingOrder?.id || 'BYH-89421';
   const waText = encodeURIComponent(`Halo Admin BYHARIANS,\nSaya mau lapor kendala pesanan #${orderId}.\nKendala: ${issueType}\nCatatan: ${issueDesc}`);
+  window.open(`https://wa.me/6281289213401?text=${waText}`, '_blank');
+}
+
+function openCancelOrderModal() {
+  const modal = document.getElementById('cancel-order-modal');
+  if (modal) modal.style.display = 'flex';
+}
+
+function closeCancelOrderModal() {
+  const modal = document.getElementById('cancel-order-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+function submitCancelOrderRequest(e) {
+  if (e) e.preventDefault();
+  if (!activeTrackingOrder) return;
+
+  const reason = document.getElementById('cancel-reason-select')?.value;
+  const note = document.getElementById('cancel-note-input')?.value?.trim() || '-';
+
+  activeTrackingOrder.status = 'cancellation_requested';
+  activeTrackingOrder.cancellationReason = reason;
+  activeTrackingOrder.cancellationNote = note;
+  store.save();
+
+  closeCancelOrderModal();
+  lookupOrder(activeTrackingOrder.id);
+
+  if (typeof renderAdminOrders === 'function') renderAdminOrders();
+  if (typeof showToast === 'function') {
+    showToast(`Pengajuan pembatalan pesanan #${activeTrackingOrder.id} telah dikirim ke Admin.`, 'info');
+  }
+
+  // Open WhatsApp Admin chat for cancellation confirmation
+  const orderId = activeTrackingOrder.id;
+  const waText = encodeURIComponent(`Halo Admin BYHARIANS,\nSaya ingin mengajukan PEMBATALAN untuk pesanan #${orderId}.\nAlasan: ${reason}\nCatatan: ${note}\nMohon bantuannya untuk memproses konfirmasi pembatalan. Terima kasih!`);
   window.open(`https://wa.me/6281289213401?text=${waText}`, '_blank');
 }
 
