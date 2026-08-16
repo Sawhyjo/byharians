@@ -62,7 +62,20 @@ function updateCycleCalculation() {
 function handleCalculateCycle() {
   updateCycleCalculation();
   if (typeof showToast === 'function') {
-    showToast('Prediksi siklus Flo Health Anda berhasil diperbarui!', 'success');
+    showToast('Prediksi siklus berhasil diperbarui!', 'success');
+  }
+}
+
+function setCyclePreset(cycleLen, periodLen) {
+  const avgLenInput = document.getElementById('cycle-avg-length-input');
+  const durationInput = document.getElementById('cycle-duration-input');
+
+  if (avgLenInput) avgLenInput.value = cycleLen;
+  if (durationInput) durationInput.value = periodLen;
+
+  updateCycleCalculation();
+  if (typeof showToast === 'function') {
+    showToast(`Preset ${cycleLen} hari diterapkan!`, 'info');
   }
 }
 
@@ -90,8 +103,8 @@ function getCyclePhaseForDay(dayInCycle, periodLen) {
     return {
       name: 'Fase Menstruasi (Pendarahan)',
       shortName: 'Menstruasi',
-      color: '#e74c3c',
-      badgeClass: 'period',
+      color: '#E35E34',
+      badgeClass: 'phase-period',
       icon: '🩸',
       tip: 'Waktu untuk istirahat, hidrasi air hangat, dan perawatan lembut dengan pembalut bambu organik ultra-lembut.'
     };
@@ -99,8 +112,8 @@ function getCyclePhaseForDay(dayInCycle, periodLen) {
     return {
       name: 'Masa Subur & Ovulasi',
       shortName: 'Ovulasi / Subur',
-      color: '#f1c40f',
-      badgeClass: 'fertile',
+      color: '#B47C04',
+      badgeClass: 'phase-fertile',
       icon: '✨',
       tip: 'Puncak masa subur & sel telur matang. Energi, suasana hati, dan kepercayaan diri berada di level tertinggi.'
     };
@@ -108,17 +121,17 @@ function getCyclePhaseForDay(dayInCycle, periodLen) {
     return {
       name: 'Fase Luteal (Progesteron)',
       shortName: 'Luteal (PMS)',
-      color: '#8e44ad',
-      badgeClass: 'luteal',
+      color: '#5B21B6',
+      badgeClass: 'phase-luteal',
       icon: '🌙',
-      tip: 'Hormon Progesteron mendominasi. Tubuh bersiap untuk siklus berikutnya. Cocok untuk tehh hangat & relaksasi.'
+      tip: 'Hormon Progesteron mendominasi. Tubuh bersiap untuk siklus berikutnya. Cocok untuk teh hangat & relaksasi.'
     };
   } else {
     return {
       name: 'Fase Folikular (Estrogen Naik)',
       shortName: 'Folikular',
-      color: '#27ae60',
-      badgeClass: 'follicular',
+      color: '#1E824C',
+      badgeClass: 'phase-follicular',
       icon: '🌱',
       tip: 'Hormon Estrogen meningkat pesat. Energi tubuh, stamina olahraga, dan daya fokus Anda berkembang.'
     };
@@ -150,23 +163,23 @@ function renderTodayStatusBar() {
   nextPeriodDate.setDate(today.getDate() + daysToNextPeriod - 1);
 
   statusBar.innerHTML = `
-    <div style="background: #FFF9F5; border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; align-items: center; box-shadow: var(--shadow-sm);">
-      <div style="text-align: center; border-right: 1px solid var(--color-border); padding-right: 10px;">
-        <span style="color: var(--color-text-muted); font-size: 0.76rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.06em;">Hari Dalam Siklus</span>
+    <div style="background: #FFF9F5; border: 1.5px solid var(--color-border); border-radius: 20px; padding: 22px 26px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; align-items: center; box-shadow: var(--shadow-sm); margin-bottom: 24px;">
+      <div style="text-align: center; border-right: 1px solid var(--color-border); padding-right: 14px;">
+        <span style="color: var(--color-text-muted); font-size: 0.74rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.06em;">Hari Dalam Siklus Saat Ini</span>
         <div style="font-size: 2.2rem; font-weight: 900; color: var(--color-primary); margin-top: 4px;">Hari ke-${currentDay}</div>
         <small style="color: var(--color-text-muted); font-size: 0.78rem;">dari ${cycleLen} hari siklus</small>
       </div>
       <div>
-        <span style="color: var(--color-text-muted); font-size: 0.76rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.06em;">Fase Biologis Tubuh</span>
-        <div style="font-size: 1.15rem; font-weight: 800; color: ${phaseInfo.color}; margin-top: 6px; display: flex; align-items: center; gap: 6px;">
-          <span>${phaseInfo.icon}</span> <span>${phaseInfo.name}</span>
+        <span style="color: var(--color-text-muted); font-size: 0.74rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.06em;">Fase Biologis Tubuh</span>
+        <div style="font-size: 1.15rem; font-weight: 800; color: ${phaseInfo.color}; margin-top: 6px; display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 1.25rem;">${phaseInfo.icon}</span> <span>${phaseInfo.name}</span>
         </div>
-        <p style="font-size: 0.82rem; color: var(--color-text-muted); margin-top: 6px; line-height: 1.4;">${phaseInfo.tip}</p>
+        <p style="font-size: 0.82rem; color: var(--color-text-muted); margin-top: 6px; line-height: 1.45;">${phaseInfo.tip}</p>
       </div>
-      <div style="text-align: center; border-left: 1px solid var(--color-border); padding-left: 10px;">
-        <span style="color: var(--color-text-muted); font-size: 0.76rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.06em;">Prediksi Haid Berikutnya</span>
-        <div style="font-size: 1.2rem; font-weight: 800; color: var(--color-primary); margin-top: 6px;">${daysToNextPeriod} Hari Lagi</div>
-        <small style="color: var(--color-secondary); font-weight: 700;">${nextPeriodDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</small>
+      <div style="text-align: center; border-left: 1px solid var(--color-border); padding-left: 14px;">
+        <span style="color: var(--color-text-muted); font-size: 0.74rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.06em;">Prediksi Haid Berikutnya</span>
+        <div style="font-size: 1.2rem; font-weight: 900; color: var(--color-primary); margin-top: 6px;">${daysToNextPeriod} Hari Lagi</div>
+        <small style="color: var(--color-secondary); font-weight: 800; font-size: 0.82rem;">${nextPeriodDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</small>
       </div>
     </div>
   `;
@@ -203,7 +216,7 @@ function renderCalendarDaysGrid() {
 
   // Blank slots for days before 1st of month
   for (let i = 0; i < startingDayOfWeek; i++) {
-    html += `<div class="cal-day empty"></div>`;
+    html += `<div class="cal-day-cell other-month"></div>`;
   }
 
   const todayStr = new Date().toISOString().split('T')[0];
@@ -227,14 +240,13 @@ function renderCalendarDaysGrid() {
 
     let badgeText = '';
     if (dayInCycle <= periodLen) badgeText = `Haid ${dayInCycle}`;
-    else if (dayInCycle === 14) badgeText = 'Ovulasi';
+    else if (dayInCycle === 14) badgeText = 'Ovulasi 👑';
     else if (dayInCycle >= 12 && dayInCycle <= 16) badgeText = 'Subur';
 
     html += `
-      <div class="cal-day ${phaseInfo.badgeClass} ${isToday ? 'today' : ''} ${hasNote ? 'has-note' : ''}" onclick="openCycleDatePopup('${dateStr}')" style="cursor: pointer; position: relative;">
-        <span class="day-num" style="font-weight: 700;">${day}</span>
-        ${badgeText ? `<span class="day-badge" style="font-size: 0.65rem;">${badgeText}</span>` : ''}
-        ${hasNote ? `<span class="note-indicator" title="Ada catatan/gejala" style="position: absolute; bottom: 4px; right: 6px; font-size: 8px; color: var(--color-primary);">●</span>` : ''}
+      <div class="cal-day-cell ${phaseInfo.badgeClass} ${isToday ? 'is-today' : ''} ${hasNote ? 'has-note' : ''}" onclick="openCycleDatePopup('${dateStr}')">
+        <span class="cal-day-number">${day}</span>
+        ${badgeText ? `<span class="cal-day-badge">${badgeText}</span>` : ''}
       </div>
     `;
   }
@@ -266,15 +278,15 @@ function renderPhaseTimelineCards() {
   if (!container) return;
 
   const phases = [
-    { title: '1. Fase Menstruasi', days: `Hari 1–${activeCycleConfig.periodLength}`, desc: 'Pendarahan meluruhkan dinding rahim. Istirahat cukup & gunakan pembalut bambu organik hypoallergenic.', color: '#e74c3c' },
-    { title: '2. Fase Folikular', days: `Hari ${activeCycleConfig.periodLength + 1}–11`, desc: 'Estrogen naik pesat. Energi tubuh, metabolisme, dan daya fokus berada di puncaknya.', color: '#27ae60' },
-    { title: '3. Ovulasi & Masa Subur', days: 'Hari 12–16', desc: 'Sel telur matang (Ovulasi hari ke-14). Puncak fertilitas dan kepercayaan diri maksimal.', color: '#f1c40f' },
-    { title: '4. Fase Luteal (PMS)', days: `Hari 17–${activeCycleConfig.cycleLength}`, desc: 'Progesteron mendominasi. Waktu sempurna untuk teh herbal hangat dan relaksasi alami.', color: '#8e44ad' }
+    { title: '1. Fase Menstruasi', days: `Hari 1–${activeCycleConfig.periodLength}`, desc: 'Pendarahan meluruhkan dinding rahim. Istirahat cukup & gunakan pembalut bambu organik hypoallergenic.', color: '#E35E34' },
+    { title: '2. Fase Folikular', days: `Hari ${activeCycleConfig.periodLength + 1}–11`, desc: 'Estrogen naik pesat. Energi tubuh, metabolisme, dan daya fokus berada di puncaknya.', color: '#1E824C' },
+    { title: '3. Ovulasi & Masa Subur', days: 'Hari 12–16', desc: 'Sel telur matang (Ovulasi hari ke-14). Puncak fertilitas dan kepercayaan diri maksimal.', color: '#B47C04' },
+    { title: '4. Fase Luteal (PMS)', days: `Hari 17–${activeCycleConfig.cycleLength}`, desc: 'Progesteron mendominasi. Waktu sempurna untuk teh herbal hangat dan relaksasi alami.', color: '#5B21B6' }
   ];
 
   container.innerHTML = phases.map(p => `
-    <div class="phase-card" style="background:#fff; padding:20px; border-radius:var(--radius-lg); border:1px solid var(--color-border); border-top:4px solid ${p.color}; box-shadow: var(--shadow-sm);">
-      <span style="font-size:0.75rem; font-weight:700; color:${p.color}; text-transform:uppercase;">${p.days}</span>
+    <div class="phase-card" style="background:#fff; padding:20px; border-radius:18px; border:1.5px solid var(--color-border); border-top:4px solid ${p.color}; box-shadow: var(--shadow-sm); transition: transform var(--transition-fast);" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+      <span style="font-size:0.75rem; font-weight:800; color:${p.color}; text-transform:uppercase; letter-spacing:0.04em;">${p.days}</span>
       <h4 style="font-size:1.05rem; color:var(--color-primary); margin:6px 0 8px;">${p.title}</h4>
       <p style="font-size:0.82rem; color:var(--color-text-muted); line-height:1.5;">${p.desc}</p>
     </div>
@@ -292,16 +304,16 @@ function renderRecommendedPads() {
 
   container.innerHTML = `
     <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:14px; margin-bottom:16px;">
-      <div style="background:#FFF9F5; padding:14px; border-radius:var(--radius-md); border:1px solid var(--color-border); text-align:center;">
-        <strong style="color:var(--color-primary); display:block;">${dayPadsNeeded}x Ultra-Thin Day Pads</strong>
+      <div style="background:#FFF9F5; padding:16px; border-radius:16px; border:1px solid var(--color-border); text-align:center;">
+        <strong style="color:var(--color-primary); display:block; font-size: 0.95rem;">${dayPadsNeeded}x Ultra-Thin Day Pads</strong>
         <span style="font-size:0.76rem; color:var(--color-text-muted);">Siang & Aktivitas (240mm)</span>
       </div>
-      <div style="background:#FFF9F5; padding:14px; border-radius:var(--radius-md); border:1px solid var(--color-border); text-align:center;">
-        <strong style="color:var(--color-primary); display:block;">${nightPadsNeeded}x Overnight Heavy Pads</strong>
+      <div style="background:#FFF9F5; padding:16px; border-radius:16px; border:1px solid var(--color-border); text-align:center;">
+        <strong style="color:var(--color-primary); display:block; font-size: 0.95rem;">${nightPadsNeeded}x Overnight Heavy Pads</strong>
         <span style="font-size:0.76rem; color:var(--color-text-muted);">Malam & Tidur Nyenyak (330mm)</span>
       </div>
-      <div style="background:#FFF9F5; padding:14px; border-radius:var(--radius-md); border:1px solid var(--color-border); text-align:center;">
-        <strong style="color:var(--color-primary); display:block;">${linersNeeded}x Daily Panty Liners</strong>
+      <div style="background:#FFF9F5; padding:16px; border-radius:16px; border:1px solid var(--color-border); text-align:center;">
+        <strong style="color:var(--color-primary); display:block; font-size: 0.95rem;">${linersNeeded}x Daily Panty Liners</strong>
         <span style="font-size:0.76rem; color:var(--color-text-muted);">Flek & Perawatan Harian (155mm)</span>
       </div>
     </div>
@@ -395,15 +407,15 @@ function renderSymptomsChips() {
   if (!container) return;
 
   const defaultSymptoms = [
-    'Kram Perut', 'Sakit Kepala / Migrain', 'Jerawat Hormonal',
-    'Nyeri Payudara', 'Kembung / Begah', 'Sensitif / Emosional',
-    'Badan Pegal', 'Ngidam Makanan Manis', 'Sulit Tidur'
+    '⚡ Kram Perut', '🧠 Sakit Kepala', '🌸 Jerawat Hormonal',
+    '💖 Nyeri Payudara', '🌊 Kembung / Begah', '☁️ Sensitif / PMS',
+    '🛋️ Lelah / Pegal', '🍯 Ngidam Manis', '🌙 Sulit Tidur'
   ];
 
   container.innerHTML = defaultSymptoms.map(sym => {
     const isSelected = activeSelectedSymptoms.includes(sym);
     return `
-      <button type="button" class="symptom-chip ${isSelected ? 'active' : ''}" onclick="toggleSymptom('${sym}', this)" style="padding: 6px 12px; font-size: 0.78rem; border-radius: var(--radius-full); border: 1px solid var(--color-border); background: ${isSelected ? 'var(--color-primary)' : '#fff'}; color: ${isSelected ? '#fff' : 'var(--color-text-main)'}; cursor: pointer;">
+      <button type="button" class="popup-symptom-tag ${isSelected ? 'active' : ''}" onclick="toggleSymptom('${sym}', this)">
         ${sym}
       </button>
     `;
@@ -413,16 +425,10 @@ function renderSymptomsChips() {
 function toggleSymptom(sym, btn) {
   if (activeSelectedSymptoms.includes(sym)) {
     activeSelectedSymptoms = activeSelectedSymptoms.filter(s => s !== sym);
-    if (btn) {
-      btn.style.background = '#fff';
-      btn.style.color = 'var(--color-text-main)';
-    }
+    if (btn) btn.classList.remove('active');
   } else {
     activeSelectedSymptoms.push(sym);
-    if (btn) {
-      btn.style.background = 'var(--color-primary)';
-      btn.style.color = '#fff';
-    }
+    if (btn) btn.classList.add('active');
   }
 }
 
