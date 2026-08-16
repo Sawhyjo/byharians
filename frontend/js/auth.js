@@ -117,11 +117,14 @@ async function handleSignInSubmit(e) {
       btn.innerText = 'Sign In to Your Account';
     }
 
+    const alertBox = document.getElementById('checkout-auth-alert');
+    if (alertBox) alertBox.style.display = 'none';
+
     const nextTarget = store.redirectAfterLogin || 'account';
     store.redirectAfterLogin = null;
 
     showToast(`Selamat datang kembali, ${store.userAccount.name}!`, 'success');
-    navigateTo(nextTarget === 'checkout' ? 'checkout' : 'account');
+    navigateTo(nextTarget);
   } catch (err) {
     console.warn('Backend Auth Connection warning:', err);
     showToast('Gagal terhubung ke server backend auth. Silakan coba lagi.', 'error');
@@ -196,8 +199,14 @@ async function handleSignUpSubmit(e) {
       btn.innerText = 'Create Account & Join Eco-Movement';
     }
 
+    const alertBox = document.getElementById('checkout-auth-alert');
+    if (alertBox) alertBox.style.display = 'none';
+
+    const nextTarget = store.redirectAfterLogin || 'account';
+    store.redirectAfterLogin = null;
+
     showToast(`Selamat datang ${name}! Akun Anda telah aktif dengan 100 bonus Eco-Points.`, 'success');
-    navigateTo('account');
+    navigateTo(nextTarget);
   } catch (err) {
     console.error('Backend Signup error:', err);
     showToast('Gagal menghubungkan pendaftaran ke database backend. Pastikan server Node.js aktif.', 'error');

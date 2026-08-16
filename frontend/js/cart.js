@@ -14,6 +14,17 @@ function getCartCalculations() {
 }
 
 function addToCart(productId, packIndex = 0, isSubscription = false) {
+  if (!store.isLoggedIn) {
+    store.redirectAfterLogin = 'shop';
+    if (typeof showToast === 'function') {
+      showToast('Silakan Sign In atau buat akun terlebih dahulu untuk belanja.', 'info');
+    }
+    const alertBox = document.getElementById('checkout-auth-alert');
+    if (alertBox) alertBox.style.display = 'flex';
+    if (typeof navigateTo === 'function') navigateTo('login');
+    return;
+  }
+
   const p = store.products.find(item => item.id === productId);
   if (!p) return;
 
@@ -56,7 +67,7 @@ function updateCartItemQty(index, change) {
     }
     store.save();
     updateCartBadgeAndDrawer();
-    if (store.currentView === 'cart') renderFullCartPage();
+    if (store.currentView === 'cart' && typeof renderFullCartPage === 'function') renderFullCartPage();
   }
 }
 
@@ -64,7 +75,7 @@ function removeCartItem(index) {
   store.cart.splice(index, 1);
   store.save();
   updateCartBadgeAndDrawer();
-  if (store.currentView === 'cart') renderFullCartPage();
+  if (store.currentView === 'cart' && typeof renderFullCartPage === 'function') renderFullCartPage();
   if (typeof showToast === 'function') showToast('Item dihapus dari keranjang', 'info');
 }
 
@@ -81,6 +92,27 @@ function closeCartDrawer() {
   const overlay = document.getElementById('cart-drawer-backdrop') || document.getElementById('cart-overlay');
   if (drawer) drawer.classList.remove('open');
   if (overlay) overlay.classList.remove('open');
+}
+
+function handleProceedToCheckout() {
+  if (!store.isLoggedIn) {
+    store.redirectAfterLogin = 'checkout';
+    if (typeof showToast === 'function') {
+      showToast('Silakan Sign In atau masuk akun terlebih dahulu untuk melanjutkan pembayaran.', 'info');
+    }
+    const alertBox = document.getElementById('checkout-auth-alert');
+    if (alertBox) alertBox.style.display = 'flex';
+    if (typeof navigateTo === 'function') navigateTo('login');
+    return;
+  }
+
+  if (store.cart.length === 0) {
+    if (typeof showToast === 'function') showToast('Keranjang Anda kosong! Tambahkan barang terlebih dahulu.', 'warning');
+    if (typeof navigateTo === 'function') navigateTo('shop');
+    return;
+  }
+
+  if (typeof navigateTo === 'function') navigateTo('checkout');
 }
 
 function updateCartBadgeAndDrawer() {

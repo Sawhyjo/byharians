@@ -14,6 +14,17 @@ const BANK_VA_DATA = {
 };
 
 function renderCheckoutView() {
+  if (!store.isLoggedIn) {
+    store.redirectAfterLogin = 'checkout';
+    if (typeof showToast === 'function') {
+      showToast('Silakan Sign In atau masuk akun terlebih dahulu untuk melakukan pembayaran.', 'info');
+    }
+    const alertBox = document.getElementById('checkout-auth-alert');
+    if (alertBox) alertBox.style.display = 'flex';
+    navigateTo('login');
+    return;
+  }
+
   if (store.cart.length === 0) {
     navigateTo('cart');
     return;
