@@ -98,122 +98,44 @@ const INITIAL_PRODUCTS = [
     absorbencyMl: 'Lengkap Siang & Malam',
     badge: 'Hadiah Edukasi Terbaik',
     image: 'assets/images/product_first_period_kit.jpg',
-    shortDesc: 'Kotak edukasi lengkap untuk pengalaman haid pertama yang penuh percaya diri, sehat, dan ramah lingkungan.',
-    description: 'Dirancang khusus untuk remaja dan pemula, kotak ritual ini berisi 10x Day Pads, 8x Night Pads, 10x Liners, Panduan Edukasi Haid Pertama, Pouch Kain Katun Organik, dan Kantong Pembuangan Biodegradable.',
+    shortDesc: 'Kotak perawatan lengkap untuk menyambut haid pertama tanpa rasa cemas, dilengkapi buku panduan edukasi & perawatan herbal.',
+    description: 'Starter kit komprehensif berisi 1x Day Pads, 1x Night Pads, 1x Panty Liners, Kantong Organik Serut, Koyo Hangat Herbal, dan Buku Panduan Siklus Edukasi.',
     packOptions: [
-      { name: 'Complete Starter Gift Box', count: 1, multiplier: 1 }
+      { name: 'Starter Box Lengkap', count: 1, multiplier: 1 }
     ],
-    composition: ['Assorted Organic Pads', 'Cotton Storage Pouch', 'First Period Handbook', 'Biodegradable Disposal Bags'],
-    stock: 45,
+    composition: ['Koleksi Lengkap Pembalut Bambu', 'Teh Herbal Pereda Kram', 'Koyo Jahe Alami', 'Panduan Edukasi'],
+    stock: 64,
     isEcoCertified: true
   },
   {
-    id: 'byh-kit-luxe-ritual',
-    name: 'BYHARIANS Ultimate Eco Ritual Care Box',
+    id: 'byh-kit-menstrual-ritual',
+    name: 'BYHARIANS Ultimate Menstrual Ritual Box',
     category: 'kits',
     categoryName: 'Ritual Menstrual Kit',
-    subType: 'Paket Langganan Mewah',
-    price: 185000,
-    originalPrice: 235000,
-    rating: 5.0,
-    reviewsCount: 304,
-    flowLevel: 5,
-    flowText: 'Lengkap Seluruh Siklus',
-    lengthMm: 'Set Lengkap Siang + Malam + Liner + Wipes',
-    absorbencyMl: 'Perawatan Total 30 Hari',
-    badge: 'Pilihan Langganan Hemat',
-    image: 'assets/images/product_menstrual_kit.jpg',
-    shortDesc: 'Pengalaman perawatan haid mewah bulanan dengan pembalut organik, minyak aromaterapi lavender, dan wipes bambu.',
-    description: 'Kotak perawatan bulanan yang memanjakan tubuh dan pikiran saat haid. Berisi paket lengkap pembalut siang & malam, wipes bambu basah, teh herbal pereda kram, dan botol kompres hangat mini.',
-    packOptions: [
-      { name: '1 Month Self-Care Box', count: 1, multiplier: 1 },
-      { name: '3 Months VIP Subscription (Disc 15%)', count: 3, multiplier: 2.55 }
-    ],
-    composition: ['Full Organic Pad Supply', 'Organic Bamboo Wipes 20s', 'Cramp Relief Herbal Tea', 'Lavender Essential Oil Roll-On'],
-    stock: 62,
-    isEcoCertified: true
-  },
-  {
-    id: 'byh-pad-maternity',
-    name: 'BYHARIANS Postpartum & Maternity Organic Pads',
-    category: 'pads',
-    categoryName: 'Pembalut Nifas & Melahirkan',
-    subType: 'Maternity Extra Long (410mm)',
-    price: 52000,
-    originalPrice: 65000,
+    subType: 'Self-Care Wellness Ritual',
+    price: 199000,
+    originalPrice: 249000,
     rating: 4.9,
-    reviewsCount: 167,
-    flowLevel: 5,
-    flowText: 'Aliran Sangat Deras Nifas (Level 5/5)',
-    lengthMm: '410mm Panjang Maksimal Nifas',
-    absorbencyMl: '220ml (Daya Serap Nifas Ekstra)',
-    badge: 'Khusus Ibu Nifas',
-    image: 'assets/images/product_maternity_pads.jpg',
-    shortDesc: 'Pembalut nifas lembut selembut awan dari bambu organik tanpa kimia berbahaya untuk kenyamanan ibu pasca melahirkan.',
-    description: 'Didesain khusus untuk masa nifas pasca persalinan. Panjang 410mm dengan bantalan bambu organik empuk yang memberikan perlindungan lembut tanpa menggesek luka jahitan persalinan.',
+    reviewsCount: 276,
+    flowLevel: 4,
+    flowText: 'Ritual Perawatan Lengkap',
+    lengthMm: 'Full Cycle Suite',
+    absorbencyMl: 'Kebutuhan 1 Bulan Penuh',
+    badge: 'Paling Populer',
+    image: 'assets/images/product_menstrual_kit.jpg',
+    shortDesc: 'Kotak ritual bulanan mewah berisi pasokan pembalut organik lengkap, teh herbal aromaterapi, dan pencuci kewanitaan alami pH 4.5.',
+    description: 'Ubah hari haid Anda dari ketidaknyamanan menjadi ritual pemulihan alami. Berisi paket lengkap pembalut organik bambu siang & malam, teh herbal pereda PMS, dan sabun pembersih kewanitaan chamomile alami.',
     packOptions: [
-      { name: '10-Pcs Maternity Extra Long', count: 10, multiplier: 1 },
-      { name: '20-Pcs Maternity Pack Hemat', count: 20, multiplier: 1.9 }
+      { name: '1 Month Full Ritual Box', count: 1, multiplier: 1 }
     ],
-    composition: ['100% Super-Soft Organic Bamboo Top Layer', 'Extra Long 410mm Contour Design', 'Medical-Grade Hypoallergenic Core'],
-    stock: 75,
+    composition: ['Pembalut Bambu Siang & Malam', 'Panty Liners Harian', 'Teh Herbal Chamomile & Lavender', 'Sabun Organik pH 4.5'],
+    stock: 52,
     isEcoCertified: true
   }
 ];
 
-const INITIAL_CUSTOMER_PACKAGES = [
-  {
-    id: 'PKG-1001',
-    customerName: 'Siti Rahmawati',
-    customerEmail: 'siti.rahmawati@gmail.com',
-    phone: '0812-9876-5432',
-    packageName: 'Paket Langganan Rutin 24-Pcs Day Pads',
-    itemsSummary: '2x Ultra-Thin Day Pads (240mm) + 1x Overnight Heavy (330mm)',
-    frequency: 'Setiap 30 Hari',
-    nextDeliveryDate: '2026-08-25',
-    courier: 'SiCepat BEST Eco-Fleet',
-    trackingNumber: 'SIC-ECO-98421049',
-    shippingAddress: 'Jl. Wijaya II No. 14, Kebayoran Baru, Jakarta Selatan 12160',
-    status: 'active',
-    statusText: 'Aktif / Berlangganan',
-    lastDispatched: '2026-07-26'
-  },
-  {
-    id: 'PKG-1002',
-    customerName: 'Anita Wijaya',
-    customerEmail: 'anita.wijaya@yahoo.com',
-    phone: '0813-1122-3344',
-    packageName: 'BYHARIANS Ultimate Eco Ritual Care Box',
-    itemsSummary: '1x Ultimate Self-Care Box (Pads + Wipes + Cramp Tea)',
-    frequency: 'Setiap 30 Hari',
-    nextDeliveryDate: '2026-08-18',
-    courier: 'J&T Electric Express',
-    trackingNumber: 'JNT-ECO-88129034',
-    shippingAddress: 'Menteng Residence Tower A 12B, Jakarta Pusat 10310',
-    status: 'in_transit',
-    statusText: 'Dalam Pengiriman',
-    lastDispatched: '2026-08-14'
-  }
-];
-
-const INITIAL_CUSTOMER_GROCERIES = [
-  {
-    id: 'GROC-801',
-    customerName: 'Dian Sastrowardoyo',
-    customerEmail: 'dian.sastro@earthmail.com',
-    phone: '0811-3456-7890',
-    basketName: 'Belanjaan Bulanan Pembalut & Tissue Basah Organik',
-    itemsSummary: '3x Ultra-Thin Day Pads (240mm) + 2x Overnight Heavy (330mm) + 2x Bamboo Wet Wipes (20s)',
-    monthlyPrice: 205000,
-    frequency: 'Setiap 30 Hari',
-    nextRefillDate: '2026-08-28',
-    courier: 'SiCepat BEST Eco-Fleet',
-    shippingAddress: 'Pondok Indah Plaza II No. 8, Jakarta Selatan 12310',
-    status: 'active',
-    statusText: 'Auto-Refill ON',
-    lastRefillDate: '2026-07-28'
-  }
-];
+const INITIAL_CUSTOMER_PACKAGES = [];
+const INITIAL_CUSTOMER_GROCERIES = [];
 
 class StoreEngine {
   constructor() {
@@ -257,8 +179,6 @@ class StoreEngine {
 
   loadState() {
     try {
-      const savedCart = localStorage.getItem('byharians_cart');
-      if (savedCart) this.cart = JSON.parse(savedCart);
       const savedAuth = localStorage.getItem('byharians_user');
       if (savedAuth) {
         const parsed = JSON.parse(savedAuth);
@@ -266,18 +186,49 @@ class StoreEngine {
         this.isAdmin = parsed.isAdmin || false;
         if (parsed.userAccount) this.userAccount = { ...this.userAccount, ...parsed.userAccount };
       }
-      const savedOrders = localStorage.getItem('byharians_orders');
-      if (savedOrders) this.orders = JSON.parse(savedOrders);
+      this.loadUserCartAndOrders();
     } catch (err) {
       console.warn('LocalStorage error:', err);
     }
   }
 
+  loadUserCartAndOrders() {
+    try {
+      const emailKey = (this.isLoggedIn && this.userAccount?.email)
+        ? this.userAccount.email.toLowerCase().replace(/[^a-z0-9]/g, '_')
+        : 'guest';
+
+      const cartKey = `byharians_cart_${emailKey}`;
+      const savedCart = localStorage.getItem(cartKey);
+      this.cart = savedCart ? JSON.parse(savedCart) : [];
+
+      const orderKey = `byharians_orders_${emailKey}`;
+      const savedOrders = localStorage.getItem(orderKey);
+      this.orders = savedOrders ? JSON.parse(savedOrders) : [];
+    } catch (err) {
+      console.warn('Failed to load user cart & orders:', err);
+      this.cart = [];
+      this.orders = [];
+    }
+  }
+
   save() {
     try {
-      localStorage.setItem('byharians_cart', JSON.stringify(this.cart));
-      localStorage.setItem('byharians_user', JSON.stringify({ isLoggedIn: this.isLoggedIn, isAdmin: this.isAdmin, userAccount: this.userAccount }));
-      localStorage.setItem('byharians_orders', JSON.stringify(this.orders));
+      const emailKey = (this.isLoggedIn && this.userAccount?.email)
+        ? this.userAccount.email.toLowerCase().replace(/[^a-z0-9]/g, '_')
+        : 'guest';
+
+      const cartKey = `byharians_cart_${emailKey}`;
+      localStorage.setItem(cartKey, JSON.stringify(this.cart));
+
+      const orderKey = `byharians_orders_${emailKey}`;
+      localStorage.setItem(orderKey, JSON.stringify(this.orders));
+
+      localStorage.setItem('byharians_user', JSON.stringify({
+        isLoggedIn: this.isLoggedIn,
+        isAdmin: this.isAdmin,
+        userAccount: this.userAccount
+      }));
     } catch (err) {
       console.warn('Failed to save state:', err);
     }

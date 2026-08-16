@@ -106,9 +106,11 @@ async function handleSignInSubmit(e) {
       periodLengthDays: 5,
       activeSubscription: { productName: 'Paket Pembalut Organik Bambu', interval: 'Setiap 4 Minggu', nextDelivery: '24 Agustus 2026', status: 'Aktif' }
     };
+    store.loadUserCartAndOrders();
     store.save();
     updateHeaderAuthUI();
     updateAccountDashboardUI();
+    if (typeof updateCartBadgeAndDrawer === 'function') updateCartBadgeAndDrawer();
 
     if (btn) {
       btn.disabled = false;
@@ -260,11 +262,25 @@ function handleAdminSignOut() {
 }
 
 function handleUserSignOut() {
+  if (supabaseClient) {
+    try { supabaseClient.auth.signOut(); } catch (e) {}
+  }
   store.isLoggedIn = false;
   store.isAdmin = false;
+  store.cart = [];
+  store.orders = [];
+  store.appliedCoupon = null;
+  store.userAccount = {
+    name: 'Pelanggan BYHARIANS',
+    email: 'pelanggan@byharians.id',
+    phone: '0812-0000-0000'
+  };
+  localStorage.removeItem('byharians_cart_guest');
+  localStorage.removeItem('byharians_user');
   store.save();
+  if (typeof updateCartBadgeAndDrawer === 'function') updateCartBadgeAndDrawer();
   updateHeaderAuthUI();
-  showToast('You have signed out successfully.', 'info');
+  showToast('Anda telah keluar dari akun. Keranjang telah dibersihkan.', 'info');
   navigateTo('home');
 }
 
