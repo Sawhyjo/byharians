@@ -2584,51 +2584,7 @@
     </div>
   </div>
 
-  <!-- ==========================================
-       MODAL: GOOGLE ACCOUNT CHOOSER (OAUTH GMAIL SELECTOR)
-       ========================================== -->
-  <div id="google-account-chooser-modal" class="modal-backdrop" style="display: none;">
-    <div class="modal-card" style="max-width: 440px; border-top: 4px solid #4285F4;">
-      <div class="modal-header">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <svg width="24" height="24" viewBox="0 0 24 24"><path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.3 9 5 12 5z"/><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"/><path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15.2c0 2.8.7 5.5 1.9 7.8l3.7-2.9c0-.2 0-.4 0-.6l-.07-.7z"/><path fill="#34A853" d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.3-6.4-5.2L1.9 16.5C3.7 20.2 7.5 23.5 12 23.5z"/></svg>
-          <h3 class="modal-title" style="font-size: 1.15rem; color: #202124;">Pilih Akun Gmail Anda</h3>
-        </div>
-        <button class="modal-close-btn" onclick="closeGoogleAccountChooserModal()">×</button>
-      </div>
-      <p style="font-size: 0.82rem; color: #5f6368; margin-bottom: 20px;">Lanjutkan ke <strong>BYHARIANS Store</strong> dengan salah satu akun Google Anda:</p>
-      
-      <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
-        <button type="button" onclick="selectGoogleAccount('Wira Pratama', 'wira.pratama@gmail.com', '0812-8921-3401')" style="display: flex; align-items: center; gap: 14px; padding: 12px 16px; border: 1px solid #dadce0; border-radius: 12px; background: #fff; text-align: left; transition: all 0.2s;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='#fff'">
-          <div style="width: 38px; height: 38px; border-radius: 50%; background: #4285F4; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.95rem;">WP</div>
-          <div>
-            <strong style="color: #202124; font-size: 0.9rem; display: block;">Wira Pratama</strong>
-            <span style="color: #5f6368; font-size: 0.78rem;">wira.pratama@gmail.com</span>
-          </div>
-        </button>
 
-        <button type="button" onclick="selectGoogleAccount('Wira BYHARIANS', 'wira.byharians@gmail.com', '0813-9988-7766')" style="display: flex; align-items: center; gap: 14px; padding: 12px 16px; border: 1px solid #dadce0; border-radius: 12px; background: #fff; text-align: left; transition: all 0.2s;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='#fff'">
-          <div style="width: 38px; height: 38px; border-radius: 50%; background: #34A853; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.95rem;">WB</div>
-          <div>
-            <strong style="color: #202124; font-size: 0.9rem; display: block;">Wira BYHARIANS</strong>
-            <span style="color: #5f6368; font-size: 0.78rem;">wira.byharians@gmail.com</span>
-          </div>
-        </button>
-
-        <button type="button" onclick="triggerDirectGoogleOAuthRedirect()" style="display: flex; align-items: center; gap: 14px; padding: 12px 16px; border: 1px dashed #4285F4; border-radius: 12px; background: #f8faff; text-align: left; cursor: pointer;">
-          <div style="width: 38px; height: 38px; border-radius: 50%; background: #e8f0fe; color: #1a73e8; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem;">+</div>
-          <div>
-            <strong style="color: #1a73e8; font-size: 0.88rem; display: block;">Gunakan Akun Google Lainnya...</strong>
-            <span style="color: #5f6368; font-size: 0.75rem;">Buka Halaman Login Resmi Google Cloud OAuth</span>
-          </div>
-        </button>
-      </div>
-
-      <div style="text-align: center;">
-        <button type="button" class="btn btn-outline btn-sm" onclick="closeGoogleAccountChooserModal()" style="font-size: 0.78rem;">Batal</button>
-      </div>
-    </div>
-  </div>
 
   <!-- Global Toast Containers -->
   <div class="toast-container" id="global-toast-container"></div>

@@ -273,71 +273,25 @@ function handleSignOut() {
 }
 
 async function handleSocialAuth(provider) {
-  if (provider === 'Google') {
-    openGoogleAccountChooserModal();
-  } else {
-    showToast(`Penyedia OAuth ${provider} dipilih`, 'info');
-  }
-}
-
-function openGoogleAccountChooserModal() {
-  const modal = document.getElementById('google-account-chooser-modal');
-  if (modal) modal.style.display = 'flex';
-}
-
-function closeGoogleAccountChooserModal() {
-  const modal = document.getElementById('google-account-chooser-modal');
-  if (modal) modal.style.display = 'none';
-}
-
-function selectGoogleAccount(name, email, phone) {
-  closeGoogleAccountChooserModal();
-  showToast(`Menghubungkan dengan Akun Google ${email}...`, 'info');
-  
-  setTimeout(() => {
-    store.isAdmin = false;
-    store.isLoggedIn = true;
-    store.userAccount = {
-      name: name || email.split('@')[0],
-      email: email,
-      phone: phone || '0812-8921-3401',
-      ecoPoints: 250,
-      padsDiverted: 50,
-      lastCycleDate: new Date().toISOString().split('T')[0],
-      cycleLengthDays: 28,
-      periodLengthDays: 5,
-      activeSubscription: { productName: 'Paket Pembalut Organik Bambu', interval: 'Setiap 4 Minggu', nextDelivery: '24 Agustus 2026', status: 'Aktif' }
-    };
-    store.save();
-    updateHeaderAuthUI();
-    updateAccountDashboardUI();
-    showToast(`Berhasil masuk via Google (${email})!`, 'success');
-    navigateTo('account');
-  }, 400);
-}
-
-async function triggerDirectGoogleOAuthRedirect() {
-  closeGoogleAccountChooserModal();
+  const p = (provider || '').toLowerCase();
   if (supabaseClient) {
-    showToast('Mengarahkan ke Halaman Login Resmi Google OAuth...', 'info');
+    showToast(`Mengarahkan ke Halaman Login Resmi ${provider} OAuth...`, 'info');
     try {
       const { error } = await supabaseClient.auth.signInWithOAuth({
-        provider: 'google',
+        provider: p === 'google' ? 'google' : 'apple',
         options: {
-          queryParams: { prompt: 'select_account', access_type: 'offline' },
           redirectTo: `${window.location.origin}/#account`
         }
       });
       if (error) {
-        showToast(`Google OAuth Notice: ${error.message}`, 'warning');
-        selectGoogleAccount('Wira Pratama', 'wira.pratama@gmail.com', '0812-8921-3401');
+        showToast(`${provider} OAuth: ${error.message}`, 'error');
       }
     } catch (err) {
-      console.warn('Google OAuth Redirect Notice:', err);
-      selectGoogleAccount('Wira Pratama', 'wira.pratama@gmail.com', '0812-8921-3401');
+      console.error(`${provider} OAuth Exception:`, err);
+      showToast(`Gagal memulai otentikasi ${provider}.`, 'error');
     }
   } else {
-    selectGoogleAccount('Wira Pratama', 'wira.pratama@gmail.com', '0812-8921-3401');
+    showToast(`Supabase Client belum siap untuk ${provider} OAuth`, 'warning');
   }
 }
 
