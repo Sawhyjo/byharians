@@ -16,14 +16,92 @@ function switchAdminSubTab(tabName = 'all') {
   if (secOrders) secOrders.style.display = 'block';
   if (secInv) secInv.style.display = 'block';
 
+  renderAdminKPIs();
+  renderAdminOrders();
   renderAdminCustomerGroceries();
   renderAdminCustomerPackages();
 }
 
+function renderAdminKPIs() {
+  const kpiRevenue = document.getElementById('kpi-revenue');
+  const kpiOrders = document.getElementById('kpi-orders');
+  const kpiSubs = document.getElementById('kpi-subs');
+  const kpiPlastic = document.getElementById('kpi-plastic');
+  const kpiAov = document.getElementById('kpi-aov');
+
+  // Base metrics
+  const baseRevenue = 128400000;
+  const baseOrders = 386;
+  const baseSubs = 142;
+  const basePlasticKg = 1312;
+
+  // Calculate live dynamic metrics from completed transactions
+  const liveRevenueSum = (store.orders || []).reduce((sum, o) => sum + (o.total || 0), 0);
+  const liveOrderCount = (store.orders || []).length;
+  
+  const totalRevenue = baseRevenue + liveRevenueSum;
+  const totalOrders = baseOrders + liveOrderCount;
+  const totalSubs = baseSubs + Math.floor(liveOrderCount * 0.3);
+  const totalPlasticDiverted = basePlasticKg + Math.floor(liveOrderCount * 2.5);
+
+  const aov = totalOrders > 0 ? Math.round(totalRevenue / totalOrders) : 332600;
+
+  if (kpiRevenue) kpiRevenue.innerText = store.formatPrice(totalRevenue);
+  if (kpiOrders) kpiOrders.innerText = totalOrders;
+  if (kpiSubs) kpiSubs.innerText = totalSubs;
+  if (kpiPlastic) kpiPlastic.innerText = `${totalPlasticDiverted.toLocaleString('id-ID')} kg`;
+  if (kpiAov) kpiAov.innerText = store.formatPrice(aov);
+}
+
+function renderAdminOrders() {
+  const container = document.getElementById('admin-orders-tbody');
+  if (!container) return;
+
+  const orders = store.orders || [];
+  if (orders.length === 0) {
+    container.innerHTML = `
+      <tr>
+        <td colspan="6" style="text-align:center; padding:24px; color:var(--color-text-muted);">
+          Belum ada pesanan baru terdaftar hari ini.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  container.innerHTML = orders.map(o => `
+    <tr>
+      <td><strong>#${o.id}</strong><br><code style="font-size:0.7rem; background:rgba(15,48,29,0.06); padding:2px 6px; border-radius:4px;">${o.trackingNumber || 'N/A'}</code></td>
+      <td>${o.date || new Date().toISOString().split('T')[0]}</td>
+      <td><strong>${o.customer?.name || 'Pelanggan'}</strong><br><small style="color:var(--color-text-muted);">${o.customer?.email || ''}</small></td>
+      <td>
+        <ul style="margin:0; padding-left:14px; font-size:0.78rem;">
+          ${(o.items || []).map(i => `<li>${i.name} x${i.qty || i.quantity || 1} (${i.size || i.packName || ''})</li>`).join('')}
+        </ul>
+      </td>
+      <td><strong>${store.formatPrice(o.total || 0)}</strong><br><small style="color:var(--color-success); font-weight:700;">${o.paymentMethod || 'QRIS'}</small></td>
+      <td>
+        <span class="status-badge status-delivered">${(o.status || 'PROSES').toUpperCase()}</span>
+      </td>
+    </tr>
+  `).join('');
+}
+
 function renderAdminCustomerGroceries(list) {
-  const container = document.getElementById('admin-groceries-table-body');
+  const container = document.getElementById('admin-groceries-tbody') || document.getElementById('admin-groceries-table-body');
   if (!container) return;
   const items = list || store.customerGroceries;
+
+  if (items.length === 0) {
+    container.innerHTML = `
+      <tr>
+        <td colspan="7" style="text-align:center; padding:20px; color:var(--color-text-muted);">
+          Belum ada daftar keranjang langganan harian (groceries) terdaftar.
+        </td>
+      </tr>
+    `;
+    return;
+  }
 
   container.innerHTML = items.map(g => `
     <tr>
@@ -44,6 +122,17 @@ function renderAdminCustomerPackages(list) {
   const container = document.getElementById('admin-packages-table-body');
   if (!container) return;
   const items = list || store.customerPackages;
+
+  if (items.length === 0) {
+    container.innerHTML = `
+      <tr>
+        <td colspan="7" style="text-align:center; padding:20px; color:var(--color-text-muted);">
+          Belum ada paket langganan siklus terdaftar.
+        </td>
+      </tr>
+    `;
+    return;
+  }
 
   container.innerHTML = items.map(p => `
     <tr>

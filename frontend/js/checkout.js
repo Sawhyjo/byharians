@@ -194,6 +194,9 @@ async function submitCheckoutOrder(e) {
   store.save();
   updateCartBadgeAndDrawer();
 
+  if (typeof renderAdminKPIs === 'function') renderAdminKPIs();
+  if (typeof renderAdminOrders === 'function') renderAdminOrders();
+
   if (completeBtn) {
     completeBtn.disabled = false;
     completeBtn.innerText = 'Bayar Sekarang & Selesaikan Pesanan';
