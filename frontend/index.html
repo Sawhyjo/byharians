@@ -680,6 +680,11 @@
           </div>
         </div>
 
+        <!-- Dynamic Delivery Control & Complaint Actions Box -->
+        <div id="tracking-actions-control-card">
+          <!-- Populated by track.js -->
+        </div>
+
       </div>
 
     </div>
@@ -2531,6 +2536,81 @@
 
 
 
+  <!-- ==========================================
+       MODAL: DELIVERY ISSUE & COMPLAINT RESOLUTION
+       ========================================== -->
+  <div id="delivery-issue-modal" class="modal-backdrop" style="display: none;">
+    <div class="modal-card" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3 class="modal-title">⚠️ Laporan Kendala Pengiriman / Produk</h3>
+        <button class="modal-close-btn" onclick="closeDeliveryIssueModal()">×</button>
+      </div>
+      <p style="font-size: 0.84rem; color: var(--color-text-muted); margin-bottom: 18px;">
+        Jika barang belum sampai padahal status selesai, kemasan rusak, atau isi barang kurang, silakan laporkan di bawah ini. Tim Admin kami siap membantu 24/7.
+      </p>
+
+      <form onsubmit="submitDeliveryComplaintTicket(event)">
+        <div class="form-group">
+          <label for="issue-type-select">Jenis Kendala</label>
+          <select id="issue-type-select" class="form-select">
+            <option value="Barang Belum Diterima (Status Selesai)">Barang Belum Diterima (Status Selesai)</option>
+            <option value="Kemasan / Produk Kerusakan Saat Pengiriman">Kemasan / Produk Kerusakan Saat Pengiriman</option>
+            <option value="Varian / Jumlah Barang Tidak Sesuai">Varian / Jumlah Barang Tidak Sesuai</option>
+            <option value="Kurir Tidak Menghubungi / Salah Alamat">Kurir Tidak Menghubungi / Salah Alamat</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="issue-desc-input">Deskripsi Kendala & Catatan</label>
+          <textarea id="issue-desc-input" class="form-input" rows="3" placeholder="Jelaskan kondisi paket atau kendala yang dialami secara singkat..." required></textarea>
+        </div>
+
+        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; flex-wrap: wrap;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="closeDeliveryIssueModal()">Batal</button>
+          <button type="submit" class="btn btn-primary btn-sm">📩 Kirim Tiket & Chat Admin WA</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL: PRODUCT REVIEW & FEEDBACK
+       ========================================== -->
+  <div id="product-review-modal" class="modal-backdrop" style="display: none;">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 class="modal-title">⭐ Ulasan Produk BYHARIANS</h3>
+        <button class="modal-close-btn" onclick="closeProductReviewModal()">×</button>
+      </div>
+      <p style="font-size: 0.84rem; color: var(--color-text-muted); margin-bottom: 18px;">
+        Bagikan pengalaman Anda menggunakan pembalut organik bambu BYHARIANS untuk mendapatkan <strong>+50 Eco-Points</strong>.
+      </p>
+
+      <form onsubmit="submitProductReview(event)">
+        <div class="form-group" style="text-align: center; margin-bottom: 20px;">
+          <label style="display: block; margin-bottom: 8px;">Rating Pengalaman Anda</label>
+          <div style="display: flex; gap: 8px; justify-content: center; font-size: 1.8rem; cursor: pointer;">
+            <span class="review-star-btn" onclick="selectReviewStars(1)" style="color: #F7C828;">★</span>
+            <span class="review-star-btn" onclick="selectReviewStars(2)" style="color: #F7C828;">★</span>
+            <span class="review-star-btn" onclick="selectReviewStars(3)" style="color: #F7C828;">★</span>
+            <span class="review-star-btn" onclick="selectReviewStars(4)" style="color: #F7C828;">★</span>
+            <span class="review-star-btn" onclick="selectReviewStars(5)" style="color: #F7C828;">★</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="review-text-input">Ulasan Anda</label>
+          <textarea id="review-text-input" class="form-input" rows="3" placeholder="Bagaimana kelembutan dan kenyamanan produk BYHARIANS menurut Anda?"></textarea>
+        </div>
+
+        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="closeProductReviewModal()">Batal</button>
+          <button type="submit" class="btn btn-primary btn-sm">Kirim Ulasan & Klaim +50 Pts</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Global Toast Containers -->
   <div class="toast-container" id="global-toast-container"></div>
   <div id="social-proof-toast-container"></div>
@@ -2543,6 +2623,7 @@
   <script src="js/products.js"></script>
   <script src="js/cart.js"></script>
   <script src="js/checkout.js"></script>
+  <script src="js/track.js"></script>
   <script src="js/cycle-tracker.js"></script>
   <script src="js/admin.js"></script>
   <script src="js/main.js"></script>

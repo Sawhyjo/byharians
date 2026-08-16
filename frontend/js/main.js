@@ -65,6 +65,13 @@ function navigateTo(viewId) {
   if (target === 'cart' && typeof renderFullCartPage === 'function') renderFullCartPage();
   if (target === 'checkout' && typeof renderCheckoutView === 'function') renderCheckoutView();
   if (target === 'cycle-tracker' && typeof renderCycleTrackerView === 'function') renderCycleTrackerView();
+  if (target === 'track') {
+    if (param && typeof lookupOrder === 'function') {
+      lookupOrder(param);
+    } else if (store.orders && store.orders.length > 0 && typeof lookupOrder === 'function') {
+      lookupOrder(store.orders[0].id);
+    }
+  }
   if (target === 'admin' && typeof switchAdminSubTab === 'function') switchAdminSubTab('all');
   if (target === 'account' && typeof updateAccountDashboardUI === 'function') updateAccountDashboardUI();
 
