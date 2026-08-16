@@ -363,7 +363,7 @@ if (document.readyState === 'loading') {
   initOAuthSessionListener();
 }
 
-function updateAccountDashboardUI() {
+async function updateAccountDashboardUI() {
   if (!store.isLoggedIn || !store.userAccount) return;
 
   const avatar = document.getElementById('acc-avatar-display');
@@ -374,11 +374,11 @@ function updateAccountDashboardUI() {
   const diverted = document.getElementById('acc-pads-diverted');
   const subDetails = document.getElementById('acc-sub-details');
 
+  const userEmail = (store.userAccount.email || '').toLowerCase().trim();
+
   if (name) name.innerText = store.userAccount.name || 'Valued Customer';
-  if (email) email.innerText = store.userAccount.email || '';
+  if (email) email.innerText = userEmail;
   if (phone) phone.innerText = store.userAccount.phone || 'No phone number provided';
-  if (points) points.innerText = `${store.userAccount.ecoPoints ?? 100} Pts`;
-  if (diverted) diverted.innerText = `${store.userAccount.padsDiverted ?? 0} Pads`;
 
   if (avatar) {
     const initials = (store.userAccount.name || 'VC')
@@ -390,6 +390,45 @@ function updateAccountDashboardUI() {
     avatar.innerText = initials;
   }
 
+  // 1. Fetch Customer Orders directly from Supabase DB
+  let customerOrders = store.orders || [];
+  if (supabaseClient && userEmail) {
+    try {
+      const { data, error } = await supabaseClient
+        .from('orders')
+        .select('*')
+        .ilike('customer_email', userEmail)
+        .order('created_at', { ascending: false });
+
+      if (!error && Array.isArray(data)) {
+        customerOrders = data.map(row => ({
+          id: row.id || row.order_id,
+          date: row.created_at ? row.created_at.split('T')[0] : new Date().toISOString().split('T')[0],
+          customer: {
+            name: row.customer_name || store.userAccount.name,
+            email: row.customer_email || userEmail,
+            phone: row.customer_phone || store.userAccount.phone,
+            city: row.shipping_address || ''
+          },
+          items: typeof row.items === 'string' ? JSON.parse(row.items) : (row.items || []),
+          total: row.total_price || row.total || 0,
+          paymentMethod: (row.payment_method || 'QRIS').toUpperCase(),
+          status: row.status || 'processing',
+          trackingNumber: row.tracking_number || `SIC-ECO-LIVE`,
+          courier: row.courier || 'SiCepat BEST Eco-Fleet'
+        }));
+        store.orders = customerOrders;
+        store.save();
+      }
+    } catch (err) {
+      console.warn('Supabase customer orders fetch warning:', err);
+    }
+  }
+
+  if (points) points.innerText = `${store.userAccount.ecoPoints ?? 100} Pts`;
+  if (diverted) diverted.innerText = `${store.userAccount.padsDiverted ?? 0} Pads`;
+
+  // Render Subscriptions
   if (subDetails) {
     const sub = store.userAccount.activeSubscription || {
       productName: 'Custom Bamboo Cycle Pack',
@@ -408,25 +447,25 @@ function updateAccountDashboardUI() {
     `;
   }
 
-  // Render Past Orders List
+  // Render Past Orders List with Supabase Verified Tag
   const ordersListEl = document.getElementById('acc-orders-list');
   if (ordersListEl) {
-    const userOrders = store.orders || [];
-    if (userOrders.length === 0) {
+    if (customerOrders.length === 0) {
       ordersListEl.innerHTML = `
         <div style="text-align:center; padding: 32px 16px; color: var(--color-text-muted);">
           <div style="font-size: 2rem; margin-bottom: 8px;">📦</div>
           <p style="font-weight: 700; color: var(--color-primary); font-size: 0.95rem; margin-bottom: 4px;">Belum Ada Riwayat Pesanan</p>
-          <small>Pesanan yang Anda buat akan muncul di sini secara otomatis.</small>
+          <small>Pesanan yang Anda buat akan terverifikasi dan muncul di sini secara otomatis dari database Supabase.</small>
         </div>
       `;
     } else {
-      ordersListEl.innerHTML = userOrders.map(order => `
-        <div style="border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 18px 20px; margin-bottom: 14px; background: #fff;">
+      ordersListEl.innerHTML = customerOrders.map(order => `
+        <div style="border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 18px 20px; margin-bottom: 14px; background: #fff; box-shadow: var(--shadow-xs);">
           <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--color-border); padding-bottom: 12px; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
             <div>
               <span style="font-size: 0.74rem; color: var(--color-text-muted); text-transform: uppercase;">Nomor Pesanan</span>
               <strong style="font-size: 1.05rem; color: var(--color-primary); display: block;">#${order.id}</strong>
+              <small style="color: var(--color-success); font-weight: 700; font-size: 0.72rem;">✓ Terverifikasi Supabase DB</small>
             </div>
             <div>
               <span style="font-size: 0.74rem; color: var(--color-text-muted); text-transform: uppercase;">Tanggal</span>
@@ -437,13 +476,15 @@ function updateAccountDashboardUI() {
               <code style="background: rgba(15,48,29,0.06); padding: 2px 8px; border-radius: 4px; font-weight: 700; color: var(--color-primary); font-size: 0.8rem;">${order.trackingNumber || 'SIC-ECO-LIVE'}</code>
             </div>
             <div>
-              <span class="status-badge status-shipped" style="text-transform: uppercase;">${order.status === 'processing' ? 'DIPROSES' : order.status.toUpperCase()}</span>
+              <span class="status-badge ${order.status === 'delivered' ? 'status-delivered' : order.status === 'processing' ? 'status-processing' : 'status-shipped'}" style="text-transform: uppercase;">
+                ${order.status === 'processing' ? 'DI PROSES' : order.status === 'shipped' ? 'DI JALAN' : order.status === 'delivered' ? 'SAMPAI' : order.status.toUpperCase()}
+              </span>
             </div>
           </div>
 
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
             <div>
-              <div style="font-size: 0.84rem; font-weight: 700; color: var(--color-primary); margin-bottom: 4px;">Daftar Item:</div>
+              <div style="font-size: 0.84rem; font-weight: 700; color: var(--color-primary); margin-bottom: 4px;">Daftar Item Dibeli:</div>
               <ul style="margin: 0; padding-left: 18px; font-size: 0.8rem; color: var(--color-text-muted);">
                 ${(order.items || []).map(item => `<li><strong>${item.name}</strong> x${item.qty || item.quantity || 1} (${item.size || item.packName || ''})</li>`).join('')}
               </ul>
@@ -452,7 +493,7 @@ function updateAccountDashboardUI() {
               <span style="font-size: 0.78rem; color: var(--color-text-muted); display: block;">Total Bayar (${order.paymentMethod || 'QRIS'})</span>
               <strong style="font-size: 1.15rem; color: var(--color-primary);">${store.formatPrice(order.total || 0)}</strong>
               <div style="margin-top: 6px;">
-                <button class="btn btn-outline btn-sm" onclick="navigateTo('track/${order.id}')" style="padding: 4px 10px; font-size: 0.76rem;">Lacak Pengiriman →</button>
+                <button class="btn btn-outline btn-sm" onclick="navigateTo('track/${order.id}')" style="padding: 4px 10px; font-size: 0.76rem;">Lacak Resi →</button>
               </div>
             </div>
           </div>

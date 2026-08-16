@@ -5,7 +5,7 @@
 let activeTrackingOrder = null;
 let selectedRatingStars = 5;
 
-function lookupOrder(customQuery) {
+async function lookupOrder(customQuery) {
   const input = document.getElementById('track-order-input');
   const query = (customQuery || input?.value || '').trim().toUpperCase();
 
@@ -14,12 +14,45 @@ function lookupOrder(customQuery) {
     return;
   }
 
-  // Search in user orders & global store orders
+  // 1. Search in memory
   let order = (store.orders || []).find(o => 
     (o.id && o.id.toUpperCase() === query) ||
     (o.trackingNumber && o.trackingNumber.toUpperCase() === query) ||
     (o.customer?.email && o.customer.email.toUpperCase() === query)
   );
+
+  // 2. Search directly in Supabase DB
+  if (!order && supabaseClient) {
+    try {
+      const { data, error } = await supabaseClient
+        .from('orders')
+        .select('*')
+        .or(`id.ilike.%${query}%,tracking_number.ilike.%${query}%`);
+
+      if (!error && Array.isArray(data) && data.length > 0) {
+        const row = data[0];
+        order = {
+          id: row.id || row.order_id,
+          date: row.created_at ? row.created_at.split('T')[0] : new Date().toISOString().split('T')[0],
+          customer: {
+            name: row.customer_name || 'Pelanggan BYHARIANS',
+            email: row.customer_email || '',
+            phone: row.customer_phone || '',
+            city: row.shipping_address || 'DKI Jakarta'
+          },
+          items: typeof row.items === 'string' ? JSON.parse(row.items) : (row.items || []),
+          total: row.total_price || row.total || 0,
+          paymentMethod: (row.payment_method || 'QRIS').toUpperCase(),
+          status: row.status || 'processing',
+          trackingNumber: row.tracking_number || `SIC-ECO-LIVE`,
+          courier: row.courier || 'SiCepat BEST Eco-Fleet'
+        };
+        store.saveGlobalOrder(order);
+      }
+    } catch (err) {
+      console.warn('Supabase lookup order error:', err);
+    }
+  }
 
   // Fallback demonstration orders if query is a demo number
   if (!order) {
@@ -46,7 +79,7 @@ function lookupOrder(customQuery) {
   if (!order) {
     if (resultsBox) resultsBox.style.display = 'none';
     if (typeof showToast === 'function') {
-      showToast(`Nomor Resi atau Order ID "${query}" tidak ditemukan. Pastikan format penulisan benar.`, 'error');
+      showToast(`Nomor Resi atau Order ID "${query}" tidak ditemukan di database Supabase. Pastikan format penulisan benar.`, 'error');
     }
     return;
   }
