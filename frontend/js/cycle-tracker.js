@@ -1,5 +1,5 @@
 /**
- * BYHARIANS FLO HEALTH-STYLE MENSTRUAL CYCLE TRACKER & CALENDAR ENGINE
+ * BYHARIANS MENSTRUAL CYCLE TRACKER & CALENDAR ENGINE
  */
 let currentCalYear = new Date().getFullYear();
 let currentCalMonth = new Date().getMonth(); // 0-indexed
@@ -85,7 +85,7 @@ function prefillCycleDemoData() {
   const durationInput = document.getElementById('cycle-duration-input');
 
   const now = new Date();
-  now.setDate(now.getDate() - 3); // 3 days ago
+  now.setDate(now.getDate() - 3);
   const dateStr = now.toISOString().split('T')[0];
 
   if (startDateInput) startDateInput.value = dateStr;
@@ -105,7 +105,6 @@ function getCyclePhaseForDay(dayInCycle, periodLen) {
       shortName: 'Menstruasi',
       color: '#E35E34',
       badgeClass: 'phase-period',
-      icon: '🩸',
       tip: 'Waktu untuk istirahat, hidrasi air hangat, dan perawatan lembut dengan pembalut bambu organik ultra-lembut.'
     };
   } else if (dayInCycle >= 12 && dayInCycle <= 16) {
@@ -114,7 +113,6 @@ function getCyclePhaseForDay(dayInCycle, periodLen) {
       shortName: 'Ovulasi / Subur',
       color: '#B47C04',
       badgeClass: 'phase-fertile',
-      icon: '✨',
       tip: 'Puncak masa subur & sel telur matang. Energi, suasana hati, dan kepercayaan diri berada di level tertinggi.'
     };
   } else if (dayInCycle > 16) {
@@ -123,7 +121,6 @@ function getCyclePhaseForDay(dayInCycle, periodLen) {
       shortName: 'Luteal (PMS)',
       color: '#5B21B6',
       badgeClass: 'phase-luteal',
-      icon: '🌙',
       tip: 'Hormon Progesteron mendominasi. Tubuh bersiap untuk siklus berikutnya. Cocok untuk teh hangat & relaksasi.'
     };
   } else {
@@ -132,7 +129,6 @@ function getCyclePhaseForDay(dayInCycle, periodLen) {
       shortName: 'Folikular',
       color: '#1E824C',
       badgeClass: 'phase-follicular',
-      icon: '🌱',
       tip: 'Hormon Estrogen meningkat pesat. Energi tubuh, stamina olahraga, dan daya fokus Anda berkembang.'
     };
   }
@@ -154,7 +150,7 @@ function renderTodayStatusBar() {
 
   let currentDay = (diffDays % cycleLen);
   if (currentDay < 0) currentDay += cycleLen;
-  currentDay += 1; // 1-indexed
+  currentDay += 1;
 
   const phaseInfo = getCyclePhaseForDay(currentDay, periodLen);
 
@@ -171,8 +167,8 @@ function renderTodayStatusBar() {
       </div>
       <div>
         <span style="color: var(--color-text-muted); font-size: 0.74rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.06em;">Fase Biologis Tubuh</span>
-        <div style="font-size: 1.15rem; font-weight: 800; color: ${phaseInfo.color}; margin-top: 6px; display: flex; align-items: center; gap: 8px;">
-          <span style="font-size: 1.25rem;">${phaseInfo.icon}</span> <span>${phaseInfo.name}</span>
+        <div style="font-size: 1.15rem; font-weight: 800; color: ${phaseInfo.color}; margin-top: 6px;">
+          ${phaseInfo.name}
         </div>
         <p style="font-size: 0.82rem; color: var(--color-text-muted); margin-top: 6px; line-height: 1.45;">${phaseInfo.tip}</p>
       </div>
@@ -221,7 +217,7 @@ function renderCalendarDaysGrid() {
 
   const todayStr = new Date().toISOString().split('T')[0];
 
-  // Render days
+  // Calculate phase for EVERY day in the calendar grid
   for (let day = 1; day <= daysInMonth; day++) {
     const thisDate = new Date(currentCalYear, currentCalMonth, day);
     thisDate.setHours(0, 0, 0, 0);
@@ -240,8 +236,9 @@ function renderCalendarDaysGrid() {
 
     let badgeText = '';
     if (dayInCycle <= periodLen) badgeText = `Haid ${dayInCycle}`;
-    else if (dayInCycle === 14) badgeText = 'Ovulasi 👑';
+    else if (dayInCycle === 14) badgeText = 'Ovulasi';
     else if (dayInCycle >= 12 && dayInCycle <= 16) badgeText = 'Subur';
+    else badgeText = phaseInfo.shortName;
 
     html += `
       <div class="cal-day-cell ${phaseInfo.badgeClass} ${isToday ? 'is-today' : ''} ${hasNote ? 'has-note' : ''}" onclick="openCycleDatePopup('${dateStr}')">
@@ -320,7 +317,7 @@ function renderRecommendedPads() {
   `;
 }
 
-// Flo Health Popup Logger state
+// Popup Logger state
 let activePopupDate = null;
 let activeSelectedFlow = 'none';
 let activeSelectedMood = '';
@@ -407,9 +404,9 @@ function renderSymptomsChips() {
   if (!container) return;
 
   const defaultSymptoms = [
-    '⚡ Kram Perut', '🧠 Sakit Kepala', '🌸 Jerawat Hormonal',
-    '💖 Nyeri Payudara', '🌊 Kembung / Begah', '☁️ Sensitif / PMS',
-    '🛋️ Lelah / Pegal', '🍯 Ngidam Manis', '🌙 Sulit Tidur'
+    'Kram Perut', 'Sakit Kepala', 'Jerawat Hormonal',
+    'Nyeri Payudara', 'Kembung / Begah', 'Sensitif / PMS',
+    'Lelah / Pegal', 'Ngidam Makanan Manis', 'Sulit Tidur'
   ];
 
   container.innerHTML = defaultSymptoms.map(sym => {
@@ -450,7 +447,7 @@ function savePopupDataDirectly() {
   closeCycleDatePopup();
   renderCalendarDaysGrid();
   if (typeof showToast === 'function') {
-    showToast('Catatan & gejala harian Flo Health berhasil disimpan!', 'success');
+    showToast('Catatan & gejala harian berhasil disimpan!', 'success');
   }
 }
 
