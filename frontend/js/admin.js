@@ -23,7 +23,75 @@ async function switchAdminSubTab(tabName = 'all') {
   renderAdminCustomerPackages();
 }
 
+let isSupabaseRealtimeSubscribed = false;
+
 async function syncAdminDatabaseOrders() {
+  if (supabaseClient) {
+    try {
+      const { data, error } = await supabaseClient
+        .from('orders')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (!error && Array.isArray(data) && data.length > 0) {
+        data.forEach(row => {
+          const formatted = {
+            id: row.id || row.order_id || `BYH-${row.id_num || '89421'}`,
+            date: row.created_at ? row.created_at.split('T')[0] : new Date().toISOString().split('T')[0],
+            customer: {
+              name: row.customer_name || row.user_name || 'Pelanggan BYHARIANS',
+              email: row.customer_email || row.user_email || '',
+              phone: row.customer_phone || '',
+              city: row.shipping_address || 'DKI Jakarta'
+            },
+            items: typeof row.items === 'string' ? JSON.parse(row.items) : (row.items || []),
+            total: row.total_price || row.total || 0,
+            paymentMethod: (row.payment_method || 'QRIS').toUpperCase(),
+            status: row.status || 'processing',
+            trackingNumber: row.tracking_number || `SIC-ECO-${row.id || 'LIVE'}`,
+            courier: row.courier || 'SiCepat BEST Eco-Fleet'
+          };
+          store.saveGlobalOrder(formatted);
+        });
+      }
+
+      // Setup Supabase Realtime Order Listener
+      if (!isSupabaseRealtimeSubscribed) {
+        isSupabaseRealtimeSubscribed = true;
+        supabaseClient
+          .channel('admin-orders-realtime')
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, (payload) => {
+            console.log('⚡ Supabase Realtime Order Event:', payload);
+            if (payload.new) {
+              const row = payload.new;
+              const formatted = {
+                id: row.id || row.order_id,
+                date: row.created_at ? row.created_at.split('T')[0] : new Date().toISOString().split('T')[0],
+                customer: {
+                  name: row.customer_name || 'Pelanggan BYHARIANS',
+                  email: row.customer_email || '',
+                  phone: row.customer_phone || '',
+                  city: row.shipping_address || 'DKI Jakarta'
+                },
+                items: typeof row.items === 'string' ? JSON.parse(row.items) : (row.items || []),
+                total: row.total_price || row.total || 0,
+                paymentMethod: (row.payment_method || 'QRIS').toUpperCase(),
+                status: row.status || 'processing',
+                trackingNumber: row.tracking_number || `SIC-ECO-LIVE`,
+                courier: row.courier || 'SiCepat BEST Eco-Fleet'
+              };
+              store.saveGlobalOrder(formatted);
+              renderAdminKPIs();
+              renderAdminOrders();
+            }
+          })
+          .subscribe();
+      }
+    } catch (err) {
+      console.warn('Supabase Direct Orders Sync warning:', err);
+    }
+  }
+
   try {
     const resp = await fetch(`${CONFIG.API_BASE_URL}/orders`);
     if (resp.ok) {

@@ -176,6 +176,26 @@ async function submitCheckoutOrder(e) {
     courier: 'SiCepat BEST Eco-Fleet'
   };
 
+  if (supabaseClient) {
+    try {
+      await supabaseClient.from('orders').insert([{
+        id: orderId,
+        customer_name: name,
+        customer_email: email,
+        customer_phone: phone,
+        shipping_address: `${city}, ${address}`,
+        items: JSON.stringify(newOrder.items),
+        total_price: calcs.grandTotal,
+        payment_method: paymentLabel,
+        status: 'processing',
+        tracking_number: newOrder.trackingNumber,
+        courier: newOrder.courier
+      }]);
+    } catch (err) {
+      console.warn('Supabase direct order insert warning:', err);
+    }
+  }
+
   try {
     await fetch(`${CONFIG.API_BASE_URL}/orders`, {
       method: 'POST',
