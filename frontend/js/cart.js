@@ -56,7 +56,7 @@ function updateCartItemQty(index, change) {
     }
     store.save();
     updateCartBadgeAndDrawer();
-    if (store.currentView === 'cart' && typeof renderFullCartPage === 'function') renderFullCartPage();
+    if (store.currentView === 'cart') renderFullCartPage();
   }
 }
 
@@ -64,7 +64,7 @@ function removeCartItem(index) {
   store.cart.splice(index, 1);
   store.save();
   updateCartBadgeAndDrawer();
-  if (store.currentView === 'cart' && typeof renderFullCartPage === 'function') renderFullCartPage();
+  if (store.currentView === 'cart') renderFullCartPage();
   if (typeof showToast === 'function') showToast('Item dihapus dari keranjang', 'info');
 }
 
@@ -156,6 +156,63 @@ function updateCartBadgeAndDrawer() {
   }
 }
 
+function renderFullCartPage() {
+  const container = document.getElementById('full-cart-items-container');
+  const summaryBox = document.getElementById('full-cart-summary-box');
+  if (!container) return;
+
+  if (store.cart.length === 0) {
+    container.innerHTML = `
+      <div style="text-align:center; padding: 60px 20px; background:#fff; border-radius:var(--radius-xl); border:1px solid var(--color-border);">
+        <div style="font-size:3rem; margin-bottom:14px;">🛒</div>
+        <h3 style="font-size:1.4rem; color:var(--color-primary); margin-bottom:8px;">Keranjang Belanja Anda Kosong</h3>
+        <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">Temukan pembalut bambu organik & paket menstruasi ramah lingkungan.</p>
+        <button class="btn btn-primary" onclick="navigateTo('shop')">Jelajahi Koleksi Produk</button>
+      </div>
+    `;
+    if (summaryBox) summaryBox.style.display = 'none';
+    return;
+  }
+
+  if (summaryBox) summaryBox.style.display = 'block';
+
+  container.innerHTML = `
+    <div style="background:#fff; border-radius:var(--radius-xl); padding:28px; border:1px solid var(--color-border); box-shadow:var(--shadow-sm);">
+      <h3 style="font-size:1.3rem; color:var(--color-primary); margin-bottom:20px; border-bottom:1px solid var(--color-border); padding-bottom:12px;">Item Keranjang (${store.cart.reduce((s, i) => s + i.quantity, 0)})</h3>
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        ${store.cart.map((item, idx) => `
+          <div style="display:grid; grid-template-columns:80px 1fr auto; gap:16px; align-items:center; padding-bottom:16px; border-bottom:1px solid var(--color-border);">
+            <img src="${item.image}" alt="${item.name}" style="width:80px; height:80px; border-radius:12px; object-fit:cover;">
+            <div>
+              <h4 style="font-size:1rem; color:var(--color-primary); margin-bottom:4px;">${item.name}</h4>
+              <div style="font-size:0.8rem; color:var(--color-text-muted); margin-bottom:6px;">Varian: ${item.packName} ${item.isSubscription ? '• Subskripsi' : ''}</div>
+              <div style="font-size:0.95rem; font-weight:800; color:var(--color-primary);">${store.formatPrice(item.unitPrice)} per pack</div>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
+              <div class="quantity-stepper" style="display:flex; align-items:center; gap:6px; background:var(--color-bg-warm); padding:4px 10px; border-radius:var(--radius-full); border:1px solid var(--color-border);">
+                <button class="qty-btn" onclick="updateCartItemQty(${idx}, -1)" style="border:none; background:none; cursor:pointer; font-weight:800; font-size:1.1rem;">-</button>
+                <span style="font-size:0.9rem; font-weight:800; padding:0 8px;">${item.quantity}</span>
+                <button class="qty-btn" onclick="updateCartItemQty(${idx}, 1)" style="border:none; background:none; cursor:pointer; font-weight:800; font-size:1.1rem;">+</button>
+              </div>
+              <div style="font-size:1rem; font-weight:900; color:var(--color-primary);">${store.formatPrice(item.unitPrice * item.quantity)}</div>
+              <button onclick="removeCartItem(${idx})" style="font-size:0.78rem; color:var(--color-error); background:none; border:none; cursor:pointer; font-weight:700;">Hapus Item</button>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+
+  const calcs = getCartCalculations();
+  const subEl = document.getElementById('full-cart-subtotal');
+  const shipEl = document.getElementById('full-cart-shipping');
+  const grandEl = document.getElementById('full-cart-grandtotal');
+
+  if (subEl) subEl.innerText = store.formatPrice(calcs.subtotal);
+  if (shipEl) shipEl.innerText = calcs.shippingCost === 0 ? 'GRATIS' : store.formatPrice(calcs.shippingCost);
+  if (grandEl) grandEl.innerText = store.formatPrice(calcs.grandTotal);
+}
+
 function applyPromoCode() {
   const input = document.getElementById('cart-coupon-input') || document.getElementById('checkout-coupon-input');
   if (!input) return;
@@ -166,6 +223,7 @@ function applyPromoCode() {
     store.appliedCoupon = coupon;
     store.save();
     updateCartBadgeAndDrawer();
+    if (store.currentView === 'cart') renderFullCartPage();
     if (store.currentView === 'checkout' && typeof renderCheckoutSummary === 'function') renderCheckoutSummary();
     if (typeof showToast === 'function') showToast(`Kupon "${code}" berhasil dipasang: diskon 15%!`, 'success');
   } else {
