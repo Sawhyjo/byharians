@@ -37,9 +37,11 @@ function renderProductCardHTML(p) {
 
 function renderCatalogGrid(productsToRender) {
   const list = productsToRender || store.products;
-  const grid = document.getElementById('shop-products-grid') || document.getElementById('home-featured-grid');
-  if (!grid) return;
-  grid.innerHTML = list.map(p => renderProductCardHTML(p)).join('');
+  const featuredGrid = document.getElementById('home-featured-grid');
+  const shopGrid = document.getElementById('shop-products-grid');
+  const html = list.map(p => renderProductCardHTML(p)).join('');
+  if (featuredGrid) featuredGrid.innerHTML = html;
+  if (shopGrid) shopGrid.innerHTML = html;
 }
 
 function filterCategory(cat, btn) {

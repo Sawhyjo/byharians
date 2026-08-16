@@ -22,11 +22,11 @@ function createToastContainer() {
 }
 
 function navigateTo(viewId) {
-  let target = viewId;
+  let target = viewId || 'home';
   let param = null;
 
-  if (viewId.includes('/')) {
-    const parts = viewId.split('/');
+  if (target.includes('/')) {
+    const parts = target.split('/');
     target = parts[0];
     param = parts[1];
   }
@@ -36,12 +36,24 @@ function navigateTo(viewId) {
   }
 
   store.currentView = target;
-  document.querySelectorAll('.view-section').forEach(sec => sec.style.display = 'none');
 
-  const targetView = document.getElementById(`view-${target}`);
-  if (targetView) {
-    targetView.style.display = 'block';
+  const standaloneView = document.getElementById(`view-${target}`);
+
+  if (standaloneView) {
+    document.querySelectorAll('.view-section').forEach(sec => sec.style.display = 'none');
+    standaloneView.style.display = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    document.querySelectorAll('.view-section').forEach(sec => sec.style.display = 'none');
+    const homeView = document.getElementById('view-home');
+    if (homeView) homeView.style.display = 'block';
+
+    const anchorElem = document.getElementById(target);
+    if (anchorElem) {
+      anchorElem.scrollIntoView({ behavior: 'smooth' });
+    } else if (target === 'home') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 
   document.querySelectorAll('.nav-link').forEach(link => {
@@ -49,16 +61,12 @@ function navigateTo(viewId) {
     link.classList.toggle('active', href === target);
   });
 
-  if (target === 'home' || target === 'shop') renderCatalogGrid();
-  if (target === 'cart') renderFullCartPage();
-  if (target === 'checkout') renderCheckoutView();
-  if (target === 'cycle-tracker') renderCycleTrackerView();
-  if (target === 'admin') switchAdminSubTab('all');
-  if (target === 'account') {
-    if (typeof updateAccountDashboardUI === 'function') {
-      updateAccountDashboardUI();
-    }
-  }
+  if (typeof renderCatalogGrid === 'function') renderCatalogGrid();
+  if (target === 'cart' && typeof renderFullCartPage === 'function') renderFullCartPage();
+  if (target === 'checkout' && typeof renderCheckoutView === 'function') renderCheckoutView();
+  if (target === 'cycle-tracker' && typeof renderCycleTrackerView === 'function') renderCycleTrackerView();
+  if (target === 'admin' && typeof switchAdminSubTab === 'function') switchAdminSubTab('all');
+  if (target === 'account' && typeof updateAccountDashboardUI === 'function') updateAccountDashboardUI();
 
   updateHeaderAuthUI();
 }
