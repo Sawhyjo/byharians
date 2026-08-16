@@ -1,11 +1,7 @@
 /**
  * BYHARIANS OPERATIONS & ADMIN MANAGEMENT MODULE
  */
-function switchAdminSubTab(tabName) {
-  document.querySelectorAll('.admin-nav-tab-btn').forEach(btn => btn.classList.remove('active'));
-  const targetBtn = document.getElementById(`admin-tab-btn-${tabName}`);
-  if (targetBtn) targetBtn.classList.add('active');
-
+function switchAdminSubTab(tabName = 'all') {
   const secKpis = document.getElementById('admin-section-kpis');
   const secChart = document.getElementById('admin-section-chart');
   const secGroc = document.getElementById('admin-section-groceries');
@@ -13,15 +9,15 @@ function switchAdminSubTab(tabName) {
   const secOrders = document.getElementById('admin-section-orders');
   const secInv = document.getElementById('admin-section-inventory');
 
-  if (secKpis) secKpis.style.display = (tabName === 'all' || tabName === 'kpis') ? 'grid' : 'none';
-  if (secChart) secChart.style.display = (tabName === 'all' || tabName === 'kpis') ? 'block' : 'none';
-  if (secGroc) secGroc.style.display = (tabName === 'all' || tabName === 'groceries') ? 'block' : 'none';
-  if (secPkg) secPkg.style.display = (tabName === 'all' || tabName === 'packages') ? 'block' : 'none';
-  if (secOrders) secOrders.style.display = (tabName === 'all' || tabName === 'orders') ? 'block' : 'none';
-  if (secInv) secInv.style.display = (tabName === 'all' || tabName === 'inventory') ? 'block' : 'none';
+  if (secKpis) secKpis.style.display = 'grid';
+  if (secChart) secChart.style.display = 'block';
+  if (secGroc) secGroc.style.display = 'block';
+  if (secPkg) secPkg.style.display = 'block';
+  if (secOrders) secOrders.style.display = 'block';
+  if (secInv) secInv.style.display = 'block';
 
-  if (tabName === 'groceries') renderAdminCustomerGroceries();
-  if (tabName === 'packages') renderAdminCustomerPackages();
+  renderAdminCustomerGroceries();
+  renderAdminCustomerPackages();
 }
 
 function renderAdminCustomerGroceries(list) {
