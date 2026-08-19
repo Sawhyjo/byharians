@@ -196,14 +196,27 @@ function adminUpdateStatusFromSelect(orderId) {
 }
 
 async function adminChangeOrderStatus(orderId, newStatus) {
-  // 1. Update in Supabase Database directly
+  // 1. Update in Supabase Database directly using clean .eq('id', orderId)
   if (supabaseClient) {
     try {
-      const { error } = await supabaseClient
+      console.log('🔄 Updating Supabase order:', orderId, 'to status:', newStatus);
+      let { data, error } = await supabaseClient
         .from('orders')
         .update({ status: newStatus })
-        .or(`id.eq.${orderId},order_id.eq.${orderId}`);
-      if (error) console.warn('Supabase status update error:', error);
+        .eq('id', orderId)
+        .select();
+
+      if (error || !data || data.length === 0) {
+        console.warn('Primary ID update didn\'t match, trying case-insensitive or tracking number:', error);
+        const fb = await supabaseClient
+          .from('orders')
+          .update({ status: newStatus })
+          .ilike('id', orderId)
+          .select();
+        data = fb.data;
+      }
+
+      console.log('✅ Supabase DB status updated:', data);
     } catch (err) {
       console.warn('Supabase status update warning:', err);
     }
