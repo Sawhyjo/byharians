@@ -109,11 +109,11 @@ function getCyclePhaseForDay(dayInCycle, periodLen) {
     };
   } else if (dayInCycle >= 12 && dayInCycle <= 16) {
     return {
-      name: 'Masa Subur & Ovulasi',
-      shortName: 'Ovulasi / Subur',
+      name: 'Fase Ovulasi',
+      shortName: 'Ovulasi',
       color: '#B47C04',
       badgeClass: 'phase-fertile',
-      tip: 'Puncak masa subur & sel telur matang. Energi, suasana hati, dan kepercayaan diri berada di level tertinggi.'
+      tip: 'Puncak masa ovulasi & sel telur matang. Energi, suasana hati, dan kepercayaan diri berada di level tertinggi.'
     };
   } else if (dayInCycle > 16) {
     return {
@@ -236,8 +236,7 @@ function renderCalendarDaysGrid() {
 
     let badgeText = '';
     if (dayInCycle <= periodLen) badgeText = `Haid ${dayInCycle}`;
-    else if (dayInCycle === 14) badgeText = 'Ovulasi';
-    else if (dayInCycle >= 12 && dayInCycle <= 16) badgeText = 'Subur';
+    else if (dayInCycle >= 12 && dayInCycle <= 16) badgeText = 'Ovulasi';
     else badgeText = phaseInfo.shortName;
 
     html += `
@@ -277,7 +276,7 @@ function renderPhaseTimelineCards() {
   const phases = [
     { title: '1. Fase Menstruasi', days: `Hari 1–${activeCycleConfig.periodLength}`, desc: 'Pendarahan meluruhkan dinding rahim. Istirahat cukup & gunakan pembalut bambu organik hypoallergenic.', color: '#E35E34' },
     { title: '2. Fase Folikular', days: `Hari ${activeCycleConfig.periodLength + 1}–11`, desc: 'Estrogen naik pesat. Energi tubuh, metabolisme, dan daya fokus berada di puncaknya.', color: '#1E824C' },
-    { title: '3. Ovulasi & Masa Subur', days: 'Hari 12–16', desc: 'Sel telur matang (Ovulasi hari ke-14). Puncak fertilitas dan kepercayaan diri maksimal.', color: '#B47C04' },
+    { title: '3. Ovulasi ', days: 'Hari 12–16', desc: 'Sel telur matang (Ovulasi hari ke-14). Puncak fertilitas dan kepercayaan diri maksimal.', color: '#B47C04' },
     { title: '4. Fase Luteal (PMS)', days: `Hari 17–${activeCycleConfig.cycleLength}`, desc: 'Progesteron mendominasi. Waktu sempurna untuk teh herbal hangat dan relaksasi alami.', color: '#5B21B6' }
   ];
 
