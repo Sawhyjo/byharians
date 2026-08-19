@@ -4,27 +4,23 @@
 function renderProductCardHTML(p) {
   return `
     <div class="product-card">
-      <div class="product-image-wrap">
-        <img src="${p.image}" alt="${p.name}" class="product-image" loading="lazy">
-        ${p.badge ? `<span class="badge badge-primary product-badge">${p.badge}</span>` : ''}
-        <button class="wishlist-btn" title="Add to Wishlist" onclick="toggleWishlist('${p.id}', this)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-        </button>
+      <div class="product-image-container">
+        <img src="${p.image}" alt="${p.name}" class="product-thumb" loading="lazy" onerror="this.src='assets/images/product_day_pads.jpg'">
+        ${p.badge ? `<div class="product-badge-stack"><span class="product-badge badge-bestseller">${p.badge}</span></div>` : ''}
+        <button class="quick-view-btn" onclick="openProductDetailModal('${p.id}')">Lihat Detail</button>
       </div>
-      <div class="product-card-body">
-        <div class="product-category">${p.categoryName}</div>
-        <h3 class="product-title" onclick="openProductDetailModal('${p.id}')">${p.name}</h3>
-        <p class="product-subtitle-type">${p.subType}</p>
-        <div class="product-rating-row">
-          <div class="rating-stars">★★★★★</div>
-          <span class="rating-score">${p.rating}</span>
-          <span class="reviews-count">(${p.reviewsCount})</span>
+      <div class="product-info">
+        <div class="product-meta">
+          <span class="product-subtype-tag">${p.categoryName}</span>
+          <span class="rating-score" style="font-weight:700; color:var(--color-primary); font-size:0.82rem;">★ ${p.rating} (${p.reviewsCount})</span>
         </div>
-        <p class="product-short-desc">${p.shortDesc}</p>
-        <div class="product-price-row">
+        <h3 class="product-title" onclick="openProductDetailModal('${p.id}')" style="cursor:pointer; font-size:1.05rem; font-weight:700; color:var(--color-primary); margin-bottom:4px;">${p.name}</h3>
+        <p class="product-subtype-tag" style="margin-bottom:8px; color:var(--color-secondary); font-weight:600; font-size:0.78rem;">${p.subType}</p>
+        <p class="product-short-desc" style="font-size:0.8rem; color:var(--color-text-muted); margin-bottom:14px; line-height:1.4;">${p.shortDesc}</p>
+        <div class="product-price-row" style="margin-top:auto; display:flex; justify-content:space-between; align-items:center;">
           <div>
-            <span class="product-price-current">${store.formatPrice(p.price)}</span>
-            ${p.originalPrice ? `<span class="product-price-original">${store.formatPrice(p.originalPrice)}</span>` : ''}
+            <span style="font-weight:800; font-size:1.1rem; color:var(--color-primary);">${store.formatPrice(p.price)}</span>
+            ${p.originalPrice ? `<span style="font-size:0.8rem; color:var(--color-text-muted); text-decoration:line-through; margin-left:6px;">${store.formatPrice(p.originalPrice)}</span>` : ''}
           </div>
           <button class="btn btn-secondary btn-sm" onclick="quickAddToCart('${p.id}')">
             + Tambah
@@ -93,12 +89,21 @@ function resetFilters() {
 }
 
 function toggleShopFilter() {
+  const layout = document.getElementById('shop-layout-container');
   const sidebar = document.getElementById('shop-filter-sidebar');
   const btnText = document.getElementById('filter-toggle-btn-text');
-  if (sidebar) {
-    const isHidden = sidebar.style.display === 'none';
-    sidebar.style.display = isHidden ? 'block' : 'none';
-    if (btnText) btnText.innerText = isHidden ? 'Sembunyikan Filter' : 'Tampilkan Filter';
+
+  if (layout) {
+    const isCurrentlyHidden = layout.classList.contains('filter-hidden') || (sidebar && sidebar.style.display === 'none');
+    if (isCurrentlyHidden) {
+      layout.classList.remove('filter-hidden');
+      if (sidebar) sidebar.style.display = 'block';
+      if (btnText) btnText.innerText = 'Sembunyikan Filter';
+    } else {
+      layout.classList.add('filter-hidden');
+      if (sidebar) sidebar.style.display = 'none';
+      if (btnText) btnText.innerText = 'Tampilkan Filter';
+    }
   }
 }
 
@@ -130,27 +135,10 @@ function openProductDetailModal(productId) {
     `).join('');
   }
 
-  const addBtn = document.getElementById('modal-add-to-cart-btn');
-  if (addBtn) {
-    addBtn.onclick = () => {
-      addToCart(p.id);
-      closeProductDetailModal();
-    };
-  }
-
   modal.style.display = 'flex';
 }
 
 function closeProductDetailModal() {
   const modal = document.getElementById('product-detail-modal');
   if (modal) modal.style.display = 'none';
-}
-
-function selectPackOption(btn, multiplier, basePrice) {
-  document.querySelectorAll('.pack-opt-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  const priceEl = document.getElementById('modal-product-price');
-  if (priceEl) {
-    priceEl.innerText = store.formatPrice(basePrice * multiplier);
-  }
 }

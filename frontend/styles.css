@@ -885,6 +885,11 @@ h1, h2, h3, h4, h5, h6 {
   display: none !important;
 }
 
+.shop-layout.filter-hidden .product-grid {
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)) !important;
+  gap: 32px;
+}
+
 .filter-toggle-btn {
   display: inline-flex;
   align-items: center;
