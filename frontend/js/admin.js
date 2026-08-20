@@ -259,8 +259,17 @@ function renderAdminSalesTrendChart() {
 
   ctx.clearRect(0, 0, width, height);
 
-  const points = [12, 18, 15, 25, 32, 28, 42, 38, 48, 55, 50, 68, 75, 82, 95];
-  const maxVal = 100;
+  const ordersList = getAllOrdersCombined().filter(o => o.status !== 'canceled');
+
+  let points = [0, 0, 0, 0, 0, 0, 0];
+  if (ordersList.length > 0) {
+    ordersList.forEach((o, i) => {
+      const idx = i % 7;
+      points[idx] += (o.total || 0);
+    });
+  }
+
+  const maxVal = Math.max(...points, 100000);
   const stepX = width / (points.length - 1);
 
   ctx.beginPath();
@@ -270,7 +279,7 @@ function renderAdminSalesTrendChart() {
 
   points.forEach((val, idx) => {
     const x = idx * stepX;
-    const y = height - (val / maxVal * (height - 40)) - 20;
+    const y = height - (val / maxVal * (height - 60)) - 20;
     if (idx === 0) ctx.moveTo(x, y);
     else ctx.lineTo(x, y);
   });
@@ -290,26 +299,81 @@ function renderTopSellingProductsTable() {
   const container = document.getElementById('admin-top-products-tbody');
   if (!container) return;
 
-  const topProducts = (store.products || []).slice(0, 5);
-  container.innerHTML = topProducts.map((p, idx) => {
-    const unitsSold = 180 - (idx * 25);
-    const revenue = unitsSold * p.price;
-    return `
-      <tr>
-        <td><strong>#${idx + 1}</strong></td>
-        <td>
-          <div style="display:flex; align-items:center; gap:10px;">
-            <img src="${p.image}" style="width:36px; height:36px; object-fit:cover; border-radius:8px;">
-            <div><strong>${p.name}</strong><br><small style="color:var(--color-text-muted);">${p.subType}</small></div>
-          </div>
-        </td>
-        <td><span class="badge badge-primary">${p.categoryName}</span></td>
-        <td>${store.formatPrice(p.price)}</td>
-        <td><strong>${unitsSold} unit</strong></td>
-        <td style="color:var(--color-primary); font-weight:800;">${store.formatPrice(revenue)}</td>
-      </tr>
-    `;
-  }).join('');
+  const ordersList = getAllOrdersCombined().filter(o => o.status !== 'canceled');
+  const salesMap = new Map();
+
+  // Aggregate real items purchased in Supabase DB orders
+  ordersList.forEach(o => {
+    (o.items || []).forEach(item => {
+      const name = item.name || 'Produk Organik BYHARIANS';
+      const qty = Number(item.quantity || item.qty || 1);
+      const price = Number(item.price || 39000);
+
+      if (!salesMap.has(name)) {
+        salesMap.set(name, {
+          name,
+          unitsSold: 0,
+          totalRevenue: 0,
+          price
+        });
+      }
+
+      const entry = salesMap.get(name);
+      entry.unitsSold += qty;
+      entry.totalRevenue += (qty * price);
+    });
+  });
+
+  if (salesMap.size > 0) {
+    const sortedSales = Array.from(salesMap.values()).sort((a, b) => b.unitsSold - a.unitsSold).slice(0, 5);
+
+    container.innerHTML = sortedSales.map((item, idx) => {
+      const matchedProd = (store.products || []).find(p => p.name.toLowerCase() === item.name.toLowerCase()) || {};
+      const image = matchedProd.image || 'assets/images/product_day_pads.jpg';
+      const categoryName = matchedProd.categoryName || 'Pembalut Wanita Organik';
+      const subType = matchedProd.subType || 'Regular / Day';
+
+      return `
+        <tr>
+          <td><strong>#${idx + 1}</strong></td>
+          <td>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <img src="${image}" style="width:36px; height:36px; object-fit:cover; border-radius:8px;" onerror="this.src='assets/images/product_day_pads.jpg'">
+              <div><strong>${item.name}</strong><br><small style="color:var(--color-text-muted);">${subType}</small></div>
+            </div>
+          </td>
+          <td><span class="badge badge-primary">${categoryName}</span></td>
+          <td>${store.formatPrice(item.price)}</td>
+          <td><strong>${item.unitsSold} unit</strong></td>
+          <td style="color:var(--color-primary); font-weight:800;">${store.formatPrice(item.totalRevenue)}</td>
+        </tr>
+      `;
+    }).join('');
+    return;
+  }
+
+  // Fallback if no order items purchased yet
+  const catalogProducts = (store.products || []).slice(0, 5);
+  if (catalogProducts.length === 0) {
+    container.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--color-text-muted);">Belum ada data penjualan produk.</td></tr>`;
+    return;
+  }
+
+  container.innerHTML = catalogProducts.map((p, idx) => `
+    <tr>
+      <td><strong>#${idx + 1}</strong></td>
+      <td>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <img src="${p.image}" style="width:36px; height:36px; object-fit:cover; border-radius:8px;" onerror="this.src='assets/images/product_day_pads.jpg'">
+          <div><strong>${p.name}</strong><br><small style="color:var(--color-text-muted);">${p.subType}</small></div>
+        </div>
+      </td>
+      <td><span class="badge badge-primary">${p.categoryName}</span></td>
+      <td>${store.formatPrice(p.price)}</td>
+      <td><strong>0 unit</strong></td>
+      <td style="color:var(--color-primary); font-weight:800;">Rp 0</td>
+    </tr>
+  `).join('');
 }
 
 // ==========================================
