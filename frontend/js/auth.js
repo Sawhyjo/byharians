@@ -420,8 +420,38 @@ async function updateAccountDashboardUI() {
     }
   }
 
-  if (points) points.innerText = `${store.userAccount.ecoPoints ?? 100} Pts`;
-  if (diverted) diverted.innerText = `${store.userAccount.padsDiverted ?? 0} Pads`;
+  // 2. Calculate dynamic Eco Metrics based on real Supabase DB customer orders
+  let totalSpend = 0;
+  let totalPadsSaved = 0;
+  let validOrderCount = 0;
+
+  (customerOrders || []).forEach(o => {
+    if (o.status !== 'canceled') {
+      totalSpend += Number(o.total || 0);
+      validOrderCount += 1;
+      (o.items || []).forEach(item => {
+        const qty = Number(item.quantity || item.qty || 1);
+        const name = (item.name || '').toLowerCase();
+        if (name.includes('pad') || name.includes('liner') || name.includes('box') || name.includes('kit')) {
+          totalPadsSaved += (qty * 14);
+        } else {
+          totalPadsSaved += qty * 10;
+        }
+      });
+    }
+  });
+
+  const calculatedPoints = totalSpend > 0 ? Math.floor(totalSpend / 1000) : (store.userAccount.ecoPoints ?? 100);
+  const plasticKg = (totalPadsSaved * 0.024).toFixed(1);
+  const mangrovesCount = Math.floor(validOrderCount * 2);
+
+  const plasticPreventedEl = document.getElementById('acc-plastic-prevented');
+  const treesPlantedEl = document.getElementById('acc-trees-planted');
+
+  if (points) points.innerText = `${calculatedPoints} Pts`;
+  if (diverted) diverted.innerText = `${totalPadsSaved} Pads`;
+  if (plasticPreventedEl) plasticPreventedEl.innerText = `${plasticKg} kg Plastic Prevented`;
+  if (treesPlantedEl) treesPlantedEl.innerText = `${mangrovesCount} Mangroves`;
 
   // Render Subscriptions
   if (subDetails) {
