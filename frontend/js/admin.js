@@ -157,6 +157,60 @@ async function syncAdminDatabaseOrders() {
   return store.orders || [];
 }
 
+function hashCode(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) - hash + str.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash);
+}
+
+function getCustomersFromSupabaseOrders() {
+  const globalOrders = typeof store.getGlobalOrders === 'function' ? store.getGlobalOrders() : [];
+  const allOrdersMap = new Map();
+  (store.orders || []).forEach(o => { if (o && o.id) allOrdersMap.set(o.id, o); });
+  (globalOrders || []).forEach(o => { if (o && o.id) allOrdersMap.set(o.id, o); });
+  const ordersList = Array.from(allOrdersMap.values());
+
+  const customerMap = new Map();
+
+  ordersList.forEach(o => {
+    const rawEmail = (o.customerEmail || o.email || o.customerName || 'pelanggan@byharians.id').toLowerCase().trim();
+    const name = o.customerName || 'Pelanggan BYHARIANS';
+    const phone = o.customerPhone || '-';
+    const date = o.date || new Date().toISOString().split('T')[0];
+
+    if (!customerMap.has(rawEmail)) {
+      customerMap.set(rawEmail, {
+        id: `CUST-${Math.abs(hashCode(rawEmail) % 1000).toString().padStart(3, '0')}`,
+        name,
+        email: rawEmail,
+        phone,
+        totalOrders: 0,
+        lifetimeSpend: 0,
+        ecoPoints: 0,
+        joinDate: date,
+        orders: []
+      });
+    }
+
+    const cust = customerMap.get(rawEmail);
+    cust.totalOrders += 1;
+    if (o.status !== 'canceled') {
+      cust.lifetimeSpend += (o.total || 0);
+    }
+    cust.ecoPoints = Math.floor(cust.lifetimeSpend / 1000);
+    cust.orders.push(o);
+
+    if (new Date(date) < new Date(cust.joinDate)) {
+      cust.joinDate = date;
+    }
+  });
+
+  return Array.from(customerMap.values());
+}
+
 // ==========================================
 // 2. DASHBOARD MAIN OVERVIEW & METRICS
 // ==========================================
@@ -669,60 +723,6 @@ function closeAdminPrintModal() {
 // ==========================================
 // 5. CUSTOMER MANAGEMENT & CRM (/admin/customers)
 // ==========================================
-function hashCode(str) {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = (hash << 5) - hash + str.charCodeAt(i);
-    hash |= 0;
-  }
-  return Math.abs(hash);
-}
-
-function getCustomersFromSupabaseOrders() {
-  const globalOrders = store.getGlobalOrders();
-  const allOrdersMap = new Map();
-  (store.orders || []).forEach(o => { if (o && o.id) allOrdersMap.set(o.id, o); });
-  globalOrders.forEach(o => { if (o && o.id) allOrdersMap.set(o.id, o); });
-  const ordersList = Array.from(allOrdersMap.values());
-
-  const customerMap = new Map();
-
-  ordersList.forEach(o => {
-    const rawEmail = (o.customerEmail || o.email || o.customerName || 'pelanggan@byharians.id').toLowerCase().trim();
-    const name = o.customerName || 'Pelanggan BYHARIANS';
-    const phone = o.customerPhone || '-';
-    const date = o.date || new Date().toISOString().split('T')[0];
-
-    if (!customerMap.has(rawEmail)) {
-      customerMap.set(rawEmail, {
-        id: `CUST-${Math.abs(hashCode(rawEmail) % 1000).toString().padStart(3, '0')}`,
-        name,
-        email: rawEmail,
-        phone,
-        totalOrders: 0,
-        lifetimeSpend: 0,
-        ecoPoints: 0,
-        joinDate: date,
-        orders: []
-      });
-    }
-
-    const cust = customerMap.get(rawEmail);
-    cust.totalOrders += 1;
-    if (o.status !== 'canceled') {
-      cust.lifetimeSpend += (o.total || 0);
-    }
-    cust.ecoPoints = Math.floor(cust.lifetimeSpend / 1000);
-    cust.orders.push(o);
-
-    if (new Date(date) < new Date(cust.joinDate)) {
-      cust.joinDate = date;
-    }
-  });
-
-  return Array.from(customerMap.values());
-}
-
 function renderAdminCustomersTable() {
   const container = document.getElementById('admin-customers-tbody');
   if (!container) return;
