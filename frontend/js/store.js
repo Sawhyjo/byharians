@@ -168,6 +168,31 @@ class StoreEngine {
       }
     };
 
+    this.adminRole = 'super_admin'; // 'super_admin' | 'warehouse_staff' | 'cs_support'
+
+    this.storeSettings = {
+      storeName: 'BYHARIANS Organic Store',
+      originCity: 'Jakarta Selatan, DKI Jakarta',
+      phone: '0812-8921-3401',
+      email: 'care@byharians.id',
+      bannerText: '🌿 Sambut Menstruasi Ramah Lingkungan | Diskon 15% Kode Promo: ECOPERIOD',
+      paymentGateways: {
+        qris: true,
+        bankTransfer: true,
+        creditCard: true
+      },
+      couriers: {
+        sicepat: true,
+        jne: true,
+        gojek: true
+      }
+    };
+
+    this.promotions = [
+      { id: 'PROM-101', code: 'ECOPERIOD', type: 'percentage', value: 15, minSpend: 50000, quota: 500, used: 142, expiry: '2026-12-31', status: 'active' },
+      { id: 'PROM-102', code: 'ZEROPLASTIC', type: 'fixed', value: 20000, minSpend: 100000, quota: 200, used: 88, expiry: '2026-11-30', status: 'active' }
+    ];
+
     this.coupons = [
       { code: 'ECOPERIOD', discountPercent: 15, description: '15% Off First Order' },
       { code: 'ZEROPLASTIC', discountPercent: 20, description: '20% Off Bundle' }
@@ -175,6 +200,17 @@ class StoreEngine {
     this.appliedCoupon = null;
 
     this.loadState();
+  }
+
+  deductProductStockOnOrder(items) {
+    if (!Array.isArray(items)) return;
+    items.forEach(item => {
+      const prod = this.products.find(p => p.id === item.id || p.name === item.name);
+      if (prod && prod.stock !== undefined) {
+        prod.stock = Math.max(0, prod.stock - (item.qty || item.quantity || 1));
+      }
+    });
+    this.save();
   }
 
   loadState() {

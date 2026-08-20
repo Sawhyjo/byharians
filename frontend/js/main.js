@@ -31,8 +31,15 @@ function navigateTo(viewId) {
     param = parts[1];
   }
 
-  if (target === 'admin' && !store.isAdmin) {
-    target = 'admin-login';
+  if (target === 'admin') {
+    if (!store.isAdmin) {
+      target = 'admin-login';
+    } else {
+      setTimeout(() => {
+        if (typeof switchAdminMainTab === 'function') switchAdminMainTab(currentAdminSubTab || 'overview');
+        if (typeof applyRBACPermissionsUI === 'function') applyRBACPermissionsUI();
+      }, 50);
+    }
   }
 
   store.currentView = target;

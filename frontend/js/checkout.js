@@ -208,6 +208,7 @@ async function submitCheckoutOrder(e) {
 
   store.orders.unshift(newOrder);
   store.saveGlobalOrder(newOrder);
+  store.deductProductStockOnOrder(newOrder.items);
   store.userAccount.ecoPoints += Math.floor(calcs.grandTotal / 1000);
   store.userAccount.padsDiverted += store.cart.reduce((s, i) => s + (i.quantity * 10), 0);
   store.cart = [];
