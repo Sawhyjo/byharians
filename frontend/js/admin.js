@@ -10,46 +10,17 @@ let currentAdminSubTab = 'overview';
 // 1. AUTHENTICATION & RBAC ROLE GUARD
 // ==========================================
 function switchAdminRoleRBAC(role) {
-  store.adminRole = role || 'super_admin';
-  localStorage.setItem('byharians_admin_role', store.adminRole);
-
-  const roleSelect = document.getElementById('admin-rbac-role-select');
-  if (roleSelect) roleSelect.value = store.adminRole;
-
-  let roleLabel = 'Super Admin';
-  if (store.adminRole === 'warehouse_staff') roleLabel = 'Staff Gudang / Fulfillment';
-  if (store.adminRole === 'cs_support') roleLabel = 'CS & Support Manager';
-
-  showToast(`Akses RBAC diubah ke: ${roleLabel}`, 'info');
+  store.adminRole = 'super_admin';
+  localStorage.setItem('byharians_admin_role', 'super_admin');
   applyRBACPermissionsUI();
 }
 
 function applyRBACPermissionsUI() {
-  const role = store.adminRole || 'super_admin';
+  store.adminRole = 'super_admin';
   const subTabBtns = document.querySelectorAll('.admin-subtab-bar .cat-tab-btn');
-
   subTabBtns.forEach(btn => {
-    const subtab = btn.getAttribute('data-subtab');
-    if (role === 'warehouse_staff') {
-      if (subtab === 'promotions' || subtab === 'settings') {
-        btn.style.display = 'none';
-      } else {
-        btn.style.display = 'inline-block';
-      }
-    } else if (role === 'cs_support') {
-      if (subtab === 'settings') {
-        btn.style.display = 'none';
-      } else {
-        btn.style.display = 'inline-block';
-      }
-    } else {
-      btn.style.display = 'inline-block';
-    }
+    btn.style.display = 'inline-block';
   });
-
-  if (role === 'warehouse_staff' && (currentAdminSubTab === 'promotions' || currentAdminSubTab === 'settings')) {
-    switchAdminMainTab('orders');
-  }
 }
 
 function handleAdminSignOut() {
