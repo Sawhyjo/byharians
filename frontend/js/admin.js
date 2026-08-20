@@ -166,27 +166,21 @@ function renderAdminKPIs() {
   const kpiActiveUsers = document.getElementById('kpi-active-users');
   const kpiLowStock = document.getElementById('kpi-low-stock');
 
-  const baseRevenue = 128400000;
-  const baseOrders = 386;
-
   const globalOrders = store.getGlobalOrders();
   const allOrdersMap = new Map();
   (store.orders || []).forEach(o => { if (o && o.id) allOrdersMap.set(o.id, o); });
   globalOrders.forEach(o => { if (o && o.id) allOrdersMap.set(o.id, o); });
   const ordersList = Array.from(allOrdersMap.values());
 
-  const liveRevenueSum = ordersList.filter(o => o.status !== 'canceled').reduce((sum, o) => sum + (o.total || 0), 0);
-  const liveOrderCount = ordersList.filter(o => o.status !== 'canceled').length;
+  const totalRevenue = ordersList.filter(o => o.status !== 'canceled').reduce((sum, o) => sum + (o.total || 0), 0);
+  const totalOrders = ordersList.filter(o => o.status !== 'canceled').length;
+  const realCustomers = typeof getCustomersFromSupabaseOrders === 'function' ? getCustomersFromSupabaseOrders() : [];
 
-  const totalRevenue = baseRevenue + liveRevenueSum;
-  const totalOrders = baseOrders + liveOrderCount;
-
-  // Calculate low stock products
   const lowStockCount = (store.products || []).filter(p => (p.stock !== undefined && p.stock < 15)).length;
 
   if (kpiRevenue) kpiRevenue.innerText = store.formatPrice(totalRevenue);
   if (kpiOrders) kpiOrders.innerText = totalOrders;
-  if (kpiActiveUsers) kpiActiveUsers.innerText = `${142 + Math.floor(liveOrderCount * 0.4)} User`;
+  if (kpiActiveUsers) kpiActiveUsers.innerText = `${realCustomers.length} User`;
   if (kpiLowStock) kpiLowStock.innerText = `${lowStockCount} Produk`;
 }
 
@@ -675,6 +669,60 @@ function closeAdminPrintModal() {
 // ==========================================
 // 5. CUSTOMER MANAGEMENT & CRM (/admin/customers)
 // ==========================================
+function hashCode(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) - hash + str.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash);
+}
+
+function getCustomersFromSupabaseOrders() {
+  const globalOrders = store.getGlobalOrders();
+  const allOrdersMap = new Map();
+  (store.orders || []).forEach(o => { if (o && o.id) allOrdersMap.set(o.id, o); });
+  globalOrders.forEach(o => { if (o && o.id) allOrdersMap.set(o.id, o); });
+  const ordersList = Array.from(allOrdersMap.values());
+
+  const customerMap = new Map();
+
+  ordersList.forEach(o => {
+    const rawEmail = (o.customerEmail || o.email || o.customerName || 'pelanggan@byharians.id').toLowerCase().trim();
+    const name = o.customerName || 'Pelanggan BYHARIANS';
+    const phone = o.customerPhone || '-';
+    const date = o.date || new Date().toISOString().split('T')[0];
+
+    if (!customerMap.has(rawEmail)) {
+      customerMap.set(rawEmail, {
+        id: `CUST-${Math.abs(hashCode(rawEmail) % 1000).toString().padStart(3, '0')}`,
+        name,
+        email: rawEmail,
+        phone,
+        totalOrders: 0,
+        lifetimeSpend: 0,
+        ecoPoints: 0,
+        joinDate: date,
+        orders: []
+      });
+    }
+
+    const cust = customerMap.get(rawEmail);
+    cust.totalOrders += 1;
+    if (o.status !== 'canceled') {
+      cust.lifetimeSpend += (o.total || 0);
+    }
+    cust.ecoPoints = Math.floor(cust.lifetimeSpend / 1000);
+    cust.orders.push(o);
+
+    if (new Date(date) < new Date(cust.joinDate)) {
+      cust.joinDate = date;
+    }
+  });
+
+  return Array.from(customerMap.values());
+}
+
 function renderAdminCustomersTable() {
   const container = document.getElementById('admin-customers-tbody');
   if (!container) return;
@@ -682,14 +730,24 @@ function renderAdminCustomersTable() {
   const searchInput = document.getElementById('admin-customer-search');
   const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
 
-  const sampleCustomers = [
-    { id: 'CUST-801', name: 'Dinda Rahmawati', email: 'dinda@wellness.id', phone: '0812-8822-1100', totalOrders: 5, lifetimeSpend: 420000, ecoPoints: 420, joinDate: '2026-01-15' },
-    { id: 'CUST-802', name: 'Maya Sustainable', email: 'maya@eco.id', phone: '0813-9911-2233', totalOrders: 3, lifetimeSpend: 280000, ecoPoints: 280, joinDate: '2026-02-10' },
-    { id: 'CUST-803', name: 'Siti Nurhaliza', email: 'siti@periodpower.id', phone: '0857-1122-3344', totalOrders: 7, lifetimeSpend: 690000, ecoPoints: 690, joinDate: '2025-11-20' }
-  ];
+  const realCustomers = getCustomersFromSupabaseOrders();
 
-  let list = sampleCustomers;
-  if (query) list = list.filter(c => c.name.toLowerCase().includes(query) || c.email.toLowerCase().includes(query));
+  let list = realCustomers;
+  if (query) {
+    list = list.filter(c => c.name.toLowerCase().includes(query) || c.email.toLowerCase().includes(query));
+  }
+
+  if (list.length === 0) {
+    container.innerHTML = `
+      <tr>
+        <td colspan="8" style="text-align:center; padding:32px; color:var(--color-text-muted);">
+          Belum ada transaksi pelanggan terdaftar di database Supabase.<br>
+          <small style="color:var(--color-secondary);">Setiap order yang dibuat oleh customer di toko akan otomatis terdaftar dan terdeteksi di sini secara real-time.</small>
+        </td>
+      </tr>
+    `;
+    return;
+  }
 
   container.innerHTML = list.map(c => `
     <tr>
@@ -717,47 +775,71 @@ function openCustomerDetailModal(customerEmail) {
   const body = document.getElementById('admin-customer-detail-body');
   if (!modal || !body) return;
 
-  if (nameEl) nameEl.innerText = `Profil CRM: ${customerEmail}`;
+  const realCustomers = getCustomersFromSupabaseOrders();
+  const targetCust = realCustomers.find(c => c.email.toLowerCase() === customerEmail.toLowerCase());
+
+  if (nameEl) nameEl.innerText = `Profil CRM: ${targetCust ? targetCust.name : customerEmail}`;
+
+  if (!targetCust || targetCust.orders.length === 0) {
+    body.innerHTML = `
+      <p style="padding:20px; text-align:center; color:var(--color-text-muted);">
+        Belum ada riwayat pesanan untuk pelanggan ini di database Supabase.
+      </p>
+      <div style="display:flex; justify-content:flex-end; margin-top:20px;">
+        <button type="button" class="btn btn-outline btn-sm" onclick="closeAdminCustomerDetailModal()">Tutup</button>
+      </div>
+    `;
+    modal.style.display = 'flex';
+    return;
+  }
+
+  const orderRowsHtml = targetCust.orders.map(o => `
+    <tr>
+      <td style="padding:10px; border-top:1px solid #eee;"><strong>#${o.id}</strong></td>
+      <td style="padding:10px; border-top:1px solid #eee;">${o.date || new Date().toISOString().split('T')[0]}</td>
+      <td style="padding:10px; border-top:1px solid #eee; font-weight:700;">${store.formatPrice(o.total)}</td>
+      <td style="padding:10px; border-top:1px solid #eee;">
+        <span class="badge badge-primary" style="text-transform:uppercase;">${o.status || 'processing'}</span>
+      </td>
+    </tr>
+  `).join('');
 
   body.innerHTML = `
-    <div style="background:var(--color-bg-warm); padding:16px; border-radius:var(--radius-lg); margin-bottom:18px;">
-      <h4 style="font-size:0.95rem; color:var(--color-primary); margin-bottom:6px;">Ringkasan CRM Pelanggan</h4>
-      <p style="margin:0; font-size:0.85rem; line-height:1.5;">
-        <strong>Email:</strong> ${customerEmail}<br>
-        <strong>Status Akun:</strong> Terverifikasi Active Buyer 🟢<br>
-        <strong>Poin Loyalitas Eco-Club:</strong> 420 Poin
+    <div style="background:var(--color-bg-warm); padding:18px; border-radius:var(--radius-lg); margin-bottom:18px; border:1px solid var(--color-border);">
+      <h4 style="font-size:0.95rem; color:var(--color-primary); margin-bottom:8px;">Ringkasan CRM Supabase</h4>
+      <p style="margin:0; font-size:0.85rem; line-height:1.6; color:var(--color-primary);">
+        <strong>Nama:</strong> ${targetCust.name}<br>
+        <strong>Email:</strong> ${targetCust.email}<br>
+        <strong>Telepon:</strong> ${targetCust.phone}<br>
+        <strong>Total Belanja:</strong> ${store.formatPrice(targetCust.lifetimeSpend)} (${targetCust.totalOrders} Pesanan)<br>
+        <strong>Poin Loyalitas Eco-Club:</strong> ✨ ${targetCust.ecoPoints} Poin
       </p>
     </div>
 
-    <h4 style="font-size:0.95rem; color:var(--color-primary); margin-bottom:10px;">Riwayat Transaksi Belanja Terakhir</h4>
+    <h4 style="font-size:0.95rem; color:var(--color-primary); margin-bottom:10px;">Riwayat Transaksi Real di Supabase DB</h4>
     <div style="border:1px solid var(--color-border); border-radius:var(--radius-md); overflow:hidden;">
-      <table style="width:100%; border-collapse:collapse; font-size:0.82rem;">
+      <table style="width:100%; border-collapse:collapse; font-size:0.84rem;">
         <thead>
-          <tr style="background:#FBF8EE; text-align:left;">
-            <th style="padding:8px;">Order ID</th>
-            <th style="padding:8px;">Tanggal</th>
-            <th style="padding:8px;">Total</th>
-            <th style="padding:8px;">Status</th>
+          <tr style="background:#FBF8EE; text-align:left; color:var(--color-primary);">
+            <th style="padding:10px;">Order ID</th>
+            <th style="padding:10px;">Tanggal</th>
+            <th style="padding:10px;">Total</th>
+            <th style="padding:10px;">Status</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td style="padding:8px; border-top:1px solid #eee;">#BYH-56</td>
-            <td style="padding:8px; border-top:1px solid #eee;">2026-08-18</td>
-            <td style="padding:8px; border-top:1px solid #eee; font-weight:700;">Rp 149.000</td>
-            <td style="padding:8px; border-top:1px solid #eee; color:green; font-weight:700;">Delivered ✅</td>
-          </tr>
-          <tr>
-            <td style="padding:8px; border-top:1px solid #eee;">#BYH-42</td>
-            <td style="padding:8px; border-top:1px solid #eee;">2026-07-20</td>
-            <td style="padding:8px; border-top:1px solid #eee; font-weight:700;">Rp 118.000</td>
-            <td style="padding:8px; border-top:1px solid #eee; color:green; font-weight:700;">Delivered ✅</td>
-          </tr>
+          ${orderRowsHtml}
         </tbody>
       </table>
     </div>
 
     <div style="display:flex; justify-content:flex-end; margin-top:20px;">
+      <button type="button" class="btn btn-outline btn-sm" onclick="closeAdminCustomerDetailModal()">Tutup</button>
+    </div>
+  `;
+
+  modal.style.display = 'flex';
+}
       <button class="btn btn-outline btn-sm" onclick="closeAdminCustomerDetailModal()">Tutup</button>
     </div>
   `;
