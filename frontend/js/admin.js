@@ -878,3 +878,10 @@ function saveAdminStoreSettings() {
   store.save();
   showToast('Pengaturan toko & kurir berhasil disimpan!', 'success');
 }
+
+// Close modals when clicking backdrop overlay
+document.addEventListener('click', (e) => {
+  if (e.target && (e.target.classList.contains('phase-popup-modal-backdrop') || e.target.classList.contains('modal-backdrop'))) {
+    e.target.style.display = 'none';
+  }
+});
