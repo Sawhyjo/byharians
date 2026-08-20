@@ -286,15 +286,25 @@ function handleUserSignOut() {
   };
   localStorage.removeItem('byharians_cart_guest');
   localStorage.removeItem('byharians_user');
+  localStorage.removeItem('byharians_admin_role');
+
+  if (typeof supabaseClient !== 'undefined' && supabaseClient && supabaseClient.auth) {
+    supabaseClient.auth.signOut().catch(() => {});
+  }
+
   store.save();
   if (typeof updateCartBadgeAndDrawer === 'function') updateCartBadgeAndDrawer();
-  updateHeaderAuthUI();
-  showToast('Anda telah keluar dari akun. Keranjang telah dibersihkan.', 'info');
+  if (typeof updateHeaderAuthUI === 'function') updateHeaderAuthUI();
+  showToast('Anda telah keluar dari akun.', 'info');
   navigateTo('home');
 }
 
 function handleSignOut() {
-  handleUserSignOut();
+  if (store.isAdmin && typeof handleAdminSignOut === 'function') {
+    handleAdminSignOut();
+  } else {
+    handleUserSignOut();
+  }
 }
 
 async function handleSocialAuth(provider) {

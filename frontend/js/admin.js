@@ -54,8 +54,18 @@ function applyRBACPermissionsUI() {
 
 function handleAdminSignOut() {
   store.isAdmin = false;
+  store.isLoggedIn = false;
   localStorage.removeItem('byharians_user');
-  showToast('Admin signed out successfully', 'success');
+  localStorage.removeItem('byharians_admin_role');
+  localStorage.removeItem('byharians_cart_guest');
+
+  if (typeof supabaseClient !== 'undefined' && supabaseClient && supabaseClient.auth) {
+    supabaseClient.auth.signOut().catch(() => {});
+  }
+
+  store.save();
+  if (typeof updateHeaderAuthUI === 'function') updateHeaderAuthUI();
+  showToast('Admin berhasil keluar dari sistem.', 'success');
   navigateTo('home');
 }
 
