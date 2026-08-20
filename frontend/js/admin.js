@@ -299,8 +299,8 @@ function renderAdminProductsTable() {
         <td>${badgeHtml}</td>
         <td>
           <div style="display:flex; gap:6px;">
-            <button class="btn btn-outline btn-sm" onclick="openEditProductModal('${p.id}')">Edit</button>
-            <button class="btn btn-outline btn-sm" onclick="deleteAdminProduct('${p.id}')" style="color:var(--color-error); border-color:rgba(186,50,50,0.3);">Hapus</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="openEditProductModal('${p.id}')">Edit</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="deleteAdminProduct('${p.id}')" style="color:var(--color-error); border-color:rgba(186,50,50,0.3);">Hapus</button>
           </div>
         </td>
       </tr>
@@ -486,8 +486,8 @@ function renderAdminOrdersTable() {
         </td>
         <td>
           <div style="display:flex; gap:6px;">
-            <button class="btn btn-outline btn-sm" onclick="openAdminOrderDetailModal('${o.id}')">Detail</button>
-            <button class="btn btn-secondary btn-sm" onclick="openInvoicePrintModal('${o.id}')">Invoice 🖨️</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="openAdminOrderDetailModal('${o.id}')">Detail</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="openInvoicePrintModal('${o.id}')">Invoice 🖨️</button>
           </div>
         </td>
       </tr>
@@ -701,7 +701,7 @@ function renderAdminCustomersTable() {
       <td><span class="badge badge-primary">✨ ${c.ecoPoints} Poin</span></td>
       <td>${c.joinDate}</td>
       <td>
-        <button class="btn btn-outline btn-sm" onclick="openCustomerDetailModal('${c.email}')">Riwayat Belanja</button>
+        <button type="button" class="btn btn-outline btn-sm" onclick="openCustomerDetailModal('${c.email}')">Riwayat Belanja</button>
       </td>
     </tr>
   `).join('');
