@@ -222,6 +222,17 @@ class StoreEngine {
         this.isAdmin = parsed.isAdmin || false;
         if (parsed.userAccount) this.userAccount = { ...this.userAccount, ...parsed.userAccount };
       }
+
+      const savedProds = localStorage.getItem('byharians_products');
+      if (savedProds) {
+        try {
+          const parsedProds = JSON.parse(savedProds);
+          if (Array.isArray(parsedProds) && parsedProds.length > 0) {
+            this.products = parsedProds;
+          }
+        } catch (e) {}
+      }
+
       this.loadUserCartAndOrders();
     } catch (err) {
       console.warn('LocalStorage error:', err);
@@ -361,6 +372,8 @@ class StoreEngine {
 
       const orderKey = `byharians_orders_${emailKey}`;
       localStorage.setItem(orderKey, JSON.stringify(this.orders));
+
+      localStorage.setItem('byharians_products', JSON.stringify(this.products));
 
       localStorage.setItem('byharians_user', JSON.stringify({
         isLoggedIn: this.isLoggedIn,

@@ -470,7 +470,7 @@ function closeAdminProductModal() {
   if (modal) modal.style.display = 'none';
 }
 
-function saveAdminProductForm(e) {
+async function saveAdminProductForm(e) {
   if (e) e.preventDefault();
 
   const id = document.getElementById('admin-prod-id').value;
@@ -483,13 +483,19 @@ function saveAdminProductForm(e) {
   const weightGrams = parseInt(document.getElementById('admin-prod-weight').value) || 150;
   const stock = parseInt(document.getElementById('admin-prod-stock').value) || 0;
   const badge = document.getElementById('admin-prod-badge').value;
-  const image = document.getElementById('admin-prod-image').value;
+  let image = document.getElementById('admin-prod-image').value.trim();
   const shortDesc = document.getElementById('admin-prod-short-desc').value;
   const description = document.getElementById('admin-prod-desc').value;
+
+  if (!image) {
+    image = 'assets/images/product_day_pads.jpg';
+  }
 
   let categoryName = 'Pembalut Wanita Organik';
   if (category === 'liners') categoryName = 'Panty Liner Organik';
   if (category === 'kits') categoryName = 'Ritual Menstrual Kit';
+
+  let targetProd = null;
 
   if (id) {
     const idx = store.products.findIndex(p => p.id === id);
@@ -498,28 +504,70 @@ function saveAdminProductForm(e) {
         ...store.products[idx],
         name, sku, category, categoryName, subType, price, originalPrice, weightGrams, stock, badge, image, shortDesc, description
       };
+      targetProd = store.products[idx];
     }
   } else {
-    const newProd = {
+    targetProd = {
       id: `byh-prod-${Date.now().toString().slice(-4)}`,
       name, sku, category, categoryName, subType, price, originalPrice, weightGrams, stock, badge, image, shortDesc, description,
       rating: 5.0, reviewsCount: 1, flowLevel: 3, isEcoCertified: true
     };
-    store.products.unshift(newProd);
+    store.products.unshift(targetProd);
   }
 
   store.save();
+
+  if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+    try {
+      await supabaseClient.from('products').upsert({
+        id: targetProd.id,
+        name: targetProd.name,
+        sku: targetProd.sku,
+        category: targetProd.category,
+        category_name: targetProd.categoryName,
+        subtype: targetProd.subType,
+        price: targetProd.price,
+        original_price: targetProd.originalPrice,
+        weight_grams: targetProd.weightGrams,
+        stock: targetProd.stock,
+        badge: targetProd.badge,
+        image: targetProd.image,
+        short_desc: targetProd.shortDesc,
+        description: targetProd.description
+      });
+    } catch (err) {
+      console.warn('Supabase product upsert warning:', err);
+    }
+  }
+
   closeAdminProductModal();
   renderAdminProductsTable();
-  showToast('Data produk berhasil diperbarui!', 'success');
+
+  if (typeof renderCatalogGrid === 'function') {
+    renderCatalogGrid();
+  }
+
+  showToast('Data produk & gambar berhasil diperbarui dan tersinkronisasi ke katalog customer!', 'success');
 }
 
-function deleteAdminProduct(productId) {
+async function deleteAdminProduct(productId) {
   if (confirm('Apakah Anda yakin ingin menghapus produk ini dari katalog?')) {
     store.products = store.products.filter(p => p.id !== productId);
     store.save();
+
+    if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+      try {
+        await supabaseClient.from('products').delete().eq('id', productId);
+      } catch (err) {
+        console.warn('Supabase product delete warning:', err);
+      }
+    }
+
     renderAdminProductsTable();
-    showToast('Produk telah dihapus!', 'info');
+    if (typeof renderCatalogGrid === 'function') {
+      renderCatalogGrid();
+    }
+    showToast('Produk telah dihapus dari katalog!', 'info');
   }
 }
 
