@@ -178,16 +178,9 @@ function hashCode(str) {
 }
 
 function getAllOrdersCombined() {
-  const defaultOrders = [
-    { id: 'BYH-56', trackingNumber: 'SIC-ECO-9941', date: '2026-08-18', customerName: 'Dinda Rahmawati', customerPhone: '0812-8822-1100', customerEmail: 'dinda@wellness.id', shippingAddress: 'Jl. Sudirman No. 42, Jakarta Selatan', total: 149000, status: 'delivered', courier: 'SiCepat BEST', items: [{ name: 'BYHARIANS Ultimate Menstrual Ritual Box', quantity: 1, price: 149000 }] },
-    { id: 'BYH-42', trackingNumber: 'SIC-ECO-8812', date: '2026-08-19', customerName: 'Maya Sustainable', customerPhone: '0813-9911-2233', customerEmail: 'maya@eco.id', shippingAddress: 'Jl. Gatot Subroto No. 15, Bandung', total: 118000, status: 'processing', courier: 'JNE YES', items: [{ name: 'BYHARIANS Ultra-Thin Day Pads', quantity: 2, price: 39000 }, { name: 'BYHARIANS Ultra-Breathable Panty Liners', quantity: 1, price: 40000 }] },
-    { id: 'BYH-22', trackingNumber: 'SIC-ECO-7719', date: '2026-08-15', customerName: 'Siti Nurhaliza', customerPhone: '0857-1122-3344', customerEmail: 'siti@periodpower.id', shippingAddress: 'Jl. Pemuda No. 88, Surabaya', total: 199000, status: 'delivered', courier: 'SiCepat BEST', items: [{ name: 'BYHARIANS Overnight Super Heavy Flow Pads', quantity: 3, price: 45000 }] }
-  ];
-
   const globalOrders = typeof store.getGlobalOrders === 'function' ? store.getGlobalOrders() : [];
   const allOrdersMap = new Map();
 
-  defaultOrders.forEach(o => allOrdersMap.set(o.id, o));
   (store.orders || []).forEach(o => { if (o && o.id) allOrdersMap.set(o.id, o); });
   (globalOrders || []).forEach(o => { if (o && o.id) allOrdersMap.set(o.id, o); });
 
@@ -545,9 +538,11 @@ function renderAdminOrdersTable() {
           </select>
         </td>
         <td>
-          <div style="display:flex; gap:6px;">
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
             <button type="button" class="btn btn-outline btn-sm" onclick="openAdminOrderDetailModal('${o.id}')">Detail</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="openAdminEditOrderModal('${o.id}')">✏️ Edit</button>
             <button type="button" class="btn btn-secondary btn-sm" onclick="openInvoicePrintModal('${o.id}')">Invoice 🖨️</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="deleteAdminOrder('${o.id}')" style="color:var(--color-error); border-color:rgba(186,50,50,0.3);">🗑️ Hapus</button>
           </div>
         </td>
       </tr>
@@ -557,6 +552,146 @@ function renderAdminOrdersTable() {
 
 function filterAdminOrdersList() {
   renderAdminOrdersTable();
+}
+
+function openAdminEditOrderModal(orderId) {
+  const globalOrders = getAllOrdersCombined();
+  const o = globalOrders.find(item => item.id === orderId);
+  if (!o) return;
+
+  const modal = document.getElementById('admin-edit-order-modal');
+  const title = document.getElementById('admin-edit-order-title');
+  if (!modal) return;
+
+  if (title) title.innerText = `Edit Pesanan Supabase #${o.id}`;
+
+  const custName = o.customerName || (o.customer && o.customer.name) || '';
+  const custPhone = o.customerPhone || (o.customer && o.customer.phone) || '';
+  const custEmail = o.customerEmail || (o.customer && o.customer.email) || '';
+  const address = o.shippingAddress || (o.customer && o.customer.city) || '';
+
+  document.getElementById('admin-edit-order-id').value = o.id;
+  document.getElementById('admin-edit-order-display-id').value = `#${o.id}`;
+  document.getElementById('admin-edit-order-status').value = o.status || 'processing';
+  document.getElementById('admin-edit-order-cust-name').value = custName;
+  document.getElementById('admin-edit-order-cust-phone').value = custPhone;
+  document.getElementById('admin-edit-order-cust-email').value = custEmail;
+  document.getElementById('admin-edit-order-total').value = o.total || 0;
+  document.getElementById('admin-edit-order-address').value = address;
+  document.getElementById('admin-edit-order-tracking').value = o.trackingNumber || `SIC-ECO-${o.id}`;
+  document.getElementById('admin-edit-order-courier').value = o.courier || 'SiCepat BEST Eco-Fleet';
+
+  modal.style.display = 'flex';
+}
+
+function closeAdminEditOrderModal() {
+  const modal = document.getElementById('admin-edit-order-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+async function saveAdminEditOrderForm(e) {
+  if (e) e.preventDefault();
+
+  const id = document.getElementById('admin-edit-order-id').value;
+  const customerName = document.getElementById('admin-edit-order-cust-name').value;
+  const customerPhone = document.getElementById('admin-edit-order-cust-phone').value;
+  const customerEmail = document.getElementById('admin-edit-order-cust-email').value;
+  const shippingAddress = document.getElementById('admin-edit-order-address').value;
+  const total = parseInt(document.getElementById('admin-edit-order-total').value) || 0;
+  const status = document.getElementById('admin-edit-order-status').value;
+  const trackingNumber = document.getElementById('admin-edit-order-tracking').value;
+  const courier = document.getElementById('admin-edit-order-courier').value;
+
+  if (supabaseClient) {
+    try {
+      const { error } = await supabaseClient
+        .from('orders')
+        .update({
+          customer_name: customerName,
+          customer_phone: customerPhone,
+          customer_email: customerEmail,
+          shipping_address: shippingAddress,
+          total_price: total,
+          status: status,
+          tracking_number: trackingNumber,
+          courier: courier
+        })
+        .eq('id', id);
+
+      if (error) console.warn('Supabase update order error:', error);
+    } catch (err) {
+      console.warn('Supabase update order exception:', err);
+    }
+  }
+
+  const globalOrders = store.getGlobalOrders();
+  const targetG = globalOrders.find(o => o.id === id);
+  if (targetG) {
+    targetG.customerName = customerName;
+    targetG.customerPhone = customerPhone;
+    targetG.customerEmail = customerEmail;
+    targetG.shippingAddress = shippingAddress;
+    targetG.total = total;
+    targetG.status = status;
+    targetG.trackingNumber = trackingNumber;
+    targetG.courier = courier;
+    if (targetG.customer) {
+      targetG.customer.name = customerName;
+      targetG.customer.email = customerEmail;
+      targetG.customer.phone = customerPhone;
+      targetG.customer.city = shippingAddress;
+    }
+    store.saveGlobalOrder(targetG);
+  }
+
+  const targetCur = (store.orders || []).find(o => o.id === id);
+  if (targetCur) {
+    targetCur.customerName = customerName;
+    targetCur.customerPhone = customerPhone;
+    targetCur.customerEmail = customerEmail;
+    targetCur.shippingAddress = shippingAddress;
+    targetCur.total = total;
+    targetCur.status = status;
+    targetCur.trackingNumber = trackingNumber;
+    targetCur.courier = courier;
+    if (targetCur.customer) {
+      targetCur.customer.name = customerName;
+      targetCur.customer.email = customerEmail;
+      targetCur.customer.phone = customerPhone;
+      targetCur.customer.city = shippingAddress;
+    }
+  }
+
+  closeAdminEditOrderModal();
+  renderAdminOrdersTable();
+  renderAdminKPIs();
+  showToast(`Pesanan #${id} berhasil diperbarui di Supabase!`, 'success');
+}
+
+async function deleteAdminOrder(orderId) {
+  if (!confirm(`Apakah Anda yakin ingin menghapus pesanan #${orderId} ini secara permanen dari Supabase & Toko?`)) return;
+
+  if (supabaseClient) {
+    try {
+      const { error } = await supabaseClient
+        .from('orders')
+        .delete()
+        .eq('id', orderId);
+
+      if (error) console.warn('Supabase delete order error:', error);
+    } catch (err) {
+      console.warn('Supabase delete exception:', err);
+    }
+  }
+
+  store.orders = (store.orders || []).filter(o => o.id !== orderId);
+  let globalOrders = store.getGlobalOrders();
+  globalOrders = globalOrders.filter(o => o.id !== orderId);
+  localStorage.setItem('byharians_global_orders', JSON.stringify(globalOrders));
+
+  showToast(`Pesanan #${orderId} telah dihapus dari Supabase & Toko!`, 'success');
+  renderAdminOrdersTable();
+  renderAdminKPIs();
 }
 
 async function adminChangeOrderStatus(orderId, newStatus) {

@@ -2796,6 +2796,87 @@
       </form>
     </div>
   </div>
+
+  <!-- ==========================================
+       MODAL 6: EDIT ORDER & LOGISTICS DETAIL
+       ========================================== -->
+  <div class="phase-popup-modal-backdrop" id="admin-edit-order-modal" style="display: none;">
+    <div class="phase-popup-card" style="max-width: 620px; padding: 28px; max-height: 90vh; overflow-y: auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1.5px solid var(--color-border);">
+        <div>
+          <span class="section-tag" style="margin-bottom: 4px; background: var(--color-primary); color: #fff;">EDIT SUPABASE ORDER</span>
+          <h3 id="admin-edit-order-title" style="font-size: 1.3rem; color: var(--color-primary);">Edit Pesanan Pelanggan</h3>
+        </div>
+        <button type="button" class="modal-close-btn" onclick="closeAdminEditOrderModal()">✕</button>
+      </div>
+
+      <form onsubmit="saveAdminEditOrderForm(event)">
+        <input type="hidden" id="admin-edit-order-id">
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="admin-edit-order-display-id">ID Pesanan (Supabase)</label>
+            <input type="text" id="admin-edit-order-display-id" class="form-input" style="background:#f4f4f4; font-weight:700;" readonly>
+          </div>
+          <div class="form-group">
+            <label for="admin-edit-order-status">Status Pesanan</label>
+            <select id="admin-edit-order-status" class="form-select" required>
+              <option value="pending">Pending 🟡</option>
+              <option value="paid">Paid 🟢</option>
+              <option value="processing">Processing 📦</option>
+              <option value="shipped">Shipped 🚚</option>
+              <option value="delivered">Delivered ✅</option>
+              <option value="canceled">Canceled 🚫</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="admin-edit-order-cust-name">Nama Pelanggan</label>
+            <input type="text" id="admin-edit-order-cust-name" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label for="admin-edit-order-cust-phone">Nomor WA / Telepon</label>
+            <input type="text" id="admin-edit-order-cust-phone" class="form-input" required>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="admin-edit-order-cust-email">Email Pelanggan</label>
+            <input type="email" id="admin-edit-order-cust-email" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label for="admin-edit-order-total">Total Tagihan (Rp)</label>
+            <input type="number" id="admin-edit-order-total" class="form-input" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="admin-edit-order-address">Alamat Lengkap Pengiriman</label>
+          <textarea id="admin-edit-order-address" class="form-input" rows="2" required></textarea>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="admin-edit-order-tracking">Nomor Resi Logistik</label>
+            <input type="text" id="admin-edit-order-tracking" class="form-input" placeholder="mis. SIC-ECO-8891" required>
+          </div>
+          <div class="form-group">
+            <label for="admin-edit-order-courier">Ekspedisi / Kurir</label>
+            <input type="text" id="admin-edit-order-courier" class="form-input" placeholder="mis. SiCepat BEST" required>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="closeAdminEditOrderModal()">Batal</button>
+          <button type="submit" class="btn btn-primary btn-sm">Simpan Perubahan ke Supabase</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- ==========================================
        VIEW: RESET PASSWORD (FROM EMAIL LINK)
        ========================================== -->
