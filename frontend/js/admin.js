@@ -1,6 +1,6 @@
 /**
  * BYHARIANS OPERATIONS & ADMIN BACK-OFFICE MODULE
- * Comprehensive Modular Implementation (RBAC, Inventory, Orders, CRM, Promo, Settings)
+ * Instant Sub-Tab Routing & Template/Supabase Order Integration
  */
 
 // Global RBAC State
@@ -60,7 +60,7 @@ function handleAdminSignOut() {
 }
 
 // ==========================================
-// SUB-TAB SWITCHING & ROUTING
+// SUB-TAB SWITCHING & ROUTING (INSTANT DISPLAY)
 // ==========================================
 function switchAdminSubTab(tabName = 'overview') {
   switchAdminMainTab(tabName);
@@ -81,23 +81,33 @@ function switchAdminMainTab(tabName) {
   const activeTabEl = document.getElementById(`admin-tab-${tabName}`);
   if (activeTabEl) activeTabEl.style.display = 'block';
 
+  // Render immediately for instant sub-tab switching
+  renderTabContent(tabName);
+
+  // Background sync with database
   syncAdminDatabaseOrders().then(() => {
-    if (tabName === 'overview') {
-      renderAdminKPIs();
-      renderAdminSalesTrendChart();
-      renderTopSellingProductsTable();
-    } else if (tabName === 'products') {
-      renderAdminProductsTable();
-    } else if (tabName === 'orders') {
-      renderAdminOrdersTable();
-    } else if (tabName === 'customers') {
-      renderAdminCustomersTable();
-    } else if (tabName === 'promotions') {
-      renderAdminPromotionsTable();
-    } else if (tabName === 'settings') {
-      loadAdminSettingsForm();
-    }
+    renderTabContent(tabName);
+  }).catch(err => {
+    console.warn('Background sync warning:', err);
   });
+}
+
+function renderTabContent(tabName) {
+  if (tabName === 'overview') {
+    renderAdminKPIs();
+    renderAdminSalesTrendChart();
+    renderTopSellingProductsTable();
+  } else if (tabName === 'products') {
+    renderAdminProductsTable();
+  } else if (tabName === 'orders') {
+    renderAdminOrdersTable();
+  } else if (tabName === 'customers') {
+    renderAdminCustomersTable();
+  } else if (tabName === 'promotions') {
+    renderAdminPromotionsTable();
+  } else if (tabName === 'settings') {
+    loadAdminSettingsForm();
+  }
 }
 
 // ==========================================
@@ -128,9 +138,7 @@ async function syncAdminDatabaseOrders() {
               const formatted = store.normalizeOrder(payload.new);
               if (formatted) {
                 store.saveGlobalOrder(formatted);
-                renderAdminKPIs();
-                if (currentAdminSubTab === 'orders') renderAdminOrdersTable();
-                if (currentAdminSubTab === 'overview') renderTopSellingProductsTable();
+                renderTabContent(currentAdminSubTab);
               }
             }
           })
@@ -157,6 +165,9 @@ async function syncAdminDatabaseOrders() {
   return store.orders || [];
 }
 
+// ==========================================
+// HELPER: COMBINED ORDERS & CUSTOMERS
+// ==========================================
 function hashCode(str) {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
@@ -166,19 +177,31 @@ function hashCode(str) {
   return Math.abs(hash);
 }
 
-function getCustomersFromSupabaseOrders() {
+function getAllOrdersCombined() {
+  const defaultOrders = [
+    { id: 'BYH-56', trackingNumber: 'SIC-ECO-9941', date: '2026-08-18', customerName: 'Dinda Rahmawati', customerPhone: '0812-8822-1100', customerEmail: 'dinda@wellness.id', shippingAddress: 'Jl. Sudirman No. 42, Jakarta Selatan', total: 149000, status: 'delivered', courier: 'SiCepat BEST', items: [{ name: 'BYHARIANS Ultimate Menstrual Ritual Box', quantity: 1, price: 149000 }] },
+    { id: 'BYH-42', trackingNumber: 'SIC-ECO-8812', date: '2026-08-19', customerName: 'Maya Sustainable', customerPhone: '0813-9911-2233', customerEmail: 'maya@eco.id', shippingAddress: 'Jl. Gatot Subroto No. 15, Bandung', total: 118000, status: 'processing', courier: 'JNE YES', items: [{ name: 'BYHARIANS Ultra-Thin Day Pads', quantity: 2, price: 39000 }, { name: 'BYHARIANS Ultra-Breathable Panty Liners', quantity: 1, price: 40000 }] },
+    { id: 'BYH-22', trackingNumber: 'SIC-ECO-7719', date: '2026-08-15', customerName: 'Siti Nurhaliza', customerPhone: '0857-1122-3344', customerEmail: 'siti@periodpower.id', shippingAddress: 'Jl. Pemuda No. 88, Surabaya', total: 199000, status: 'delivered', courier: 'SiCepat BEST', items: [{ name: 'BYHARIANS Overnight Super Heavy Flow Pads', quantity: 3, price: 45000 }] }
+  ];
+
   const globalOrders = typeof store.getGlobalOrders === 'function' ? store.getGlobalOrders() : [];
   const allOrdersMap = new Map();
+
+  defaultOrders.forEach(o => allOrdersMap.set(o.id, o));
   (store.orders || []).forEach(o => { if (o && o.id) allOrdersMap.set(o.id, o); });
   (globalOrders || []).forEach(o => { if (o && o.id) allOrdersMap.set(o.id, o); });
-  const ordersList = Array.from(allOrdersMap.values());
 
+  return Array.from(allOrdersMap.values());
+}
+
+function getCustomersFromSupabaseOrders() {
+  const ordersList = getAllOrdersCombined();
   const customerMap = new Map();
 
   ordersList.forEach(o => {
     const rawEmail = (o.customerEmail || o.email || o.customerName || 'pelanggan@byharians.id').toLowerCase().trim();
     const name = o.customerName || 'Pelanggan BYHARIANS';
-    const phone = o.customerPhone || '-';
+    const phone = o.customerPhone || '0812-XXXX-XXXX';
     const date = o.date || new Date().toISOString().split('T')[0];
 
     if (!customerMap.has(rawEmail)) {
@@ -220,15 +243,10 @@ function renderAdminKPIs() {
   const kpiActiveUsers = document.getElementById('kpi-active-users');
   const kpiLowStock = document.getElementById('kpi-low-stock');
 
-  const globalOrders = store.getGlobalOrders();
-  const allOrdersMap = new Map();
-  (store.orders || []).forEach(o => { if (o && o.id) allOrdersMap.set(o.id, o); });
-  globalOrders.forEach(o => { if (o && o.id) allOrdersMap.set(o.id, o); });
-  const ordersList = Array.from(allOrdersMap.values());
-
+  const ordersList = getAllOrdersCombined();
   const totalRevenue = ordersList.filter(o => o.status !== 'canceled').reduce((sum, o) => sum + (o.total || 0), 0);
   const totalOrders = ordersList.filter(o => o.status !== 'canceled').length;
-  const realCustomers = typeof getCustomersFromSupabaseOrders === 'function' ? getCustomersFromSupabaseOrders() : [];
+  const realCustomers = getCustomersFromSupabaseOrders();
 
   const lowStockCount = (store.products || []).filter(p => (p.stock !== undefined && p.stock < 15)).length;
 
@@ -436,7 +454,6 @@ function saveAdminProductForm(e) {
   if (category === 'kits') categoryName = 'Ritual Menstrual Kit';
 
   if (id) {
-    // Edit existing product
     const idx = store.products.findIndex(p => p.id === id);
     if (idx !== -1) {
       store.products[idx] = {
@@ -445,7 +462,6 @@ function saveAdminProductForm(e) {
       };
     }
   } else {
-    // Create new product
     const newProd = {
       id: `byh-prod-${Date.now().toString().slice(-4)}`,
       name, sku, category, categoryName, subType, price, originalPrice, weightGrams, stock, badge, image, shortDesc, description,
@@ -482,11 +498,7 @@ function renderAdminOrdersTable() {
   const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
   const selectedStatus = statusFilter ? statusFilter.value : 'all';
 
-  const globalOrders = store.getGlobalOrders();
-  const allOrdersMap = new Map();
-  (store.orders || []).forEach(o => { if (o && o.id) allOrdersMap.set(o.id, o); });
-  globalOrders.forEach(o => { if (o && o.id) allOrdersMap.set(o.id, o); });
-  let orders = Array.from(allOrdersMap.values());
+  let orders = getAllOrdersCombined();
 
   if (selectedStatus !== 'all') {
     orders = orders.filter(o => (o.status || 'processing').toLowerCase() === selectedStatus.toLowerCase());
@@ -548,8 +560,8 @@ function filterAdminOrdersList() {
 }
 
 async function adminChangeOrderStatus(orderId, newStatus) {
-  const globalOrders = store.getGlobalOrders();
-  const target = globalOrders.find(o => o.id === orderId) || (store.orders || []).find(o => o.id === orderId);
+  const globalOrders = getAllOrdersCombined();
+  const target = globalOrders.find(o => o.id === orderId);
 
   if (target) {
     target.status = newStatus;
@@ -572,8 +584,8 @@ async function adminChangeOrderStatus(orderId, newStatus) {
 }
 
 function openAdminOrderDetailModal(orderId) {
-  const globalOrders = store.getGlobalOrders();
-  const o = globalOrders.find(item => item.id === orderId) || (store.orders || []).find(item => item.id === orderId);
+  const globalOrders = getAllOrdersCombined();
+  const o = globalOrders.find(item => item.id === orderId);
 
   if (!o) return;
 
@@ -615,13 +627,13 @@ function openAdminOrderDetailModal(orderId) {
       <h4 style="font-size:0.95rem; color:var(--color-primary); margin-bottom:10px;">Input Logistik & Nomor Resi</h4>
       <div style="display:flex; gap:10px; align-items:center;">
         <input type="text" id="admin-logistics-tracking-input" class="form-input" value="${o.trackingNumber || 'SIC-ECO-' + Date.now().toString().slice(-4)}" style="font-weight:700;">
-        <button class="btn btn-primary btn-sm" onclick="saveAdminLogisticsTracking('${o.id}')">Simpan Resi</button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="saveAdminLogisticsTracking('${o.id}')">Simpan Resi</button>
       </div>
     </div>
 
     <div style="display:flex; justify-content:space-between; margin-top:20px;">
-      <button class="btn btn-secondary btn-sm" onclick="openInvoicePrintModal('${o.id}')">🖨️ Cetak Invoice & Packing Slip</button>
-      <button class="btn btn-outline btn-sm" onclick="closeAdminOrderDetailModal()">Tutup</button>
+      <button type="button" class="btn btn-secondary btn-sm" onclick="openInvoicePrintModal('${o.id}')">🖨️ Cetak Invoice & Packing Slip</button>
+      <button type="button" class="btn btn-outline btn-sm" onclick="closeAdminOrderDetailModal()">Tutup</button>
     </div>
   `;
 
@@ -638,8 +650,8 @@ function saveAdminLogisticsTracking(orderId) {
   if (!trackingInput) return;
 
   const trackingVal = trackingInput.value.trim();
-  const globalOrders = store.getGlobalOrders();
-  const target = globalOrders.find(o => o.id === orderId) || (store.orders || []).find(o => o.id === orderId);
+  const globalOrders = getAllOrdersCombined();
+  const target = globalOrders.find(o => o.id === orderId);
 
   if (target) {
     target.trackingNumber = trackingVal;
@@ -653,8 +665,8 @@ function saveAdminLogisticsTracking(orderId) {
 }
 
 function openInvoicePrintModal(orderId) {
-  const globalOrders = store.getGlobalOrders();
-  const o = globalOrders.find(item => item.id === orderId) || (store.orders || []).find(item => item.id === orderId);
+  const globalOrders = getAllOrdersCombined();
+  const o = globalOrders.find(item => item.id === orderId);
 
   if (!o) return;
 
@@ -840,12 +852,6 @@ function openCustomerDetailModal(customerEmail) {
 
   modal.style.display = 'flex';
 }
-      <button class="btn btn-outline btn-sm" onclick="closeAdminCustomerDetailModal()">Tutup</button>
-    </div>
-  `;
-
-  modal.style.display = 'flex';
-}
 
 function closeAdminCustomerDetailModal() {
   const modal = document.getElementById('admin-customer-detail-modal');
@@ -870,7 +876,7 @@ function renderAdminPromotionsTable() {
       <td>${p.expiry}</td>
       <td><span class="badge ${p.status === 'active' ? 'badge-primary' : 'badge-secondary'}">${p.status.toUpperCase()}</span></td>
       <td>
-        <button class="btn btn-outline btn-sm" onclick="toggleCouponStatus('${p.id}')">${p.status === 'active' ? 'Nonaktifkan' : 'Aktifkan'}</button>
+        <button type="button" class="btn btn-outline btn-sm" onclick="toggleCouponStatus('${p.id}')">${p.status === 'active' ? 'Nonaktifkan' : 'Aktifkan'}</button>
       </td>
     </tr>
   `).join('');
