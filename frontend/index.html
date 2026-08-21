@@ -77,8 +77,15 @@
       <nav class="main-nav">
         <a href="#home" class="nav-link active">Home</a>
         <a href="#shop" class="nav-link">Our Products</a>
-        <a href="#cycle-tracker" class="nav-link">Cycle Tracker</a>
-        <a href="#story" class="nav-link">Philosophy</a>
+        <div class="nav-dropdown-wrap">
+          <a href="#story" class="nav-link" onclick="scrollToAboutSection('mission')">
+            About Us <span style="font-size: 0.7rem; margin-left: 2px;">▾</span>
+          </a>
+          <div class="nav-dropdown-menu">
+            <a href="#story" onclick="scrollToAboutSection('mission')" class="dropdown-item">Mission</a>
+            <a href="#story" onclick="scrollToAboutSection('sustainability')" class="dropdown-item">Sustainability Initiative</a>
+          </div>
+        </div>
         <a href="#track" class="nav-link">Track Order</a>
       </nav>
 
@@ -576,44 +583,98 @@
   <!-- ==========================================
        VIEW: BRAND STORY & SUSTAINABILITY
        ========================================== -->
+  <!-- ==========================================
+       VIEW: ABOUT US (MISSION & SUSTAINABILITY INITIATIVE)
+       ========================================== -->
   <main id="view-story" class="view-section" style="display: none;">
-    <section class="story-hero">
-      <div class="container">
-        <span class="section-tag">Our Ethical Mission</span>
-        <h1 style="font-size: 3rem; margin-bottom: 16px;">Revolutionizing Menstrual Health,<br>Healing Our Planet.</h1>
-        <p style="max-width: 680px; margin: 0 auto; font-size: 1.15rem; color: var(--color-text-muted); line-height: 1.7;">
-          BYHARIANS was born from a simple yet radical belief: women deserve intimate care that is luxuriously soft, medically safe, and completely harmonious with the earth.
+    
+    <!-- SECTION 1: ABOUT US & OUR MISSION -->
+    <section id="story-mission" class="story-hero" style="padding: 70px 0 50px;">
+      <div class="container text-center">
+        <span class="section-tag" style="background: rgba(15, 48, 29, 0.08); color: var(--color-primary); font-weight: 800;">ABOUT US & OUR MISSION</span>
+        <h1 style="font-size: 2.8rem; margin: 14px 0 16px; color: var(--color-primary);">Revolutionizing Menstrual Health,<br>Healing Our Planet.</h1>
+        <p style="max-width: 720px; margin: 0 auto 36px; font-size: 1.1rem; color: var(--color-text-muted); line-height: 1.7;">
+          BYHARIANS was founded on a simple yet radical mission: to empower women with intimate care that is whisper-soft, medically pure, and 100% harmonious with the earth.
         </p>
+
+        <!-- Mission Feature Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 40px; text-align: left;">
+          <div style="background: #fff; border-radius: var(--radius-xl); padding: 30px; border: 1px solid var(--color-border); box-shadow: var(--shadow-xs);">
+            <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(15, 48, 29, 0.08); color: var(--color-primary); display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3 style="font-size: 1.2rem; color: var(--color-primary); margin-bottom: 10px;">Botanical Vulvar Purity</h3>
+            <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6;">
+              0% PU, PVC, Chlorine, or Synthetic Fragrance. We formulate strictly for sensitive vulvar skin health to preserve natural intimate pH balance.
+            </p>
+          </div>
+
+          <div style="background: #fff; border-radius: var(--radius-xl); padding: 30px; border: 1px solid var(--color-border); box-shadow: var(--shadow-xs);">
+            <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(15, 48, 29, 0.08); color: var(--color-primary); display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.4 19 2c1 2 2 4.1 2 9a9 9 0 0 1-10 9Z"/><path d="M11 20v-5"/></svg>
+            </div>
+            <h3 style="font-size: 1.2rem; color: var(--color-primary); margin-bottom: 10px;">Zero Plastic Pollution</h3>
+            <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6;">
+              12 billion conventional plastic pads choke landfills every year. BYHARIANS replaces synthetic crude oil plastics with certified organic bamboo.
+            </p>
+          </div>
+
+          <div style="background: #fff; border-radius: var(--radius-xl); padding: 30px; border: 1px solid var(--color-border); box-shadow: var(--shadow-xs);">
+            <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(15, 48, 29, 0.08); color: var(--color-primary); display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 22 12 17 17 22 15.79 13.88"/></svg>
+            </div>
+            <h3 style="font-size: 1.2rem; color: var(--color-primary); margin-bottom: 10px;">Medical-Grade Certification</h3>
+            <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6;">
+              Dermatest 5-Star Germany certified for hypoallergenic excellence, guaranteeing peak protection and total peace of mind during your cycle.
+            </p>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="container story-grid">
-      <div>
-        <h2 style="font-size: 2.2rem; margin-bottom: 16px;">12 Billion Plastic Pads Are Discarded Every Year.</h2>
-        <p style="color: var(--color-text-muted); font-size: 1rem; line-height: 1.8; margin-bottom: 20px;">
-          Traditional sanitary napkins are made of up to 90% petroleum plastic. They sit in landfills and ocean waterways for over 500 years, fragmenting into toxic microplastics that enter the food chain.
-        </p>
-        <p style="color: var(--color-text-muted); font-size: 1rem; line-height: 1.8;">
-          We engineered a revolutionary alternative using organic bamboo fibers and plant starch biopolymers that return to the soil in just 180 days, leaving zero microplastic footprint.
-        </p>
-      </div>
-
-      <div class="story-card-box">
-        <h3 style="font-size: 1.4rem; margin-bottom: 24px; color: var(--color-primary);">Our 180-Day Soil Journey</h3>
-        
-        <div class="story-timeline-item">
-          <strong style="color: var(--color-primary);">Day 1: Ethical Bamboo Harvesting</strong>
-          <p style="font-size: 0.85rem; color: var(--color-text-muted);">Fast-growing organic bamboo shoots harvested without pesticides or defoliants.</p>
+    <!-- SECTION 2: SUSTAINABILITY INITIATIVE -->
+    <section id="story-sustainability" style="background: #F4EFE0; padding: 70px 0; border-top: 1px solid var(--color-border);">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 40px;">
+          <span class="section-tag" style="background: rgba(39, 154, 94, 0.12); color: var(--color-success); font-weight: 800;">SUSTAINABILITY INITIATIVE</span>
+          <h2 style="font-size: 2.4rem; color: var(--color-primary); margin-top: 10px;">180-Day Circular Soil Ecosystem</h2>
+          <p style="font-size: 0.95rem; color: var(--color-text-muted); max-width: 620px; margin: 8px auto 0;">
+            From ethical agricultural bio-waste harvesting to 100% soil breakdown, see how BYHARIANS closes the environmental loop.
+          </p>
         </div>
 
-        <div class="story-timeline-item">
-          <strong style="color: var(--color-primary);">Day 30: Zero-Bleach Closed-Loop Processing</strong>
-          <p style="font-size: 0.85rem; color: var(--color-text-muted);">Bamboo transformed into soft fibers using 100% steam without chlorine or harsh chemical baths.</p>
-        </div>
+        <div class="story-grid" style="align-items: center;">
+          <div>
+            <h3 style="font-size: 1.8rem; margin-bottom: 16px; color: var(--color-primary);">Repurposing Agricultural Bio-Wastes</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.8; margin-bottom: 20px;">
+              By utilizing upcycled sugarcane bagasse, FSC pine fluff, and organic bamboo chips, our initiative reduces post-harvest loss while diverting thousands of tons of plastic waste from landfills and oceans.
+            </p>
+            <div style="background: #fff; border-radius: var(--radius-lg); padding: 20px; border: 1px solid var(--color-border);">
+              <strong style="color: var(--color-primary); display: block; margin-bottom: 6px;">🌱 1% For The Planet & OK Compost Certified</strong>
+              <p style="font-size: 0.84rem; color: var(--color-text-muted); margin: 0;">
+                Every purchase directly funds Indonesian mangrove reforestation and supports certified industrial compost initiatives.
+              </p>
+            </div>
+          </div>
 
-        <div class="story-timeline-item">
-          <strong style="color: var(--color-primary);">Day 180: Full Natural Decomposition</strong>
-          <p style="font-size: 0.85rem; color: var(--color-text-muted);">Placed in soil or compost, the pad breaks down completely into rich nutrient compost.</p>
+          <div class="story-card-box">
+            <h3 style="font-size: 1.3rem; margin-bottom: 20px; color: var(--color-primary);">The 180-Day Soil Journey</h3>
+            
+            <div class="story-timeline-item">
+              <strong style="color: var(--color-primary);">Stage 1: Organic Bio-Waste Sourcing</strong>
+              <p style="font-size: 0.85rem; color: var(--color-text-muted);">Harvesting fast-growing organic bamboo shoots and sugarcane by-products without synthetic pesticides.</p>
+            </div>
+
+            <div class="story-timeline-item">
+              <strong style="color: var(--color-primary);">Stage 2: 100% Chlorine-Free Steam Fiber</strong>
+              <p style="font-size: 0.85rem; color: var(--color-text-muted);">Steam-purified closed loop processing ensuring zero dioxin residue or toxic effluent in waterways.</p>
+            </div>
+
+            <div class="story-timeline-item">
+              <strong style="color: var(--color-primary);">Stage 3: 180-Day Complete Soil Decomposition</strong>
+              <p style="font-size: 0.85rem; color: var(--color-text-muted);">Returned to natural soil compost, the pad breaks down completely into rich nutrient earth with zero microplastics.</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>

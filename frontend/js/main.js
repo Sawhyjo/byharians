@@ -127,3 +127,13 @@ document.addEventListener('DOMContentLoaded', () => {
   renderCatalogGrid();
   updateCartBadgeAndDrawer();
 });
+
+function scrollToAboutSection(sectionId) {
+  navigateTo('story');
+  setTimeout(() => {
+    const target = document.getElementById(`story-${sectionId}`);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, 100);
+}
