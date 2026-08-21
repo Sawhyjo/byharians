@@ -129,9 +129,11 @@
       <a href="#home" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')">Home</a>
       <a href="#shop" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')">Our Products</a>
       <a href="#cycle-tracker" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')" style="color: var(--color-primary); font-weight: 800;">Kalender Siklus (Cycle Tracker)</a>
+      <a href="#cart" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')" style="color: var(--color-primary); font-weight: 700;">Keranjang Belanja (Cart)</a>
+      <a href="#checkout" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')" style="color: var(--color-secondary);">Checkout</a>
       <a href="#story" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')">Philosophy</a>
       <a href="#track" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')">Track Order</a>
-      <a href="#login" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')" style="color: var(--color-secondary);">Sign In / Register</a>
+      <a href="#login" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')">Sign In / Register</a>
       <a href="#account" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')">My Eco-Account</a>
     </div>
   </div>
@@ -869,6 +871,7 @@
             <div class="account-nav-item" onclick="document.getElementById('acc-orders-card').scrollIntoView();">Order History</div>
             <div class="account-nav-item" onclick="document.getElementById('acc-sub-card').scrollIntoView();">Cycle Subscriptions</div>
             <div class="account-nav-item" onclick="document.getElementById('acc-cycle-sync-card').scrollIntoView();">Period Cycle Sync</div>
+            <div class="account-nav-item" onclick="navigateTo('cart')" style="color: var(--color-primary); font-weight: 700;">Keranjang Saya (Cart)</div>
             <div class="account-nav-item" onclick="navigateTo('checkout')" style="color: var(--color-secondary);">Go to Checkout</div>
           </div>
 
@@ -2295,7 +2298,7 @@
             A new standard in certified compostable, medical-grade feminine wellness rituals.
           </p>
           <div style="display: flex; gap: 14px; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-gold);">
-            <span>Instagram</span> <span>•</span> <span>TikTok</span> <span>•</span> <span>Editorial</span>
+            <a href="https://instagram.com" target="_blank" style="color: inherit; text-decoration: none;">Instagram</a> <span>•</span> <a href="https://tiktok.com" target="_blank" style="color: inherit; text-decoration: none;">TikTok</a>
           </div>
         </div>
 
@@ -2303,12 +2306,10 @@
         <div>
           <h4 class="footer-col-title">Shop Collection</h4>
           <div class="footer-links">
-            <a href="#pads" class="footer-link">Ultra-Thin Day Pads</a>
-            <a href="#pads" class="footer-link">Overnight Heavy Flow</a>
-            <a href="#pads" class="footer-link">Featherlight Panty Liners</a>
-            <a href="#pads" class="footer-link">Postpartum Maxi Pads</a>
-            <a href="#kits" class="footer-link">The Menstrual Ritual Box</a>
-            <a href="#kits" class="footer-link">First Period Starter Kit</a>
+            <a href="#shop" class="footer-link">Semua Koleksi Produk</a>
+            <a href="#shop" class="footer-link" onclick="filterByCategory('pads')">Pembalut Organik Day & Night</a>
+            <a href="#shop" class="footer-link" onclick="filterByCategory('liners')">Panty Liners Bamboo</a>
+            <a href="#shop" class="footer-link" onclick="filterByCategory('kits')">Menstrual Ritual Kits</a>
           </div>
         </div>
 
@@ -2316,11 +2317,9 @@
         <div>
           <h4 class="footer-col-title">Eco & Science</h4>
           <div class="footer-links">
-            <a href="#story" class="footer-link">Our 180-Day Compost Journey</a>
-            <a href="#story" class="footer-link">Why Traditional Pads Contain Plastic</a>
-            <a href="#story" class="footer-link">TÜV Austria Certifications</a>
-            <a href="#story" class="footer-link">The Period Dignity Project</a>
-            <a href="#story" class="footer-link">Supply Chain Transparency</a>
+            <a href="#story" class="footer-link">Filosofi 100% Bahan Organik</a>
+            <a href="#story" class="footer-link">Perhitungan 180 Hari Kompos Soil</a>
+            <a href="#story" class="footer-link">Proteksi Bebas PU & PVC Toxic</a>
           </div>
         </div>
 
@@ -2328,13 +2327,12 @@
         <div>
           <h4 class="footer-col-title">Customer Care</h4>
           <div class="footer-links">
+            <a href="#cart" class="footer-link" style="color: var(--color-banana); font-weight: 700;">Keranjang Saya (Cart)</a>
+            <a href="#checkout" class="footer-link">Lanjut Ke Checkout</a>
             <a href="#cycle-tracker" class="footer-link">Kalender Siklus (Cycle Tracker)</a>
-            <a href="#track" class="footer-link">Live Order Tracking</a>
-            <a href="#account" class="footer-link">Subscription Manager</a>
-            <a href="#account" class="footer-link">Period Cycle Sync</a>
-            <a href="#home" class="footer-link">Carbon-Neutral Shipping Policy</a>
-            <a href="#home" class="footer-link">30-Day Happiness Guarantee</a>
-            <a href="#admin-login" class="footer-link" style="opacity: 0.35; font-size: 0.76rem;">Staff Portal</a>
+            <a href="#track" class="footer-link">Lacak Pesanan (Track Order)</a>
+            <a href="#account" class="footer-link">Akun Saya (My Account)</a>
+            <a href="#admin-login" class="footer-link" style="opacity: 0.4; font-size: 0.76rem; margin-top: 4px;">Staff / Admin Portal</a>
           </div>
         </div>
 

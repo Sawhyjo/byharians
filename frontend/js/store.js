@@ -354,10 +354,52 @@ class StoreEngine {
         const savedOrders = localStorage.getItem(orderKey);
         this.orders = savedOrders ? JSON.parse(savedOrders) : [];
       }
+
+      // Fetch user-scoped cart from Supabase DB asynchronously if logged in
+      if (this.isLoggedIn && this.userAccount?.email) {
+        this.fetchCartFromSupabase();
+      }
     } catch (err) {
       console.warn('Failed to load user cart & orders:', err);
       this.cart = [];
       this.orders = [];
+    }
+  }
+
+  async fetchCartFromSupabase() {
+    if (typeof supabaseClient !== 'undefined' && supabaseClient && this.isLoggedIn && this.userAccount?.email) {
+      try {
+        const userEmail = this.userAccount.email.toLowerCase().trim();
+        const { data, error } = await supabaseClient
+          .from('user_carts')
+          .select('cart_items')
+          .eq('email', userEmail)
+          .maybeSingle();
+
+        if (!error && data && Array.isArray(data.cart_items)) {
+          this.cart = data.cart_items;
+          const emailKey = userEmail.replace(/[^a-z0-9]/g, '_');
+          localStorage.setItem(`byharians_cart_${emailKey}`, JSON.stringify(this.cart));
+          if (typeof updateCartBadgeAndDrawer === 'function') updateCartBadgeAndDrawer();
+        }
+      } catch (err) {
+        console.warn('Supabase user cart fetch notice:', err);
+      }
+    }
+  }
+
+  async syncCartToSupabase() {
+    if (typeof supabaseClient !== 'undefined' && supabaseClient && this.isLoggedIn && this.userAccount?.email) {
+      try {
+        const userEmail = this.userAccount.email.toLowerCase().trim();
+        await supabaseClient.from('user_carts').upsert({
+          email: userEmail,
+          cart_items: this.cart,
+          updated_at: new Date().toISOString()
+        });
+      } catch (err) {
+        console.warn('Supabase user cart sync notice:', err);
+      }
     }
   }
 
@@ -380,6 +422,9 @@ class StoreEngine {
         isAdmin: this.isAdmin,
         userAccount: this.userAccount
       }));
+
+      // Sync user cart to Supabase DB
+      this.syncCartToSupabase();
     } catch (err) {
       console.warn('Failed to save state:', err);
     }
