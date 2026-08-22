@@ -127,9 +127,40 @@ const INITIAL_PRODUCTS = [
 const INITIAL_CUSTOMER_PACKAGES = [];
 const INITIAL_CUSTOMER_GROCERIES = [];
 
+const INITIAL_ECO_BASKETS = [
+  {
+    id: 'byh-basket-bamboo-duo',
+    name: 'Paket Pembalut Organik Bambu Bulanan',
+    itemsSummary: '1x Day Pads (24-Pcs), 1x Night Pads (16-Pcs)',
+    monthlyPrice: 84000,
+    badge: 'Paling Laris',
+    image: 'assets/images/product_day_pads.jpg',
+    description: 'Pasokan lengkap pembalut bambu organik ultra-tipis siang & malam untuk 1 bulan haid.'
+  },
+  {
+    id: 'byh-basket-full-ritual',
+    name: 'Paket Ritual Menstruasi & Perawatan Wellness',
+    itemsSummary: '1x Day Pads, 1x Night Pads, 1x Panty Liners, Teh Herbal',
+    monthlyPrice: 165000,
+    badge: 'Perawatan Lengkap',
+    image: 'assets/images/product_menstrual_kit.jpg',
+    description: 'Bentuk perawatan diri bulanan dengan kombinasi pembalut bambu, panty liner, dan teh herbal pereda PMS.'
+  },
+  {
+    id: 'byh-basket-daily-care',
+    name: 'Paket Kesegaran Panty Liner Harian Auto-Refill',
+    itemsSummary: '2x Daily Panty Liners (40-Pcs)',
+    monthlyPrice: 58000,
+    badge: 'Harian Kesegaran',
+    image: 'assets/images/product_panty_liners.jpg',
+    description: 'Panty liner ultra-breathable dari bambu organik untuk kesegaran harian dan keputihan.'
+  }
+];
+
 class StoreEngine {
   constructor() {
     this.products = INITIAL_PRODUCTS;
+    this.ecoBaskets = INITIAL_ECO_BASKETS;
     this.customerPackages = INITIAL_CUSTOMER_PACKAGES;
     this.customerGroceries = INITIAL_CUSTOMER_GROCERIES;
     this.cart = [];
@@ -267,6 +298,46 @@ class StoreEngine {
       status: row.status || 'processing',
       trackingNumber: row.tracking_number || row.trackingNumber || `SIC-ECO-${row.id || 'LIVE'}`,
       courier: row.courier || 'SiCepat BEST Eco-Fleet'
+    };
+  }
+
+  normalizeGrocery(row) {
+    if (!row) return null;
+    return {
+      id: row.id || `REFILL-${Date.now()}`,
+      customerName: row.customer_name || row.customerName || 'Pelanggan BYHARIANS',
+      customerEmail: (row.customer_email || row.customerEmail || '').toLowerCase().trim(),
+      phone: row.phone || '',
+      basketName: row.basket_name || row.basketName || 'Paket Auto-Refill Organik',
+      itemsSummary: row.items_summary || row.itemsSummary || 'Pembalut Bambu Organik',
+      monthlyPrice: Number(row.monthly_price || row.monthlyPrice || 0),
+      frequency: row.frequency || 'Setiap 4 Minggu',
+      nextRefillDate: row.next_refill_date || row.nextRefillDate || new Date().toISOString().split('T')[0],
+      courier: row.courier || 'SiCepat BEST Eco-Fleet',
+      shippingAddress: row.shipping_address || row.shippingAddress || 'Jakarta, Indonesia',
+      status: row.status || 'active',
+      statusText: row.status_text || row.statusText || 'Auto-Refill ON',
+      lastRefillDate: row.last_refill_date || row.lastRefillDate || new Date().toISOString().split('T')[0]
+    };
+  }
+
+  normalizePackage(row) {
+    if (!row) return null;
+    return {
+      id: row.id || `PKG-${Date.now()}`,
+      customerName: row.customer_name || row.customerName || 'Pelanggan BYHARIANS',
+      customerEmail: (row.customer_email || row.customerEmail || '').toLowerCase().trim(),
+      phone: row.phone || '',
+      packageName: row.package_name || row.packageName || 'Paket Pembalut Organik Bambu',
+      itemsSummary: row.items_summary || row.itemsSummary || '1x Day Pads, 1x Night Pads',
+      frequency: row.frequency || 'Setiap 4 Minggu',
+      nextDeliveryDate: row.next_delivery_date || row.nextDeliveryDate || new Date().toISOString().split('T')[0],
+      courier: row.courier || 'SiCepat BEST Eco-Fleet',
+      trackingNumber: row.tracking_number || row.trackingNumber || `SIC-ECO-${row.id || 'LIVE'}`,
+      shippingAddress: row.shipping_address || row.shippingAddress || 'Jakarta, Indonesia',
+      status: row.status || 'active',
+      statusText: row.status_text || row.statusText || 'Aktif / Berlangganan',
+      lastDispatched: row.last_dispatched || row.lastDispatched || new Date().toISOString().split('T')[0]
     };
   }
 
