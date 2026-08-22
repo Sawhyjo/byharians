@@ -2,6 +2,29 @@ const express = require('express');
 const router = express.Router();
 const { supabase } = require('../config/supabase');
 
+// GET /api/orders (Fetch all orders or filter by customer email / status)
+router.get('/', async (req, res) => {
+  const { email, status } = req.query;
+  try {
+    if (supabase) {
+      let query = supabase.from('orders').select('*').order('created_at', { ascending: false });
+      if (email) {
+        query = query.ilike('customer_email', email.trim());
+      }
+      if (status && status !== 'all') {
+        query = query.eq('status', status.trim());
+      }
+      const { data, error } = await query;
+      if (!error && data) {
+        return res.json(data);
+      }
+    }
+    return res.json([]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // POST /api/orders (Create new order)
 router.post('/', async (req, res) => {
   const orderData = req.body;
