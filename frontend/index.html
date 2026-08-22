@@ -1167,6 +1167,20 @@
             </div>
           </div>
 
+          <!-- Auto-Refill Subscriptions (Customer Groceries) Box -->
+          <div id="acc-groceries-card" style="background: #fff; border-radius: var(--radius-xl); padding: 30px; border: 1px solid var(--color-border); margin-bottom: 30px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+              <div>
+                <h3 style="font-size: 1.3rem; margin-bottom: 4px; color: var(--color-primary);">Subskripsi Auto-Refill Bulanan</h3>
+                <p style="font-size: 0.85rem; color: var(--color-text-muted); margin: 0;">Layanan pengiriman otomatis paket pembalut bambu organik teratur.</p>
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="navigateTo('shop')">+ Langganan Auto-Refill</button>
+            </div>
+            <div id="acc-groceries-list">
+              <!-- Populated dynamically by groceries.js -->
+            </div>
+          </div>
+
           <!-- Period Cycle Sync Tool -->
           <div id="acc-cycle-sync-card" style="background: #fff; border-radius: var(--radius-xl); padding: 30px; border: 1px solid var(--color-border); margin-bottom: 30px;">
             <h3 style="font-size: 1.3rem; margin-bottom: 6px; color: var(--color-primary);">Menstrual Cycle Sync Delivery</h3>
@@ -1625,6 +1639,7 @@
         <button class="cat-tab-btn active" data-subtab="overview" onclick="switchAdminMainTab('overview')">📊 Overview & Metrik</button>
         <button class="cat-tab-btn" data-subtab="products" onclick="switchAdminMainTab('products')">📦 Produk & Inventaris</button>
         <button class="cat-tab-btn" data-subtab="orders" onclick="switchAdminMainTab('orders')">🚚 Pesanan & Logistik</button>
+        <button class="cat-tab-btn" data-subtab="packages" onclick="switchAdminMainTab('packages')">📦 Jadwal Paket & Dispatch</button>
         <button class="cat-tab-btn" data-subtab="customers" onclick="switchAdminMainTab('customers')">👥 Pelanggan (CRM)</button>
         <button class="cat-tab-btn" data-subtab="promotions" onclick="switchAdminMainTab('promotions')">🎟️ Promosi & Voucher</button>
         <button class="cat-tab-btn" data-subtab="settings" onclick="switchAdminMainTab('settings')">⚙️ Pengaturan Sistem</button>
@@ -1768,6 +1783,47 @@
                 </tr>
               </thead>
               <tbody id="admin-orders-tbody">
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB-TAB 7: PACKAGES & DISPATCH MANAGEMENT -->
+      <div id="admin-tab-packages" class="admin-tab-content" style="display: none;">
+        <div class="admin-table-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <h3 style="font-size: 1.3rem; color: var(--color-primary); margin: 0;">Manajemen Jadwal Paket & Dispatch Refill</h3>
+              <p style="font-size: 0.82rem; color: var(--color-text-muted); margin: 4px 0 0;">Atur pengiriman rutin pelanggan, eksekusi batch dispatch, dan generate nomor resi.</p>
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+              <input type="text" id="admin-package-search" class="form-input" placeholder="Cari nama / email / resi..." oninput="filterAdminPackagesList()" style="padding: 6px 14px; font-size: 0.82rem; width: 220px; border-radius: var(--radius-full);">
+              <select id="admin-package-status-filter" class="form-input" onchange="filterAdminPackagesList()" style="padding: 6px 14px; font-size: 0.82rem; width: 150px;">
+                <option value="all">Semua Status</option>
+                <option value="active">Aktif 🟢</option>
+                <option value="dispatched">Dispatched 🚚</option>
+                <option value="paused">Dijeda 🔴</option>
+              </select>
+              <button class="btn btn-secondary btn-sm" onclick="openCreatePackageModal()">+ Jadwal Paket Baru</button>
+            </div>
+          </div>
+
+          <div style="overflow-x: auto;">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID Paket</th>
+                  <th>Pelanggan</th>
+                  <th>Nama Paket & Produk</th>
+                  <th>Frekuensi</th>
+                  <th>Target Pengiriman</th>
+                  <th>Status & Resi</th>
+                  <th>Aksi Operasional</th>
+                </tr>
+              </thead>
+              <tbody id="admin-packages-tbody">
                 <!-- Populated dynamically -->
               </tbody>
             </table>
@@ -3439,6 +3495,146 @@
         </div>
       </form>
     </div>
+  <!-- ==========================================
+       MODAL: CREATE / CONFIGURE AUTO-REFILL SUBSCRIPTION
+       ========================================== -->
+  <div id="auto-refill-modal" class="modal-backdrop" style="display: none;">
+    <div class="modal-card" style="max-width: 520px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="color: var(--color-primary);">🔄 Langganan Auto-Refill Bulanan</h3>
+        <button class="modal-close-btn" onclick="closeCreateAutoRefillModal()">×</button>
+      </div>
+      <div style="background: var(--color-bg-warm); padding: 14px 18px; border-radius: var(--radius-md); border: 1px solid var(--color-border); margin-bottom: 18px;">
+        <strong id="refill-modal-basket-title" style="color: var(--color-primary); display: block; font-size: 1.05rem;">Paket Pembalut Organik Bambu</strong>
+        <span id="refill-modal-items-summary" style="font-size: 0.82rem; color: var(--color-text-muted); display: block;">1x Day Pads, 1x Night Pads</span>
+        <span id="refill-modal-price" style="font-size: 0.95rem; font-weight: 800; color: var(--color-primary); display: block; margin-top: 4px;">Rp 84.000 / pengiriman</span>
+      </div>
+
+      <form onsubmit="submitAutoRefillSubscription(event)">
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="refill-customer-name">Nama Penerima</label>
+            <input type="text" id="refill-customer-name" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label for="refill-customer-phone">Nomor WA / HP</label>
+            <input type="tel" id="refill-customer-phone" class="form-input" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="refill-customer-email">Email Terdaftar</label>
+          <input type="email" id="refill-customer-email" class="form-input" required>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="refill-frequency-select">Frekuensi Auto-Refill</label>
+            <select id="refill-frequency-select" class="form-select">
+              <option value="Setiap 4 Minggu">Setiap 4 Minggu (Siklus Standar 28 Hari)</option>
+              <option value="Setiap 8 Minggu">Setiap 8 Minggu (Paket 2 Bulan)</option>
+              <option value="Setiap Bulan (Tgl 1)">Setiap Bulan (Tanggal 1)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="refill-start-date">Tanggal Pengiriman Pertama</label>
+            <input type="date" id="refill-start-date" class="form-input" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="refill-shipping-address">Alamat Pengiriman Lengkap</label>
+          <input type="text" id="refill-shipping-address" class="form-input" required>
+        </div>
+
+        <div style="font-size: 0.78rem; color: var(--color-text-muted); background: rgba(39, 154, 94, 0.08); padding: 10px 14px; border-radius: var(--radius-md); margin-bottom: 18px; border: 1px solid rgba(39, 154, 94, 0.2);">
+          💡 <strong>Garansi Bebas Jeda:</strong> Subskripsi dapat dijeda atau dibatalkan kapan saja melalui dashboard akun tanpa biaya pembatalan.
+        </div>
+
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="closeCreateAutoRefillModal()">Batal</button>
+          <button type="submit" id="btn-submit-refill" class="btn btn-primary btn-sm" style="font-weight: 800;">Konfirmasi & Aktifkan Auto-Refill</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL: CREATE / EDIT CUSTOMER PACKAGE SCHEDULE
+       ========================================== -->
+  <div id="admin-package-modal" class="modal-backdrop" style="display: none;">
+    <div class="modal-card" style="max-width: 520px;">
+      <div class="modal-header">
+        <h3 id="admin-package-modal-title" class="modal-title" style="color: var(--color-primary);">Jadwal Paket Langganan</h3>
+        <button class="modal-close-btn" onclick="closeAdminPackageModal()">×</button>
+      </div>
+
+      <form onsubmit="saveAdminPackageForm(event)">
+        <input type="hidden" id="admin-pkg-id">
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="admin-pkg-cust-name">Nama Pelanggan</label>
+            <input type="text" id="admin-pkg-cust-name" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label for="admin-pkg-phone">Nomor WA / HP</label>
+            <input type="tel" id="admin-pkg-phone" class="form-input" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="admin-pkg-cust-email">Email Pelanggan</label>
+          <input type="email" id="admin-pkg-cust-email" class="form-input" required>
+        </div>
+
+        <div class="form-group">
+          <label for="admin-pkg-name">Nama Paket Langganan</label>
+          <input type="text" id="admin-pkg-name" class="form-input" placeholder="Paket Pembalut Organik Bambu" required>
+        </div>
+
+        <div class="form-group">
+          <label for="admin-pkg-items">Ringkasan Produk</label>
+          <input type="text" id="admin-pkg-items" class="form-input" placeholder="1x Day Pads, 1x Night Pads" required>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="admin-pkg-freq">Frekuensi Pengiriman</label>
+            <select id="admin-pkg-freq" class="form-select">
+              <option value="Setiap 4 Minggu">Setiap 4 Minggu</option>
+              <option value="Setiap 8 Minggu">Setiap 8 Minggu</option>
+              <option value="Setiap Bulan">Setiap Bulan</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="admin-pkg-next-date">Tanggal Pengiriman Berikutnya</label>
+            <input type="date" id="admin-pkg-next-date" class="form-input" required>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="admin-pkg-courier">Ekspedisi Kurir</label>
+            <input type="text" id="admin-pkg-courier" class="form-input" value="SiCepat BEST Eco-Fleet" required>
+          </div>
+          <div class="form-group">
+            <label for="admin-pkg-tracking">Nomor Resi</label>
+            <input type="text" id="admin-pkg-tracking" class="form-input" placeholder="SIC-ECO-XXXX">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="admin-pkg-address">Alamat Pengiriman</label>
+          <input type="text" id="admin-pkg-address" class="form-input" required>
+        </div>
+
+        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="closeAdminPackageModal()">Batal</button>
+          <button type="submit" class="btn btn-primary btn-sm">Simpan Jadwal Paket</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <!-- Global Toast Containers -->
@@ -3456,6 +3652,7 @@
   <script src="js/track.js"></script>
   <script src="js/cycle-tracker.js"></script>
   <script src="js/admin.js"></script>
+  <script src="js/groceries.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

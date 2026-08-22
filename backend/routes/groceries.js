@@ -2,11 +2,16 @@ const express = require('express');
 const router = express.Router();
 const { supabase } = require('../config/supabase');
 
-// GET /api/groceries
+// GET /api/groceries (Support email query filtering)
 router.get('/', async (req, res) => {
+  const { email } = req.query;
   try {
     if (supabase) {
-      const { data, error } = await supabase.from('customer_groceries').select('*').order('created_at', { ascending: false });
+      let query = supabase.from('customer_groceries').select('*').order('created_at', { ascending: false });
+      if (email) {
+        query = query.ilike('customer_email', email.trim());
+      }
+      const { data, error } = await query;
       if (!error && data) return res.json({ success: true, groceries: data });
     }
     return res.json({ success: true, groceries: [] });
@@ -32,8 +37,8 @@ router.post('/upsert', async (req, res) => {
         next_refill_date: grocery.nextRefillDate,
         courier: grocery.courier,
         shipping_address: grocery.shippingAddress,
-        status: grocery.status,
-        status_text: grocery.statusText,
+        status: grocery.status || 'active',
+        status_text: grocery.statusText || 'Auto-Refill ON',
         last_refill_date: grocery.lastRefillDate || new Date().toISOString().split('T')[0]
       }).select();
 
@@ -41,6 +46,22 @@ router.post('/upsert', async (req, res) => {
       return res.json({ success: true, grocery: data?.[0] || grocery });
     }
     return res.json({ success: true, grocery });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/groceries/delete
+router.post('/delete', async (req, res) => {
+  const { id } = req.body;
+  if (!id) return res.status(400).json({ error: 'ID subskripsi wajib diisi' });
+
+  try {
+    if (supabase) {
+      const { error } = await supabase.from('customer_groceries').delete().eq('id', id);
+      if (error) throw error;
+    }
+    return res.json({ success: true, message: `Subskripsi ${id} berhasil dihapus` });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

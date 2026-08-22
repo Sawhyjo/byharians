@@ -44,6 +44,10 @@ function renderCatalogGrid(productsToRender) {
   const html = list.map(p => renderProductCardHTML(p)).join('');
   if (featuredGrid) featuredGrid.innerHTML = html;
   if (shopGrid) shopGrid.innerHTML = html;
+
+  if (typeof renderGroceriesShowcase === 'function') {
+    renderGroceriesShowcase();
+  }
 }
 
 function filterCategory(cat, btn) {

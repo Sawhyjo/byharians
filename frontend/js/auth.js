@@ -475,6 +475,11 @@ async function updateAccountDashboardUI() {
     `;
   }
 
+  // 1b. Render Auto-Refill Subscriptions Dashboard
+  if (typeof renderUserGroceriesDashboard === 'function') {
+    renderUserGroceriesDashboard();
+  }
+
   // Render Past Orders List with Supabase Verified Tag
   const ordersListEl = document.getElementById('acc-orders-list');
   if (ordersListEl) {
