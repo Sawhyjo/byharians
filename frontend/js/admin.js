@@ -82,6 +82,8 @@ function renderTabContent(tabName) {
     renderAdminProductsTable();
   } else if (tabName === 'orders') {
     renderAdminOrdersTable();
+  } else if (tabName === 'packages') {
+    renderAdminPackagesTable();
   } else if (tabName === 'customers') {
     renderAdminCustomersTable();
   } else if (tabName === 'promotions') {
@@ -1193,6 +1195,286 @@ function saveAdminStoreSettings() {
 
   store.save();
   showToast('Pengaturan toko & kurir berhasil disimpan!', 'success');
+}
+
+// ==========================================
+// PACKAGES & DISPATCH MANAGEMENT (/admin/packages)
+// ==========================================
+let adminCustomerPackagesList = [];
+
+async function renderAdminPackagesTable() {
+  const container = document.getElementById('admin-packages-tbody');
+  if (!container) return;
+
+  const searchInput = document.getElementById('admin-package-search');
+  const statusFilter = document.getElementById('admin-package-status-filter');
+
+  const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+  const selectedStatus = statusFilter ? statusFilter.value : 'all';
+
+  if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+    try {
+      const { data, error } = await supabaseClient
+        .from('customer_packages')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (!error && Array.isArray(data)) {
+        adminCustomerPackagesList = data.map(r => store.normalizePackage(r)).filter(Boolean);
+        store.customerPackages = adminCustomerPackagesList;
+      }
+    } catch (err) {
+      console.warn('Fetch admin customer packages warning:', err);
+    }
+  }
+
+  let list = adminCustomerPackagesList || store.customerPackages || [];
+  if (selectedStatus !== 'all') {
+    list = list.filter(p => (p.status || 'active').toLowerCase() === selectedStatus.toLowerCase());
+  }
+  if (query) {
+    list = list.filter(p =>
+      p.id.toLowerCase().includes(query) ||
+      (p.customerName && p.customerName.toLowerCase().includes(query)) ||
+      (p.customerEmail && p.customerEmail.toLowerCase().includes(query)) ||
+      (p.trackingNumber && p.trackingNumber.toLowerCase().includes(query))
+    );
+  }
+
+  if (list.length === 0) {
+    container.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:24px; color:var(--color-text-muted);">Tidak ada jadwal paket ditemukan.</td></tr>`;
+    return;
+  }
+
+  container.innerHTML = list.map(p => {
+    let badgeClass = 'badge-primary';
+    let statusLabel = '🔴 PAUSED';
+    if (p.status === 'active') {
+      badgeClass = 'badge-success';
+      statusLabel = '🟢 AKTIF';
+    } else if (p.status === 'dispatched') {
+      badgeClass = 'badge-primary';
+      statusLabel = '🚚 DISPATCHED TODAY';
+    }
+
+    return `
+      <tr>
+        <td>
+          <strong>#${p.id}</strong><br>
+          <small style="color:var(--color-text-muted);">Tgl Buat: ${p.lastDispatched || 'Hari Ini'}</small>
+        </td>
+        <td>
+          <strong>${p.customerName}</strong><br>
+          <small style="color:var(--color-text-muted);">${p.customerEmail}</small><br>
+          <small style="color:var(--color-text-muted);">${p.phone || ''}</small>
+        </td>
+        <td>
+          <strong>${p.packageName}</strong><br>
+          <small style="color:var(--color-text-muted);">${p.itemsSummary}</small>
+        </td>
+        <td><span class="badge badge-secondary">${p.frequency}</span></td>
+        <td>
+          <strong>${p.nextDeliveryDate}</strong><br>
+          <small style="color:var(--color-text-muted);">${p.courier}</small>
+        </td>
+        <td>
+          <span class="badge ${badgeClass}" style="text-transform:uppercase; margin-bottom:4px; display:inline-block;">${statusLabel}</span><br>
+          <code style="background:rgba(15,48,29,0.06); padding:2px 6px; border-radius:4px; font-weight:700; font-size:0.75rem;">${p.trackingNumber || 'SIC-ECO-PENDING'}</code>
+        </td>
+        <td>
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <button type="button" class="btn btn-primary btn-sm" onclick="adminDispatchPackageNow('${p.id}')">🚚 Dispatch</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="openEditPackageModal('${p.id}')">✏️ Edit</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="deleteAdminPackage('${p.id}')" style="color:var(--color-error); border-color:rgba(186,50,50,0.3);">🗑️ Hapus</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function filterAdminPackagesList() {
+  renderAdminPackagesTable();
+}
+
+function openCreatePackageModal() {
+  const modal = document.getElementById('admin-package-modal');
+  const title = document.getElementById('admin-package-modal-title');
+  if (!modal) return;
+
+  if (title) title.innerText = 'Buat Jadwal Paket Baru';
+  document.getElementById('admin-pkg-id').value = '';
+  document.getElementById('admin-pkg-cust-name').value = '';
+  document.getElementById('admin-pkg-cust-email').value = '';
+  document.getElementById('admin-pkg-phone').value = '';
+  document.getElementById('admin-pkg-name').value = 'Paket Pembalut Organik Bambu Bulanan';
+  document.getElementById('admin-pkg-items').value = '1x Day Pads (24-Pcs), 1x Night Pads (16-Pcs)';
+  document.getElementById('admin-pkg-freq').value = 'Setiap 4 Minggu';
+  
+  const nextMonth = new Date();
+  nextMonth.setDate(nextMonth.getDate() + 7);
+  document.getElementById('admin-pkg-next-date').value = nextMonth.toISOString().split('T')[0];
+  document.getElementById('admin-pkg-courier').value = 'SiCepat BEST Eco-Fleet';
+  document.getElementById('admin-pkg-tracking').value = `SIC-ECO-${Math.floor(10000 + Math.random() * 90000)}`;
+  document.getElementById('admin-pkg-address').value = 'Jakarta Selatan, DKI Jakarta';
+
+  modal.style.display = 'flex';
+}
+
+function openEditPackageModal(packageId) {
+  const list = adminCustomerPackagesList || store.customerPackages || [];
+  const p = list.find(item => item.id === packageId);
+  if (!p) return;
+
+  const modal = document.getElementById('admin-package-modal');
+  const title = document.getElementById('admin-package-modal-title');
+  if (!modal) return;
+
+  if (title) title.innerText = `Edit Jadwal Paket #${p.id}`;
+  document.getElementById('admin-pkg-id').value = p.id;
+  document.getElementById('admin-pkg-cust-name').value = p.customerName;
+  document.getElementById('admin-pkg-cust-email').value = p.customerEmail;
+  document.getElementById('admin-pkg-phone').value = p.phone || '';
+  document.getElementById('admin-pkg-name').value = p.packageName;
+  document.getElementById('admin-pkg-items').value = p.itemsSummary;
+  document.getElementById('admin-pkg-freq').value = p.frequency;
+  document.getElementById('admin-pkg-next-date').value = p.nextDeliveryDate;
+  document.getElementById('admin-pkg-courier').value = p.courier || 'SiCepat BEST Eco-Fleet';
+  document.getElementById('admin-pkg-tracking').value = p.trackingNumber || '';
+  document.getElementById('admin-pkg-address').value = p.shippingAddress || '';
+
+  modal.style.display = 'flex';
+}
+
+function closeAdminPackageModal() {
+  const modal = document.getElementById('admin-package-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+async function saveAdminPackageForm(e) {
+  if (e) e.preventDefault();
+
+  const id = document.getElementById('admin-pkg-id').value || `PKG-${Math.floor(10000 + Math.random() * 90000)}`;
+  const customerName = document.getElementById('admin-pkg-cust-name').value.trim();
+  const customerEmail = document.getElementById('admin-pkg-cust-email').value.trim().toLowerCase();
+  const phone = document.getElementById('admin-pkg-phone').value.trim();
+  const packageName = document.getElementById('admin-pkg-name').value.trim();
+  const itemsSummary = document.getElementById('admin-pkg-items').value.trim();
+  const frequency = document.getElementById('admin-pkg-freq').value;
+  const nextDeliveryDate = document.getElementById('admin-pkg-next-date').value;
+  const courier = document.getElementById('admin-pkg-courier').value.trim();
+  const trackingNumber = document.getElementById('admin-pkg-tracking').value.trim() || `SIC-ECO-${Math.floor(10000 + Math.random() * 90000)}`;
+  const shippingAddress = document.getElementById('admin-pkg-address').value.trim();
+
+  const packageData = {
+    id,
+    customerName,
+    customerEmail,
+    phone,
+    packageName,
+    itemsSummary,
+    frequency,
+    nextDeliveryDate,
+    courier,
+    trackingNumber,
+    shippingAddress,
+    status: 'active',
+    statusText: 'Aktif / Berlangganan',
+    lastDispatched: new Date().toISOString().split('T')[0]
+  };
+
+  if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+    try {
+      await supabaseClient.from('customer_packages').upsert({
+        id,
+        customer_name: customerName,
+        customer_email: customerEmail,
+        phone,
+        package_name: packageName,
+        items_summary: itemsSummary,
+        frequency,
+        next_delivery_date: nextDeliveryDate,
+        courier,
+        tracking_number: trackingNumber,
+        shipping_address: shippingAddress,
+        status: 'active',
+        status_text: 'Aktif / Berlangganan',
+        last_dispatched: new Date().toISOString().split('T')[0]
+      });
+    } catch (err) {
+      console.warn('Supabase package upsert notice:', err);
+    }
+  }
+
+  try {
+    await fetch(`${CONFIG.API_BASE_URL}/packages/upsert`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(packageData)
+    });
+  } catch (err) {
+    console.warn('Backend packages API notice:', err);
+  }
+
+  closeAdminPackageModal();
+  renderAdminPackagesTable();
+  showToast(`Jadwal paket #${id} berhasil disimpan ke Supabase!`, 'success');
+}
+
+async function adminDispatchPackageNow(packageId) {
+  const newTracking = `SIC-ECO-DISPATCH-${Math.floor(10000 + Math.random() * 90000)}`;
+  const today = new Date().toISOString().split('T')[0];
+
+  if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+    try {
+      await supabaseClient.from('customer_packages').update({
+        last_dispatched: today,
+        tracking_number: newTracking,
+        status: 'dispatched',
+        status_text: 'Telah Dikirim Hari Ini'
+      }).eq('id', packageId);
+    } catch (err) {
+      console.warn('Supabase dispatch update warning:', err);
+    }
+  }
+
+  try {
+    await fetch(`${CONFIG.API_BASE_URL}/packages/dispatch`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: packageId, trackingNumber: newTracking })
+    });
+  } catch (err) {
+    console.warn('Backend dispatch notice:', err);
+  }
+
+  showToast(`Paket #${packageId} berhasil didispatch! No. Resi: ${newTracking}`, 'success');
+  renderAdminPackagesTable();
+}
+
+async function deleteAdminPackage(packageId) {
+  if (!confirm(`Apakah Anda yakin ingin menghapus jadwal paket #${packageId}?`)) return;
+
+  if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+    try {
+      await supabaseClient.from('customer_packages').delete().eq('id', packageId);
+    } catch (err) {
+      console.warn('Delete package warning:', err);
+    }
+  }
+
+  try {
+    await fetch(`${CONFIG.API_BASE_URL}/packages/delete`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: packageId })
+    });
+  } catch (err) {
+    console.warn('Backend delete package notice:', err);
+  }
+
+  showToast(`Jadwal paket #${packageId} berhasil dihapus.`, 'info');
+  renderAdminPackagesTable();
 }
 
 // Close modals when clicking backdrop overlay
