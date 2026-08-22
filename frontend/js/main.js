@@ -2,7 +2,7 @@
  * BYHARIANS MAIN ENTRY POINT, ROUTER & VIEW ENGINE
  */
 function showToast(message, type = 'info') {
-  const container = document.getElementById('toast-container') || createToastContainer();
+  const container = document.getElementById('global-toast-container') || document.getElementById('toast-container') || createToastContainer();
   const toast = document.createElement('div');
   toast.className = `toast toast-${type}`;
   toast.innerText = message;
