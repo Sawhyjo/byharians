@@ -10,13 +10,11 @@ const INITIAL_PRODUCTS = [
     subType: 'Regular / Day (240mm)',
     price: 39000,
     originalPrice: 49000,
-    rating: 4.9,
-    reviewsCount: 342,
     flowLevel: 3,
     flowText: 'Aliran Sedang (Level 3/5)',
     lengthMm: '240mm dengan Sayap Fleksibel',
     absorbencyMl: '80ml (3x daya serap pembalut biasa)',
-    badge: 'Paling Laris',
+    badge: '',
     image: 'assets/images/product_day_pads.jpg',
     shortDesc: 'Pembalut siang ultra-tipis, sejuk, dan selembut sutra dari 100% serat bambu organik dengan inti selulosa tumbuhan alami.',
     description: 'Didesain untuk kenyamanan seharian, pembalut organik biodegradable ini memberikan kelembutan alami serat bambu dengan lapisan anti-bocor nabati. Terurai 100% dalam 180 hari, 0% mikroplastik, 0% klorin, bebas pewangi sintetis, dan hipoalergenik.',
@@ -25,7 +23,7 @@ const INITIAL_PRODUCTS = [
       { name: '24-Pcs Hemat Duo', count: 24, multiplier: 2.02 },
       { name: '48-Pcs Stok 3 Bulan', count: 48, multiplier: 3.82 }
     ],
-    composition: ['100% Lapisan Atas Bambu Organik Bersertifikat', 'Inti Penyerap Kayu Pinus Alami & Gel Nabati', 'Lapisan Bawah Jagung Non-GMO Berpori', 'Bungkus Nabati Biodegradable & Perekat Aman'],
+    composition: ['Lapisan Atas Serat Bambu Alami', 'Inti Penyerap Kayu Pinus Alami & Gel Nabati', 'Lapisan Bawah Jagung Non-GMO Berpori', 'Bungkus Nabati Biodegradable & Perekat Aman'],
     stock: 145,
     isEcoCertified: true
   },
@@ -37,13 +35,11 @@ const INITIAL_PRODUCTS = [
     subType: 'Night / Heavy (330mm)',
     price: 45000,
     originalPrice: 58000,
-    rating: 5.0,
-    reviewsCount: 512,
     flowLevel: 5,
     flowText: 'Aliran Deras / Malam (Level 5/5)',
     lengthMm: '330mm Sayap Belakang Ekstra Lebar',
     absorbencyMl: '160ml (5x daya serap standar)',
-    badge: 'Pilihan Aliran Deras',
+    badge: '',
     image: 'assets/images/product_night_pads.jpg',
     shortDesc: 'Proteksi ekstra lebar 330mm untuk tidur nyenyak 12 jam tanpa bocor dan bebas rasa gatal.',
     description: 'Pelindung malam terbaik dengan teknologi Dual Anti-Leak Barrier dan daya serap 160ml. Lapisan atas bambu berpori menjaga area intim tetap kering dan bebas iritasi sepanjang malam.',
@@ -52,7 +48,7 @@ const INITIAL_PRODUCTS = [
       { name: '16-Pcs Night Duo Pack', count: 16, multiplier: 1.95 },
       { name: '32-Pcs Stok 3 Bulan', count: 32, multiplier: 3.7 }
     ],
-    composition: ['100% Serat Bambu Organik Alami', 'Sayap Belakang Ekstra Lebar 330mm', 'Membran Jagung Nabati Bebas Plastik', 'Bungkus Kertas Daur Ulang'],
+    composition: ['Serat Bambu Alami', 'Sayap Belakang Ekstra Lebar 330mm', 'Membran Jagung Nabati Bebas Plastik', 'Bungkus Kertas Daur Ulang'],
     stock: 98,
     isEcoCertified: true
   },
@@ -64,13 +60,11 @@ const INITIAL_PRODUCTS = [
     subType: 'Daily Care (155mm)',
     price: 32000,
     originalPrice: 39000,
-    rating: 4.8,
-    reviewsCount: 218,
     flowLevel: 1,
     flowText: 'Perawatan Harian / Keputihan (Level 1/5)',
     lengthMm: '155mm Tipis Berpori',
     absorbencyMl: '25ml (Sangat Nyaman)',
-    badge: 'Perawatan Harian',
+    badge: '',
     image: 'assets/images/product_panty_liners.jpg',
     shortDesc: 'Panty liner tipis berpori dari bambu organik untuk kesegaran harian, keputihan, dan hari-hari akhir haid.',
     description: 'Terasa seperti tidak menggunakan apa-apa. Panty liner ultra-tipis ini dirancang untuk menjaga kesegaran harian Anda tanpa menyumbat pori-pori kulit sensitif.',
@@ -90,13 +84,11 @@ const INITIAL_PRODUCTS = [
     subType: 'Starter Kit Remaja & Pemula',
     price: 149000,
     originalPrice: 189000,
-    rating: 5.0,
-    reviewsCount: 189,
     flowLevel: 4,
     flowText: 'Lengkap Semua Aliran',
     lengthMm: 'Paket Campuran 240mm + 330mm',
     absorbencyMl: 'Lengkap Siang & Malam',
-    badge: 'Hadiah Edukasi Terbaik',
+    badge: '',
     image: 'assets/images/product_first_period_kit.jpg',
     shortDesc: 'Kotak perawatan lengkap untuk menyambut haid pertama tanpa rasa cemas, dilengkapi buku panduan edukasi & perawatan herbal.',
     description: 'Starter kit komprehensif berisi 1x Day Pads, 1x Night Pads, 1x Panty Liners, Kantong Organik Serut, Koyo Hangat Herbal, dan Buku Panduan Siklus Edukasi.',
@@ -115,13 +107,11 @@ const INITIAL_PRODUCTS = [
     subType: 'Self-Care Wellness Ritual',
     price: 199000,
     originalPrice: 249000,
-    rating: 4.9,
-    reviewsCount: 276,
     flowLevel: 4,
     flowText: 'Ritual Perawatan Lengkap',
     lengthMm: 'Full Cycle Suite',
     absorbencyMl: 'Kebutuhan 1 Bulan Penuh',
-    badge: 'Paling Populer',
+    badge: '',
     image: 'assets/images/product_menstrual_kit.jpg',
     shortDesc: 'Kotak ritual bulanan mewah berisi pasokan pembalut organik lengkap, teh herbal aromaterapi, dan pencuci kewanitaan alami pH 4.5.',
     description: 'Ubah hari haid Anda dari ketidaknyamanan menjadi ritual pemulihan alami. Berisi paket lengkap pembalut organik bambu siang & malam, teh herbal pereda PMS, dan sabun pembersih kewanitaan chamomile alami.',
@@ -228,7 +218,14 @@ class StoreEngine {
         try {
           const parsedProds = JSON.parse(savedProds);
           if (Array.isArray(parsedProds) && parsedProds.length > 0) {
-            this.products = parsedProds;
+            this.products = parsedProds.map(p => {
+              delete p.rating;
+              delete p.reviewsCount;
+              if (p.badge === 'Paling Laris' || p.badge === 'Pilihan Aliran Deras' || p.badge === 'Hadiah Edukasi Terbaik' || p.badge === 'Paling Populer') {
+                p.badge = '';
+              }
+              return p;
+            });
           }
         } catch (e) {}
       }

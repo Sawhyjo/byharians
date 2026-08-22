@@ -7,19 +7,21 @@ const { supabase } = require('../config/supabase');
 const ADMIN_EMAIL = 'byharians81@gmail.com';
 const ADMIN_HASH = '11a6c1afb5f9f221880d2915cd980feead5538d9af55bed832de2f0d6c670888';
 
-// POST /api/auth/signup (With Duplicate Check)
+// POST /api/auth/signup (With Duplicate Check & Strict Supabase Auth)
 router.post('/signup', async (req, res) => {
   const { name, email, phone, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ error: 'Email dan password wajib diisi' });
   }
 
+  const cleanEmail = email.trim().toLowerCase();
+
   try {
     if (supabase) {
       // 1. Duplicate Registration Check (Email & Phone)
       const query = phone 
-        ? `email.eq.${email},phone.eq.${phone}` 
-        : `email.eq.${email}`;
+        ? `email.eq.${cleanEmail},phone.eq.${phone}` 
+        : `email.eq.${cleanEmail}`;
 
       const { data: existing } = await supabase
         .from('profiles')
@@ -32,43 +34,33 @@ router.post('/signup', async (req, res) => {
         });
       }
 
-      // 2. Perform Supabase Sign Up (With Rate-Limit Bypass Fallback)
-      let userId = null;
-      let userData = null;
+      // 2. Perform Supabase Auth Sign Up
+      const { data, error } = await supabase.auth.signUp({
+        email: cleanEmail,
+        password,
+        options: { data: { name, phone } }
+      });
 
-      try {
-        const { data, error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: { data: { name, phone } }
-        });
-
-        if (error) {
-          if (error.message.includes('already registered')) {
-            return res.status(400).json({
-              error: 'Email ini sudah terdaftar di sistem. Silakan masuk atau gunakan fitur Lupa Password.'
-            });
-          }
-          console.warn('⚠️ Supabase Auth notice (bypassing rate limit):', error.message);
-        } else if (data?.user) {
-          userId = data.user.id;
-          userData = data.user;
+      if (error) {
+        if (error.message.includes('already registered')) {
+          return res.status(400).json({
+            error: 'Email ini sudah terdaftar di sistem. Silakan masuk atau gunakan fitur Lupa Password.'
+          });
         }
-      } catch (authErr) {
-        console.warn('⚠️ Supabase Auth exception (bypassing rate limit):', authErr.message);
+        return res.status(400).json({ error: error.message });
       }
 
-      // If Auth rate limit is hit, generate a deterministic UUID so signup never blocks
-      if (!userId) {
-        userId = crypto.randomUUID();
-        userData = { id: userId, email, user_metadata: { name, phone } };
+      if (!data?.user) {
+        return res.status(400).json({ error: 'Gagal membuat akun di Supabase Auth.' });
       }
+
+      const userId = data.user.id;
 
       // Always save profile to Supabase database
       const { error: profileErr } = await supabase.from('profiles').upsert({
         id: userId,
         name,
-        email,
+        email: cleanEmail,
         phone: phone || '',
         eco_points: 100,
         pads_diverted: 0
@@ -77,10 +69,10 @@ router.post('/signup', async (req, res) => {
       if (profileErr) {
         console.error('⚠️ Supabase profile insert error:', profileErr.message);
       } else {
-        console.log(`✅ Profile created in Supabase for user: ${email} (${userId})`);
+        console.log(`✅ Profile created in Supabase for user: ${cleanEmail} (${userId})`);
       }
 
-      return res.json({ success: true, user: userData });
+      return res.json({ success: true, user: data.user });
     }
 
     return res.json({ success: true, message: 'Signed up successfully' });
@@ -96,9 +88,11 @@ router.post('/signin', async (req, res) => {
     return res.status(400).json({ error: 'Email dan password wajib diisi' });
   }
 
+  const cleanEmail = email.trim().toLowerCase();
+
   // 1. Check Server-Side Hashed Admin Credentials
   const inputHash = crypto.createHash('sha256').update(password).digest('hex');
-  if (email.trim().toLowerCase() === ADMIN_EMAIL && inputHash === ADMIN_HASH) {
+  if (cleanEmail === ADMIN_EMAIL && inputHash === ADMIN_HASH) {
     return res.json({
       success: true,
       isAdmin: true,
@@ -112,39 +106,47 @@ router.post('/signin', async (req, res) => {
     });
   }
 
-  // 2. Check Customer Credentials via Supabase Auth / Profiles
+  // 2. Check Customer Credentials via Supabase Auth (Strict Verification)
   try {
     if (supabase) {
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: cleanEmail,
+        password
+      });
       
-      if (!error && data?.user) {
+      const isEmailNotConfirmed = error && (
+        error.code === 'email_not_confirmed' ||
+        (error.message && error.message.toLowerCase().includes('email not confirmed'))
+      );
+
+      // If Supabase returned an auth error AND it's NOT email_not_confirmed,
+      // the password/credentials are invalid! Reject access immediately.
+      if (error && !isEmailNotConfirmed) {
+        return res.status(401).json({ error: 'Email atau password salah. Silakan periksa kembali kredensial Anda.' });
+      }
+
+      // Password verified successfully by Supabase Auth! Fetch user profile.
+      let userProfile = null;
+      if (data?.user?.id) {
         const { data: profile } = await supabase.from('profiles').select('*').eq('id', data.user.id).single();
-        return res.json({ success: true, user: data.user, profile: profile || { name: email.split('@')[0], email } });
+        userProfile = profile;
+      }
+      
+      if (!userProfile) {
+        const { data: profileByEmail } = await supabase.from('profiles').select('*').eq('email', cleanEmail).single();
+        userProfile = profileByEmail || { name: cleanEmail.split('@')[0], email: cleanEmail };
       }
 
-      // Rate limit / unconfirmed user fallback: check profiles table
-      const { data: profile } = await supabase.from('profiles').select('*').eq('email', email).single();
-      if (profile) {
-        return res.json({
-          success: true,
-          user: { id: profile.id, email: profile.email },
-          profile
-        });
-      }
-
-      return res.status(401).json({ error: 'Email atau password salah. Silakan periksa kembali kredensial Anda.' });
+      return res.json({
+        success: true,
+        user: data?.user || { id: userProfile.id, email: cleanEmail },
+        profile: userProfile
+      });
     }
 
     return res.status(401).json({ error: 'Email atau password salah. Silakan periksa kembali kredensial Anda.' });
   } catch (err) {
-    const { data: profile } = await supabase.from('profiles').select('*').eq('email', email).single();
-    if (profile) {
-      return res.json({
-        success: true,
-        user: { id: profile.id, email: profile.email },
-        profile
-      });
-    }
+    console.error('Sign in authentication exception:', err);
     return res.status(401).json({ error: 'Email atau password salah. Silakan periksa kembali kredensial Anda.' });
   }
 });

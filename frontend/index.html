@@ -199,7 +199,7 @@
                 <li><strong>Certified Organic Bamboo Fiber:</strong> Naturally thermo-regulating, whisper-soft, and hypoallergenic.</li>
                 <li><strong>180-Day Natural Soil Compost:</strong> Returns entirely to the earth without synthetic trace residues.</li>
                 <li><strong>Totally Chlorine-Free (TCF):</strong> Pure steam purification with zero dioxins or chemical dyes.</li>
-                <li><strong>Dermatest 5-Star Germany:</strong> Clinically proven zero-irritation formula for sensitive vulvar skin.</li>
+                <li><strong>Dermatologically Tested:</strong> Clinically tested zero-irritation formula for sensitive skin.</li>
               </ul>
             </div>
           </div>
@@ -2912,7 +2912,7 @@
           </div>
           <div class="form-group">
             <label for="admin-prod-badge">Badge Promosi (Opsional)</label>
-            <input type="text" id="admin-prod-badge" class="form-input" placeholder="mis. Paling Laris / Pilihan Aliran Deras">
+            <input type="text" id="admin-prod-badge" class="form-input" placeholder="mis. Diskon Special / Bundel Hemat">
           </div>
         </div>
 
@@ -3161,6 +3161,116 @@
       </div>
     </div>
   </main>
+
+  <!-- ==========================================
+       MODAL: E-COMMERCE PRODUCT DETAIL ("LIHAT DETAIL")
+       ========================================== -->
+  <div id="product-detail-modal" class="modal-backdrop" style="display: none;" onclick="if(event.target === this) closeProductDetailModal()">
+    <div class="product-detail-modal-card">
+      <button class="modal-close-btn" onclick="closeProductDetailModal()" aria-label="Tutup modal detail produk">✕</button>
+
+      <div class="product-detail-layout">
+        <!-- Left Column: Product Image & Badges -->
+        <div class="product-detail-media">
+          <div class="product-detail-img-box">
+            <img id="modal-product-img" src="" alt="Detail Produk" class="product-detail-img">
+          </div>
+          <div class="product-trust-bullets">
+            <div class="trust-bullet-item">
+              <span class="trust-icon">🚚</span>
+              <div>
+                <strong>Pengiriman Cepat & Eco-Pack</strong>
+                <p>Dikemas ramah lingkungan & bebas plastik sekali pakai.</p>
+              </div>
+            </div>
+            <div class="trust-bullet-item">
+              <span class="trust-icon">🛡️</span>
+              <div>
+                <strong>100% Produk Original & Bebas Kimia</strong>
+                <p>Bebas klorin, bebas pewangi sintetis & hipoalergenik.</p>
+              </div>
+            </div>
+            <div class="trust-bullet-item">
+              <span class="trust-icon">🔄</span>
+              <div>
+                <strong>Layanan Pelanggan & Garansi</strong>
+                <p>Bantuan CS 24/7 & pengajuan klaim retur mudah.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Product Information & Purchase Actions -->
+        <div class="product-detail-info">
+          <div class="product-detail-header">
+            <span id="modal-product-cat" class="product-detail-cat-pill">Pembalut Wanita Organik</span>
+            <h2 id="modal-product-title" class="product-detail-title">Nama Produk</h2>
+            <div class="product-detail-subtitle-row">
+              <span id="modal-product-subtype" class="product-detail-subtype">Subtype</span>
+              <span id="modal-product-flow" class="product-detail-flow-pill">🩸 Aliran</span>
+            </div>
+          </div>
+
+          <!-- Pricing Row -->
+          <div class="product-detail-price-box">
+            <span id="modal-product-price" class="product-detail-price">Rp 0</span>
+            <span id="modal-product-orig-price" class="product-detail-orig-price" style="display: none;">Rp 0</span>
+            <span class="tax-shipping-note">Termasuk PPN • Stok Siap Kirim</span>
+          </div>
+
+          <!-- Short Description -->
+          <p id="modal-product-desc" class="product-detail-description">
+            Deskripsi lengkap produk...
+          </p>
+
+          <!-- Specifications Table / Grid -->
+          <div class="product-detail-section">
+            <h4 class="detail-section-title">Spesifikasi Produk</h4>
+            <div id="modal-product-specs" class="specs-grid">
+              <!-- Dynamically populated by products.js -->
+            </div>
+          </div>
+
+          <!-- Material & Composition -->
+          <div class="product-detail-section">
+            <h4 class="detail-section-title">Komposisi & Material Organik</h4>
+            <div id="modal-product-composition" class="composition-chips-wrap">
+              <!-- Dynamically populated by products.js -->
+            </div>
+          </div>
+
+          <!-- Pack Variants Selector -->
+          <div class="product-detail-section">
+            <h4 class="detail-section-title">Pilih Kemasan / Paket</h4>
+            <div id="modal-pack-options" class="modal-pack-options-grid">
+              <!-- Dynamically populated by products.js -->
+            </div>
+          </div>
+
+          <!-- Quantity & Action Buttons -->
+          <div class="product-detail-actions-box">
+            <div class="detail-qty-control">
+              <label for="modal-product-qty" class="qty-label">Jumlah:</label>
+              <div class="qty-stepper">
+                <button type="button" class="qty-btn" onclick="decreaseDetailQty()">−</button>
+                <input type="text" id="modal-product-qty" value="1" readonly class="qty-input">
+                <button type="button" class="qty-btn" onclick="increaseDetailQty()">+</button>
+              </div>
+            </div>
+
+            <div class="detail-btn-group">
+              <button type="button" class="btn btn-outline btn-lg" onclick="addDetailToCart(false)">
+                🛒 Tambah ke Keranjang
+              </button>
+              <button type="button" class="btn btn-primary btn-lg" onclick="addDetailToCart(true)">
+                ⚡ Beli Sekarang
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ==========================================
        MODAL: FORGOT PASSWORD REQUEST
