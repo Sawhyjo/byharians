@@ -5695,12 +5695,20 @@ html, body {
 
 .preloader-logo-wrap {
   position: relative;
-  width: 140px;
-  height: 140px;
+  width: 210px;
+  height: 210px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 24px;
+}
+
+@media (max-width: 480px) {
+  .preloader-logo-wrap {
+    width: 170px;
+    height: 170px;
+    margin-bottom: 20px;
+  }
 }
 
 .preloader-logo-img {
@@ -5708,14 +5716,14 @@ html, body {
   height: 100%;
   object-fit: contain;
   animation: preloaderLogoPulse 2s cubic-bezier(0.25, 1, 0.5, 1) infinite alternate;
-  filter: drop-shadow(0 12px 28px rgba(247, 200, 40, 0.35));
+  filter: drop-shadow(0 14px 32px rgba(247, 200, 40, 0.4));
 }
 
 .preloader-glow {
   position: absolute;
-  width: 160px;
-  height: 160px;
-  background: radial-gradient(circle, rgba(247, 200, 40, 0.3) 0%, rgba(247, 200, 40, 0) 70%);
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(247, 200, 40, 0.35) 0%, rgba(247, 200, 40, 0) 70%);
   border-radius: 50%;
   z-index: -1;
   animation: preloaderGlowPulse 2.2s ease-in-out infinite alternate;
@@ -5723,7 +5731,7 @@ html, body {
 
 .preloader-brand-title {
   font-family: 'Cinzel', 'Playfair Display', 'Cormorant Garamond', serif;
-  font-size: 2.3rem;
+  font-size: 2.5rem;
   font-weight: 800;
   color: #FEF9EE;
   letter-spacing: 0.28em;
@@ -5734,13 +5742,21 @@ html, body {
   animation: preloaderTextFadeIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards;
 }
 
+@media (max-width: 480px) {
+  .preloader-brand-title {
+    font-size: 1.9rem;
+    letter-spacing: 0.22em;
+    text-indent: 0.22em;
+  }
+}
+
 .preloader-tagline {
   font-family: var(--font-sans);
-  font-size: 0.72rem;
+  font-size: 0.76rem;
   font-weight: 700;
-  color: rgba(254, 249, 238, 0.7);
-  letter-spacing: 0.22em;
-  text-indent: 0.22em;
+  color: rgba(254, 249, 238, 0.75);
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
   text-transform: uppercase;
   margin-bottom: 28px;
   opacity: 0;
