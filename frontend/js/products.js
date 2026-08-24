@@ -285,23 +285,3 @@ function closeProductDetailModal() {
   const modal = document.getElementById('product-detail-modal');
   if (modal) modal.style.display = 'none';
 }
-
-/**
- * INTERACTIVE WHY EKAPADS COMPARISON TAB FILTER
- */
-function filterComparison(category, btn) {
-  document.querySelectorAll('.comp-tab-btn').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-
-  const boxes = document.querySelectorAll('.comp-feature-box');
-  boxes.forEach(box => {
-    const boxCat = box.getAttribute('data-comp-cat');
-    if (category === 'all' || boxCat === category) {
-      box.style.display = 'block';
-      box.style.opacity = '1';
-      box.style.transform = 'translateY(0)';
-    } else {
-      box.style.display = 'none';
-    }
-  });
-}

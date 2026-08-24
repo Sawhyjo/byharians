@@ -5076,54 +5076,16 @@ html, body {
    WHY BYHARIANS COMPARISON SECTION (RESPONSIVE CAROUSEL & SCREEN FIT)
    ========================================================================== */
 .why-byharians-section {
-  padding: 85px 0;
+  padding: 90px 0;
   background: #FAF8F5;
 }
 
 .why-byharians-header {
-  margin-bottom: 36px;
-}
-
-/* Interactive Category Filter Tabs */
-.comp-tabs-container {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 36px;
-}
-
-.comp-tab-btn {
-  background: #FFFFFF;
-  border: 1.5px solid var(--color-border);
-  color: var(--color-primary);
-  padding: 10px 20px;
-  border-radius: var(--radius-full);
-  font-size: 0.84rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  box-shadow: var(--shadow-xs);
-}
-
-.comp-tab-btn:hover {
-  background: var(--color-bg-warm);
-  border-color: var(--color-secondary);
-  transform: translateY(-2px);
-}
-
-.comp-tab-btn.active {
-  background: var(--color-primary);
-  color: #FFFFFF;
-  border-color: var(--color-primary);
-  box-shadow: var(--shadow-sm);
+  margin-bottom: 50px;
 }
 
 .why-byharians-grid-wrapper {
-  max-width: 1020px;
+  max-width: 960px;
   margin: 0 auto;
 }
 
@@ -5134,182 +5096,61 @@ html, body {
 }
 
 .comparison-card {
-  border-radius: 24px;
+  border-radius: 20px;
   padding: 36px;
   box-sizing: border-box;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  position: relative;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
 }
 
 .conventional-card {
-  background: #F4ECE6;
-  border: 1.5px solid #E4D7CD;
-}
-
-.conventional-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 36px rgba(123, 104, 88, 0.12);
+  background: #F4EFEA;
+  border: 1px solid var(--color-border-subtle);
 }
 
 .byharians-card {
-  background: #0F301D;
-  color: #FFFFFF;
-  border: 1.5px solid rgba(247, 200, 40, 0.35);
-  box-shadow: 0 16px 40px rgba(15, 48, 29, 0.18);
-}
-
-.byharians-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 22px 48px rgba(15, 48, 29, 0.28);
-  border-color: var(--color-banana);
+  background: #FFFFFF;
+  border: 1px solid rgba(203, 176, 121, 0.45);
+  box-shadow: 0 12px 30px rgba(21, 36, 26, 0.06);
 }
 
 .comparison-card-badge {
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.12em;
-  color: #8C7261;
+  color: #7B6858;
   margin-bottom: 12px;
   text-transform: uppercase;
 }
 
 .comparison-card-badge.eco-badge {
-  color: var(--color-banana);
-  background: rgba(247, 200, 40, 0.14);
-  padding: 4px 12px;
-  border-radius: var(--radius-full);
-  display: inline-block;
+  color: var(--color-primary);
 }
 
 .comparison-card-title {
-  font-family: var(--font-sans);
-  font-size: 1.35rem;
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
   color: var(--color-primary);
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  font-weight: 800;
+  letter-spacing: 0.08em;
+  font-weight: 600;
 }
 
 .conventional-card .comparison-card-title {
-  color: #614D3F;
+  color: #7B6858;
 }
 
-.byharians-card .comparison-card-title {
-  color: #FFFFFF;
-}
-
-/* Feature Item Box Layout */
-.comp-feature-box {
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(123, 104, 88, 0.18);
-  border-radius: 16px;
-  padding: 16px 18px;
-  margin-bottom: 14px;
-  transition: all 0.2s ease;
-}
-
-.conventional-card .comp-feature-box:hover {
-  background: #FFFFFF;
-  border-color: #D6C2B4;
-}
-
-.byharians-card .comp-feature-box {
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.byharians-card .comp-feature-box:hover {
-  background: rgba(255, 255, 255, 0.14);
-  border-color: rgba(247, 200, 40, 0.4);
-}
-
-.comp-feature-head {
+.comparison-card-list {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 6px;
+  flex-direction: column;
+  gap: 16px;
+  font-size: 0.88rem;
+  color: #2C3830;
+  line-height: 1.6;
 }
 
-.comp-feature-name {
-  font-weight: 800;
-  font-size: 0.92rem;
-}
-
-.conventional-card .comp-feature-name {
-  color: #4A3A2F;
-}
-
-.byharians-card .comp-feature-name {
-  color: #FFF;
-}
-
-.comp-feature-badge {
-  font-size: 0.72rem;
-  font-weight: 800;
-  padding: 3px 8px;
-  border-radius: 6px;
-  text-transform: uppercase;
-}
-
-.badge-danger-soft {
-  background: #FEE2E2;
-  color: #991B1B;
-}
-
-.badge-success-soft {
-  background: rgba(247, 200, 40, 0.2);
-  color: var(--color-banana);
-  border: 1px solid rgba(247, 200, 40, 0.35);
-}
-
-.comp-feature-desc {
-  font-size: 0.83rem;
-  line-height: 1.45;
-}
-
-.conventional-card .comp-feature-desc {
-  color: #6E5E53;
-}
-
-.byharians-card .comp-feature-desc {
-  color: #D1DED7;
-}
-
-/* Interactive Impact Summary Meter Box below Cards */
-.interactive-impact-summary-box {
-  margin-top: 36px;
-  background: #FFFFFF;
-  border: 1.5px solid var(--color-border);
-  border-radius: 20px;
-  padding: 24px 28px;
-  box-shadow: var(--shadow-sm);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.impact-metric-pill {
-  text-align: center;
-  flex: 1;
-  min-width: 140px;
-}
-
-.impact-metric-val {
-  font-size: 1.6rem;
-  font-weight: 900;
-  color: var(--color-primary);
-  margin-bottom: 2px;
-}
-
-.impact-metric-lbl {
-  font-size: 0.74rem;
-  color: var(--color-text-muted);
-  text-transform: uppercase;
-  font-weight: 800;
-  letter-spacing: 0.04em;
+.conventional-card .comparison-card-list {
+  color: #6E6862;
 }
 
 .swipe-indicator-bar {
