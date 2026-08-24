@@ -137,3 +137,24 @@ function scrollToAboutSection(sectionId) {
     }
   }, 100);
 }
+
+// ==========================================================================
+// BYHARIANS PRELOADER DISMISS LIFECYCLE
+// ==========================================================================
+function dismissPreloader() {
+  const preloader = document.getElementById('site-preloader');
+  if (preloader && !preloader.classList.contains('fade-out')) {
+    preloader.classList.add('fade-out');
+    setTimeout(() => {
+      preloader.style.display = 'none';
+    }, 850);
+  }
+}
+
+window.addEventListener('load', () => {
+  setTimeout(dismissPreloader, 2100);
+});
+
+// Safety fallback in case load event takes too long
+setTimeout(dismissPreloader, 3800);
+
