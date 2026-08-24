@@ -16,14 +16,14 @@ const INITIAL_PRODUCTS = [
     absorbencyMl: '80ml (3x daya serap pembalut biasa)',
     badge: '',
     image: 'assets/images/product_day_pads.jpg',
-    shortDesc: 'Pembalut siang ultra-tipis, sejuk, dan selembut sutra dari 100% serat bambu organik dengan inti selulosa tumbuhan alami.',
-    description: 'Didesain untuk kenyamanan seharian, pembalut organik biodegradable ini memberikan kelembutan alami serat bambu dengan lapisan anti-bocor nabati. Terurai 100% dalam 180 hari, 0% mikroplastik, 0% klorin, bebas pewangi sintetis, dan hipoalergenik.',
+    shortDesc: 'Pembalut siang ultra-tipis, sejuk, dan berdaya serap tinggi dari selulosa batang pisang (banana pseudostem) & serat kenaf.',
+    description: 'Didesain untuk kenyamanan seharian, pembalut organik biodegradable EKAPADS mengombinasikan inti selulosa batang semu pisang dan lapisan distribusi serat kenaf alami. Dibungkus kantong starter dekomposisi ramah lingkungan, 100% biodegradable, 0% mikroplastik, 0% klorin, dan hipoalergenik.',
     packOptions: [
       { name: '10-Pcs Regular', count: 10, multiplier: 1 },
       { name: '24-Pcs Hemat Duo', count: 24, multiplier: 2.02 },
       { name: '48-Pcs Stok 3 Bulan', count: 48, multiplier: 3.82 }
     ],
-    composition: ['Lapisan Atas Serat Bambu Alami', 'Inti Penyerap Kayu Pinus Alami & Gel Nabati', 'Lapisan Bawah Jagung Non-GMO Berpori', 'Bungkus Nabati Biodegradable & Perekat Aman'],
+    composition: ['Inti Selulosa Batang Pisang (Banana Pseudostem)', 'Lapisan Distribusi Serat Kenaf (ADL)', 'Lapisan Atas Serat Alami Berpori', 'Kantong Pembungkus Starter Dekomposisi'],
     stock: 145,
     isEcoCertified: true
   },
