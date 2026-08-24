@@ -14,7 +14,7 @@ function renderProductCardHTML(p) {
       <div class="product-image-container">
         <img src="${p.image}" alt="${p.name}" class="product-thumb" loading="lazy" onerror="this.src='assets/images/product_day_pads.jpg'">
         ${badgeHTML}
-        <button class="quick-view-btn" onclick="openProductDetailModal('${p.id}')">Lihat Detail</button>
+        <button class="quick-view-btn" onclick="openProductDetailModal('${p.id}')">View Details</button>
       </div>
       <div class="product-info">
         <div class="product-meta">
@@ -29,7 +29,7 @@ function renderProductCardHTML(p) {
             ${p.originalPrice ? `<span style="font-size:0.8rem; color:var(--color-text-muted); text-decoration:line-through; margin-left:6px;">${store.formatPrice(p.originalPrice)}</span>` : ''}
           </div>
           <button class="btn btn-secondary btn-sm" onclick="quickAddToCart('${p.id}')">
-            + Tambah
+            + Add
           </button>
         </div>
       </div>
@@ -108,11 +108,11 @@ function toggleShopFilter() {
     if (isCurrentlyHidden) {
       layout.classList.remove('filter-hidden');
       if (sidebar) sidebar.style.display = 'block';
-      if (btnText) btnText.innerText = 'Sembunyikan Filter';
+      if (btnText) btnText.innerText = 'Hide Filters';
     } else {
       layout.classList.add('filter-hidden');
       if (sidebar) sidebar.style.display = 'none';
-      if (btnText) btnText.innerText = 'Tampilkan Filter';
+      if (btnText) btnText.innerText = 'Show Filters';
     }
   }
 }
@@ -145,34 +145,34 @@ function openProductDetailModal(productId) {
     imgEl.src = p.image;
     imgEl.alt = p.name;
   }
-  if (catEl) catEl.innerText = p.categoryName || 'Pembalut Wanita Organik';
+  if (catEl) catEl.innerText = p.categoryName || 'Organic Sanitary Pads';
   if (titleEl) titleEl.innerText = p.name;
   if (subTypeEl) subTypeEl.innerText = p.subType || '';
-  if (flowEl) flowEl.innerText = `🩸 ${p.flowText || 'Kenyamanan Alami'}`;
+  if (flowEl) flowEl.innerText = `🩸 ${p.flowText || 'Natural Comfort'}`;
   if (descEl) descEl.innerText = p.description || p.shortDesc || '';
 
   // Render Specifications Grid
   if (specsContainer) {
     const stockBadge = (p.stock && p.stock > 0) 
-      ? `<span class="spec-value-badge in-stock">✓ Tersedia (${p.stock} unit)</span>` 
-      : `<span class="spec-value-badge out-stock">Stok Habis</span>`;
+      ? `<span class="spec-value-badge in-stock">✓ In Stock (${p.stock} units)</span>` 
+      : `<span class="spec-value-badge out-stock">Out of Stock</span>`;
 
     specsContainer.innerHTML = `
       <div class="spec-item">
-        <span class="spec-label">Ukuran / Panjang:</span>
-        <span class="spec-value">${p.lengthMm || 'Standar Ergonomis'}</span>
+        <span class="spec-label">Size / Length:</span>
+        <span class="spec-value">${p.lengthMm || 'Ergonomic Standard'}</span>
       </div>
       <div class="spec-item">
-        <span class="spec-label">Daya Serap:</span>
-        <span class="spec-value">${p.absorbencyMl || 'Tinggi'}</span>
+        <span class="spec-label">Absorbency:</span>
+        <span class="spec-value">${p.absorbencyMl || 'High'}</span>
       </div>
       <div class="spec-item">
-        <span class="spec-label">Status Stok:</span>
+        <span class="spec-label">Stock Status:</span>
         <span class="spec-value">${stockBadge}</span>
       </div>
       <div class="spec-item">
-        <span class="spec-label">Sertifikasi & Keamanan:</span>
-        <span class="spec-value">100% Biodegradable • 0% Klorin & Bebas Pemutih</span>
+        <span class="spec-label">Certifications & Safety:</span>
+        <span class="spec-value">100% Biodegradable • 0% Chlorine & Bleach-Free</span>
       </div>
     `;
   }
@@ -184,7 +184,7 @@ function openProductDetailModal(productId) {
         <span class="composition-chip">🌱 ${c}</span>
       `).join('');
     } else {
-      compContainer.innerHTML = `<span class="composition-chip">🌱 Serat Bambu Alami</span>`;
+      compContainer.innerHTML = `<span class="composition-chip">🌱 Natural Botanical Fibers</span>`;
     }
   }
 
@@ -276,7 +276,7 @@ function addDetailToCart(isBuyNow = false) {
     navigateTo('checkout');
   } else {
     if (typeof showToast === 'function') {
-      showToast(`${currentDetailProduct.name} (${itemToAdd.selectedPack}) ditambahkan ke keranjang!`, 'success');
+      showToast(`${currentDetailProduct.name} (${itemToAdd.selectedPack}) added to cart!`, 'success');
     }
   }
 }

@@ -17,7 +17,7 @@ function addToCart(productId, packIndex = 0, isSubscription = false) {
   if (!store.isLoggedIn) {
     store.redirectAfterLogin = 'shop';
     if (typeof showToast === 'function') {
-      showToast('Silakan Sign In atau buat akun terlebih dahulu untuk belanja.', 'info');
+      showToast('Please sign in or create an account to start shopping.', 'info');
     }
     const alertBox = document.getElementById('checkout-auth-alert');
     if (alertBox) alertBox.style.display = 'flex';
@@ -51,7 +51,7 @@ function addToCart(productId, packIndex = 0, isSubscription = false) {
   updateCartBadgeAndDrawer();
   openCartDrawer();
   if (typeof showToast === 'function') {
-    showToast(`${p.name} (${pack.name}) berhasil ditambahkan ke keranjang!`, 'success');
+    showToast(`${p.name} (${pack.name}) added to cart!`, 'success');
   }
 }
 
@@ -76,7 +76,7 @@ function removeCartItem(index) {
   store.save();
   updateCartBadgeAndDrawer();
   if (store.currentView === 'cart' && typeof renderFullCartPage === 'function') renderFullCartPage();
-  if (typeof showToast === 'function') showToast('Item dihapus dari keranjang', 'info');
+  if (typeof showToast === 'function') showToast('Item removed from cart', 'info');
 }
 
 function openCartDrawer() {
@@ -98,7 +98,7 @@ function handleProceedToCheckout() {
   if (!store.isLoggedIn) {
     store.redirectAfterLogin = 'checkout';
     if (typeof showToast === 'function') {
-      showToast('Silakan Sign In atau masuk akun terlebih dahulu untuk melanjutkan pembayaran.', 'info');
+      showToast('Please sign in or register to proceed to payment.', 'info');
     }
     const alertBox = document.getElementById('checkout-auth-alert');
     if (alertBox) alertBox.style.display = 'flex';
@@ -107,7 +107,7 @@ function handleProceedToCheckout() {
   }
 
   if (store.cart.length === 0) {
-    if (typeof showToast === 'function') showToast('Keranjang Anda kosong! Tambahkan barang terlebih dahulu.', 'warning');
+    if (typeof showToast === 'function') showToast('Your cart is empty! Add items before proceeding.', 'warning');
     if (typeof navigateTo === 'function') navigateTo('shop');
     return;
   }
@@ -132,12 +132,12 @@ function updateCartBadgeAndDrawer() {
   const freeThreshold = 150000;
   if (shipMsg && shipFill) {
     if (calcs.subtotal >= freeThreshold) {
-      shipMsg.innerHTML = `<span>Selamat! Pesanan Anda berhak mendapat <strong>GRATIS Ongkir!</strong></span>`;
+      shipMsg.innerHTML = `<span>Congratulations! Your order qualifies for <strong>FREE Shipping!</strong></span>`;
       shipFill.style.width = '100%';
     } else {
       const remaining = freeThreshold - calcs.subtotal;
       const pct = Math.min(100, Math.round((calcs.subtotal / freeThreshold) * 100));
-      shipMsg.innerHTML = `<span>Tambah <strong>${store.formatPrice(remaining)}</strong> lagi untuk <strong>GRATIS Ongkir!</strong></span>`;
+      shipMsg.innerHTML = `<span>Add <strong>${store.formatPrice(remaining)}</strong> more for <strong>FREE Shipping!</strong></span>`;
       shipFill.style.width = `${pct}%`;
     }
   }
@@ -156,7 +156,7 @@ function updateCartBadgeAndDrawer() {
           <img src="${item.image}" alt="${item.name}" style="width:70px; height:70px; border-radius:12px; object-fit:cover;">
           <div>
             <div style="font-weight:800; font-size:0.9rem; color:var(--color-primary);">${item.name}</div>
-            <div style="font-size:0.76rem; color:var(--color-text-muted); margin-bottom:4px;">${item.packName} ${item.isSubscription ? '• Subskripsi' : ''}</div>
+            <div style="font-size:0.76rem; color:var(--color-text-muted); margin-bottom:4px;">${item.packName} ${item.isSubscription ? '• Subscription' : ''}</div>
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <span style="font-weight:800; color:var(--color-primary); font-size:0.9rem;">${store.formatPrice(item.unitPrice * item.quantity)}</span>
               <div class="quantity-stepper" style="display:flex; align-items:center; gap:4px; background:var(--color-bg-warm); padding:2px 8px; border-radius:var(--radius-full); border:1px solid var(--color-border);">
@@ -197,9 +197,9 @@ function renderFullCartPage() {
     container.innerHTML = `
       <div style="text-align:center; padding: 60px 20px; background:#fff; border-radius:var(--radius-xl); border:1px solid var(--color-border);">
         <div style="font-size:3rem; margin-bottom:14px;">🛒</div>
-        <h3 style="font-size:1.4rem; color:var(--color-primary); margin-bottom:8px;">Keranjang Belanja Anda Kosong</h3>
-        <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">Temukan pembalut bambu organik & paket menstruasi ramah lingkungan.</p>
-        <button class="btn btn-primary" onclick="navigateTo('shop')">Jelajahi Koleksi Produk</button>
+        <h3 style="font-size:1.4rem; color:var(--color-primary); margin-bottom:8px;">Your Shopping Cart is Empty</h3>
+        <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">Explore our organic bamboo pads & eco-friendly menstrual care kits.</p>
+        <button class="btn btn-primary" onclick="navigateTo('shop')">Explore Product Collection</button>
       </div>
     `;
     if (summaryBox) summaryBox.style.display = 'none';

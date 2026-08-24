@@ -36,7 +36,7 @@ function renderGroceriesShowcase() {
 function openCreateAutoRefillModal(basketId) {
   if (!store.isLoggedIn) {
     store.redirectAfterLogin = 'account';
-    showToast('Silakan masuk atau daftar terlebih dahulu untuk berlangganan Auto-Refill', 'info');
+    showToast('Please sign in or register to subscribe to Auto-Refill', 'info');
     navigateTo('login');
     return;
   }
@@ -57,7 +57,7 @@ function openCreateAutoRefillModal(basketId) {
 
   if (titleEl) titleEl.innerText = basket.name;
   if (summaryEl) summaryEl.innerText = basket.itemsSummary;
-  if (priceEl) priceEl.innerText = `${store.formatPrice(basket.monthlyPrice)} / pengiriman`;
+  if (priceEl) priceEl.innerText = `${store.formatPrice(basket.monthlyPrice)} / delivery`;
 
   if (nameInput) nameInput.value = store.userAccount?.name || '';
   if (emailInput) emailInput.value = store.userAccount?.email || '';
@@ -82,21 +82,21 @@ async function submitAutoRefillSubscription(e) {
   if (e) e.preventDefault();
 
   if (!store.isLoggedIn || !activeSelectedBasket) {
-    showToast('Silakan masuk ke akun Anda terlebih dahulu.', 'error');
+    showToast('Please sign in to your account first.', 'error');
     return;
   }
 
   const name = document.getElementById('refill-customer-name')?.value?.trim() || store.userAccount.name;
   const email = document.getElementById('refill-customer-email')?.value?.trim()?.toLowerCase() || store.userAccount.email;
   const phone = document.getElementById('refill-customer-phone')?.value?.trim() || '0812-0000-0000';
-  const frequency = document.getElementById('refill-frequency-select')?.value || 'Setiap 4 Minggu';
+  const frequency = document.getElementById('refill-frequency-select')?.value || 'Every 4 Weeks';
   const nextRefillDate = document.getElementById('refill-start-date')?.value || new Date().toISOString().split('T')[0];
   const shippingAddress = document.getElementById('refill-shipping-address')?.value?.trim() || 'Jakarta, Indonesia';
 
   const btn = document.getElementById('btn-submit-refill');
   if (btn) {
     btn.disabled = true;
-    btn.innerText = 'Memproses Subskripsi...';
+    btn.innerText = 'Processing Subscription...';
   }
 
   const subscriptionId = `SUB-${Math.floor(10000 + Math.random() * 90000)}`;
@@ -164,10 +164,10 @@ async function submitAutoRefillSubscription(e) {
 
   if (btn) {
     btn.disabled = false;
-    btn.innerText = 'Konfirmasi & Aktifkan Auto-Refill';
+    btn.innerText = 'Confirm & Activate Auto-Refill';
   }
 
-  showToast(`Subskripsi Auto-Refill (${activeSelectedBasket.name}) Berhasil Diaktifkan!`, 'success');
+  showToast(`Auto-Refill Subscription (${activeSelectedBasket.name}) activated successfully!`, 'success');
   renderUserGroceriesDashboard();
   navigateTo('account');
 }
@@ -200,9 +200,9 @@ async function renderUserGroceriesDashboard() {
     container.innerHTML = `
       <div style="background: var(--color-bg-warm); border: 1px dashed var(--color-border); border-radius: var(--radius-lg); padding: 24px; text-align: center; color: var(--color-text-muted);">
         <div style="font-size: 2rem; margin-bottom: 8px;">🔄</div>
-        <h4 style="font-size: 0.95rem; color: var(--color-primary); font-weight: 700; margin-bottom: 4px;">Belum Ada Subskripsi Auto-Refill Aktif</h4>
-        <p style="font-size: 0.8rem; margin-bottom: 14px;">Aktifkan layanan Auto-Refill bulanan agar stok pembalut bambu organik Anda selalu tersedia tanpa perlu pesan ulang setiap bulan.</p>
-        <button class="btn btn-secondary btn-sm" onclick="navigateTo('shop')">Jelajahi Paket Auto-Refill →</button>
+        <h4 style="font-size: 0.95rem; color: var(--color-primary); font-weight: 700; margin-bottom: 4px;">No Active Auto-Refill Subscriptions</h4>
+        <p style="font-size: 0.8rem; margin-bottom: 14px;">Activate our monthly Auto-Refill service so your organic bamboo sanitary pad supply never runs out.</p>
+        <button class="btn btn-secondary btn-sm" onclick="navigateTo('shop')">Explore Auto-Refill Suites →</button>
       </div>
     `;
     return;
@@ -212,9 +212,9 @@ async function renderUserGroceriesDashboard() {
     <div style="background: #fff; border: 1.5px solid var(--color-border); border-radius: var(--radius-lg); padding: 18px 20px; margin-bottom: 14px; box-shadow: var(--shadow-xs);">
       <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; border-bottom: 1px solid var(--color-border); padding-bottom: 12px;">
         <div>
-          <span style="font-size: 0.74rem; color: var(--color-text-muted); text-transform: uppercase;">Nomor Subskripsi</span>
+          <span style="font-size: 0.74rem; color: var(--color-text-muted); text-transform: uppercase;">Subscription Number</span>
           <strong style="font-size: 1.05rem; color: var(--color-primary); display: block;">#${sub.id}</strong>
-          <small style="color: var(--color-success); font-weight: 700; font-size: 0.72rem;">✓ Terdaftar Supabase DB</small>
+          <small style="color: var(--color-success); font-weight: 700; font-size: 0.72rem;">✓ Verified Supabase DB</small>
         </div>
         <div>
           <span class="badge ${sub.status === 'active' ? 'badge-primary' : 'badge-secondary'}" style="text-transform: uppercase; font-weight: 800;">
@@ -225,28 +225,28 @@ async function renderUserGroceriesDashboard() {
 
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 14px;">
         <div>
-          <span style="font-size: 0.76rem; color: var(--color-text-muted); display: block;">Nama Paket Auto-Refill:</span>
+          <span style="font-size: 0.76rem; color: var(--color-text-muted); display: block;">Auto-Refill Suite Name:</span>
           <strong style="font-size: 0.95rem; color: var(--color-primary);">${sub.basketName}</strong>
           <small style="display: block; color: var(--color-text-muted); font-size: 0.78rem;">${sub.itemsSummary}</small>
         </div>
         <div>
-          <span style="font-size: 0.76rem; color: var(--color-text-muted); display: block;">Jadwal Pengiriman Berikutnya:</span>
+          <span style="font-size: 0.76rem; color: var(--color-text-muted); display: block;">Next Delivery Date:</span>
           <strong style="font-size: 0.95rem; color: var(--color-primary);">${sub.nextRefillDate}</strong>
-          <small style="display: block; color: var(--color-secondary); font-size: 0.78rem;">Siklus: ${sub.frequency}</small>
+          <small style="display: block; color: var(--color-secondary); font-size: 0.78rem;">Cycle: ${sub.frequency}</small>
         </div>
         <div style="text-align: right;">
-          <span style="font-size: 0.76rem; color: var(--color-text-muted); display: block;">Tagihan Bulanan:</span>
+          <span style="font-size: 0.76rem; color: var(--color-text-muted); display: block;">Monthly Billing:</span>
           <strong style="font-size: 1.1rem; color: var(--color-primary);">${store.formatPrice(sub.monthlyPrice)}</strong>
-          <small style="display: block; color: var(--color-text-muted); font-size: 0.78rem;">Kurir: ${sub.courier}</small>
+          <small style="display: block; color: var(--color-text-muted); font-size: 0.78rem;">Courier: ${sub.courier}</small>
         </div>
       </div>
 
       <div style="display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap;">
         <button class="btn btn-outline btn-sm" onclick="toggleGrocerySubscriptionStatus('${sub.id}', '${sub.status === 'active' ? 'paused' : 'active'}')">
-          ${sub.status === 'active' ? '⏸️ Jeda Subskripsi' : '▶️ Aktifkan Kembali'}
+          ${sub.status === 'active' ? '⏸️ Pause Subscription' : '▶️ Resume Subscription'}
         </button>
         <button class="btn btn-outline btn-sm" onclick="cancelGrocerySubscription('${sub.id}')" style="color: var(--color-error); border-color: rgba(186, 50, 50, 0.35);">
-          🗑️ Batalkan Subskripsi
+          🗑️ Cancel Subscription
         </button>
       </div>
     </div>
@@ -258,26 +258,26 @@ async function toggleGrocerySubscriptionStatus(subscriptionId, newStatus) {
   const target = userSubscriptions.find(s => s.id === subscriptionId);
   if (target) {
     target.status = newStatus;
-    target.statusText = newStatus === 'active' ? 'Auto-Refill ON' : 'Subskripsi Dijeda';
+    target.statusText = newStatus === 'active' ? 'Auto-Refill ON' : 'Subscription Paused';
   }
 
   if (typeof supabaseClient !== 'undefined' && supabaseClient) {
     try {
       await supabaseClient
         .from('customer_groceries')
-        .update({ status: newStatus, status_text: newStatus === 'active' ? 'Auto-Refill ON' : 'Subskripsi Dijeda' })
+        .update({ status: newStatus, status_text: newStatus === 'active' ? 'Auto-Refill ON' : 'Subscription Paused' })
         .eq('id', subscriptionId);
     } catch (err) {
       console.warn('Update grocery status warning:', err);
     }
   }
 
-  showToast(`Subskripsi #${subscriptionId} diperbarui ke status: ${newStatus.toUpperCase()}`, 'info');
+  showToast(`Subscription #${subscriptionId} status updated to: ${newStatus.toUpperCase()}`, 'info');
   renderUserGroceriesDashboard();
 }
 
 async function cancelGrocerySubscription(subscriptionId) {
-  if (!confirm(`Apakah Anda yakin ingin membatalkan subskripsi Auto-Refill #${subscriptionId}?`)) return;
+  if (!confirm(`Are you sure you want to cancel Auto-Refill subscription #${subscriptionId}?`)) return;
 
   store.customerGroceries = (store.customerGroceries || []).filter(s => s.id !== subscriptionId);
 
@@ -299,6 +299,6 @@ async function cancelGrocerySubscription(subscriptionId) {
     console.warn('Backend delete grocery notice:', err);
   }
 
-  showToast(`Subskripsi #${subscriptionId} berhasil dibatalkan.`, 'info');
+  showToast(`Subscription #${subscriptionId} has been cancelled.`, 'info');
   renderUserGroceriesDashboard();
 }

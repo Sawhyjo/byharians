@@ -152,8 +152,8 @@
     <div style="display: flex; flex-direction: column; gap: 16px; font-size: 0.95rem; font-weight: 600;">
       <a href="#home" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')">Home</a>
       <a href="#shop" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')">Our Products</a>
-      <a href="#cycle-tracker" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')" style="color: var(--color-primary); font-weight: 800;">Kalender Siklus (Cycle Tracker)</a>
-      <a href="#cart" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')" style="color: var(--color-primary); font-weight: 700;">Keranjang Belanja (Cart)</a>
+      <a href="#cycle-tracker" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')" style="color: var(--color-primary); font-weight: 800;">Cycle Tracker</a>
+      <a href="#cart" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')" style="color: var(--color-primary); font-weight: 700;">Shopping Cart</a>
       <a href="#checkout" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')" style="color: var(--color-secondary);">Checkout</a>
       <a href="#mission" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')">Mission</a>
       <a href="#sustainability" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')">Sustainability Initiative</a>
@@ -186,8 +186,8 @@
           <p class="editorial-hero-subtitle">From Nature, Back to Nature. Zero-Waste Circular Menstrual Care.</p>
           
           <div class="editorial-hero-cta-group">
-            <a href="#shop" class="btn btn-primary btn-lg editorial-cta-btn">Jelajahi Produk EKAPADS</a>
-            <a href="#cycle-tracker" class="btn btn-outline-white btn-lg editorial-cta-btn">Hitung Siklus Haid</a>
+            <a href="#shop" class="btn btn-primary btn-lg editorial-cta-btn">Explore EKAPADS Products</a>
+            <a href="#cycle-tracker" class="btn btn-outline-white btn-lg editorial-cta-btn">Calculate Cycle</a>
       </div>
     </section>
 
@@ -231,7 +231,7 @@
           <div class="swipe-indicator-bar">
             <span class="swipe-dot active"></span>
             <span class="swipe-dot"></span>
-            <small>← Geser untuk Membandingkan →</small>
+            <small>← Swipe to Compare →</small>
           </div>
         </div>
     <!-- SECTION 1: Your Partner in Sustainability (Dark Forest Theme - Image 1) -->
@@ -428,21 +428,21 @@
       
       <div class="shop-header">
         <div>
-          <span class="section-tag">Perawatan Menstruasi Ramah Lingkungan</span>
-          <h1 class="section-title">Koleksi Pembalut Organik Biodegradable</h1>
-          <p style="color: var(--color-text-muted);">100% Berbahan Tumbuhan & Paket Menstruasi Lengkap.</p>
+          <span class="section-tag">Eco-Friendly Menstrual Care</span>
+          <h1 class="section-title">Biodegradable Organic Pads Collection</h1>
+          <p style="color: var(--color-text-muted);">100% Botanical Materials & Complete Menstrual Care Suites.</p>
         </div>
 
         <div class="shop-header-actions" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-          <button type="button" class="btn btn-outline filter-toggle-btn" id="filter-toggle-btn" onclick="toggleShopFilter()" title="Tampilkan / Sembunyikan Filter">
+          <button type="button" class="btn btn-outline filter-toggle-btn" id="filter-toggle-btn" onclick="toggleShopFilter()" title="Toggle Filters">
             <svg class="filter-icon-svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="21" y2="21"/><line x1="4" x2="20" y1="14" y2="14"/><line x1="4" x2="20" y1="7" y2="7"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="14" r="2"/><circle cx="10" cy="21" r="2"/></svg>
-            <span id="filter-toggle-btn-text">Sembunyikan Filter</span>
+            <span id="filter-toggle-btn-text">Hide Filters</span>
           </button>
 
           <div class="category-tabs">
-            <button class="cat-tab-btn active" data-category="all" onclick="filterByCategory('all')">Semua Produk</button>
-            <button class="cat-tab-btn" data-category="pads" onclick="filterByCategory('pads')">Pembalut Wanita</button>
-            <button class="cat-tab-btn" data-category="kits" onclick="filterByCategory('kits')">Paket Ritual</button>
+            <button class="cat-tab-btn active" data-category="all" onclick="filterByCategory('all')">All Products</button>
+            <button class="cat-tab-btn" data-category="pads" onclick="filterByCategory('pads')">Sanitary Pads</button>
+            <button class="cat-tab-btn" data-category="kits" onclick="filterByCategory('kits')">Ritual Kits</button>
           </div>
         </div>
       </div>
@@ -451,10 +451,10 @@
         <!-- Filter Sidebar -->
         <aside class="filter-sidebar" id="shop-filter-sidebar">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
-            <h3 style="font-size: 1.1rem; margin: 0;">Filter Produk</h3>
+            <h3 style="font-size: 1.1rem; margin: 0;">Product Filters</h3>
             <div style="display: flex; align-items: center; gap: 10px;">
               <button type="button" onclick="resetFilters()" style="font-size: 0.78rem; color: var(--color-secondary); font-weight: 700; background: none; border: none; cursor: pointer;">Reset</button>
-              <button type="button" class="filter-sidebar-close-btn" onclick="toggleShopFilter()" title="Sembunyikan Filter">
+              <button type="button" class="filter-sidebar-close-btn" onclick="toggleShopFilter()" title="Hide Filters">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
               </button>
             </div>
@@ -462,30 +462,30 @@
 
           <!-- Flow Level Filter -->
           <div class="filter-group">
-            <h4 class="filter-title">Daya Serap & Aliran</h4>
+            <h4 class="filter-title">Absorbency & Flow</h4>
             <div class="filter-options">
               <label class="filter-label">
                 <input type="radio" name="flow-filter" value="all" checked onchange="filterByFlow('all')">
-                <span>Semua Aliran</span>
+                <span>All Flow Levels</span>
               </label>
               <label class="filter-label">
                 <input type="radio" name="flow-filter" value="1" onchange="filterByFlow('1')">
-                <span>Ringan / Harian (155mm)</span>
+                <span>Light / Daily (155mm)</span>
               </label>
               <label class="filter-label">
                 <input type="radio" name="flow-filter" value="3" onchange="filterByFlow('3')">
-                <span>Sedang / Siang (240mm)</span>
+                <span>Regular / Day (240mm)</span>
               </label>
               <label class="filter-label">
                 <input type="radio" name="flow-filter" value="5" onchange="filterByFlow('5')">
-                <span>Deras & Malam (330mm-360mm)</span>
+                <span>Heavy & Night (330mm-360mm)</span>
               </label>
             </div>
           </div>
 
           <!-- Max Price Slider -->
           <div class="filter-group">
-            <h4 class="filter-title">Harga Maksimal</h4>
+            <h4 class="filter-title">Maximum Price</h4>
             <input type="range" id="price-slider-input" min="25000" max="350000" value="350000" step="5000" class="price-slider" oninput="filterByPrice(this.value)">
             <div class="price-range-display">
               <span>Rp 25.000</span>
@@ -530,9 +530,9 @@
   <main id="view-cart" class="view-section" style="display: none; padding: 60px 0 100px;">
     <div class="container">
       <div style="margin-bottom: 28px;">
-        <span class="section-tag">Keranjang Belanja</span>
-        <h1 class="section-title">Ringkasan Belanjaan Anda</h1>
-        <p style="color: var(--color-text-muted);">Periksa item pembalut organik dan nikmati pengiriman ramah lingkungan.</p>
+        <span class="section-tag">Shopping Cart</span>
+        <h1 class="section-title">Your Shopping Cart Summary</h1>
+        <p style="color: var(--color-text-muted);">Review your organic care items and enjoy eco-friendly delivery.</p>
       </div>
 
       <div style="display: grid; grid-template-columns: 1fr 340px; gap: 32px;" class="cart-page-layout">
@@ -544,12 +544,12 @@
         <!-- Right: Order Summary Sidebar -->
         <div id="full-cart-summary-box">
           <div style="background: #fff; border-radius: var(--radius-xl); padding: 28px; border: 1px solid var(--color-border); box-shadow: var(--shadow-sm); position: sticky; top: 100px;">
-            <h3 style="font-size: 1.2rem; color: var(--color-primary); margin-bottom: 20px; border-bottom: 1px solid var(--color-border); padding-bottom: 12px;">Ringkasan Pembayaran</h3>
+            <h3 style="font-size: 1.2rem; color: var(--color-primary); margin-bottom: 20px; border-bottom: 1px solid var(--color-border); padding-bottom: 12px;">Payment Summary</h3>
 
             <!-- Promo Input -->
             <div style="display: flex; gap: 8px; margin-bottom: 20px;">
-              <input type="text" id="cart-coupon-input" placeholder="Kode Kupon (ECOPERIOD)" class="form-input" style="flex: 1; font-size: 0.8rem; text-transform: uppercase;">
-              <button class="btn btn-secondary btn-sm" onclick="applyPromoCode()">Pasang</button>
+              <input type="text" id="cart-coupon-input" placeholder="Promo Code (ECOPERIOD)" class="form-input" style="flex: 1; font-size: 0.8rem; text-transform: uppercase;">
+              <button class="btn btn-secondary btn-sm" onclick="applyPromoCode()">Apply</button>
             </div>
 
             <!-- Pricing breakdown -->
@@ -559,21 +559,21 @@
                 <strong id="full-cart-subtotal" style="color: var(--color-primary);">Rp 0</strong>
               </div>
               <div style="display: flex; justify-content: space-between; color: var(--color-text-muted);">
-                <span>Ongkos Kirim</span>
-                <strong id="full-cart-shipping" style="color: var(--color-success);">GRATIS</strong>
+                <span>Shipping Fee</span>
+                <strong id="full-cart-shipping" style="color: var(--color-success);">FREE</strong>
               </div>
               <div style="display: flex; justify-content: space-between; font-size: 1.1rem; font-weight: 800; color: var(--color-primary); border-top: 1px solid var(--color-border); padding-top: 14px; margin-top: 4px;">
-                <span>Total Estimasi</span>
+                <span>Estimated Total</span>
                 <span id="full-cart-grandtotal">Rp 0</span>
               </div>
             </div>
 
             <button class="btn btn-primary btn-block btn-lg" onclick="handleProceedToCheckout()" style="width: 100%; margin-bottom: 12px;">
-              Lanjut ke Checkout →
+              Proceed to Checkout →
             </button>
 
             <button class="btn btn-outline btn-block btn-sm" onclick="navigateTo('shop')" style="width: 100%;">
-              ← Lanjut Belanja
+              ← Continue Shopping
             </button>
           </div>
         </div>
@@ -1550,17 +1550,17 @@
 
               <div class="qris-timer-pill">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                <span>Batas Waktu Pembayaran: <strong id="qris-countdown-timer">14:59</strong></span>
+                <span>Payment Time Remaining: <strong id="qris-countdown-timer">14:59</strong></span>
               </div>
 
               <p style="font-size: 0.8rem; color: var(--color-text-muted); margin-top: 14px; line-height: 1.5;">
-                Dapat discan menggunakan aplikasi: <strong>GoPay, OVO, DANA, ShopeePay, BCA Mobile, Livin' by Mandiri, BRImo, BNI Mobile</strong>, atau semua aplikasi e-wallet & m-banking berlogo QRIS.
+                Scannable via e-wallet & mobile banking apps: <strong>GoPay, OVO, DANA, ShopeePay, BCA Mobile, Livin' Mandiri, BRImo, BNI Mobile</strong>, or any QRIS-compatible app.
               </p>
             </div>
 
             <!-- 2. M-Banking / Virtual Account Section -->
             <div id="va-section" style="display: none;">
-              <label style="font-size: 0.88rem; font-weight: 700; color: var(--color-primary); margin-bottom: 8px; display: block;">Pilih Bank Virtual Account:</label>
+              <label style="font-size: 0.88rem; font-weight: 700; color: var(--color-primary); margin-bottom: 8px; display: block;">Select Virtual Account Bank:</label>
               
               <div class="bank-selector-grid">
                 <button type="button" class="bank-option-btn active" onclick="selectBankVA('bca', this)">BCA VA</button>
@@ -1572,23 +1572,23 @@
               <div class="va-display-card">
                 <div style="display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--color-text-muted);">
                   <span id="va-bank-name">BCA Virtual Account</span>
-                  <span>Otomatis Terverifikasi 24/7</span>
+                  <span>Automatically Verified 24/7</span>
                 </div>
                 <div class="va-number-row">
                   <div class="va-number-text" id="va-number-display">8277 0812 8921 3401</div>
                   <button type="button" class="btn btn-secondary btn-sm" onclick="copyVirtualAccount()" style="padding: 6px 14px; font-size: 0.78rem;">
-                    Salin No. VA
+                    Copy VA No.
                   </button>
                 </div>
                 <div style="font-size: 0.78rem; color: var(--color-text-muted); line-height: 1.5;">
-                  Transfer tepat sesuai total belanja. Pembayaran akan dicek otomatis dalam 1-2 menit tanpa perlu upload bukti transfer.
+                  Transfer the exact amount. Payment is automatically verified within 1-2 minutes without uploading payment receipts.
                 </div>
               </div>
             </div>
 
             <!-- 3. E-Wallet Section -->
             <div id="ewallet-section" style="display: none;">
-              <label style="font-size: 0.88rem; font-weight: 700; color: var(--color-primary); margin-bottom: 8px; display: block;">Pilih Dompet Digital (E-Wallet):</label>
+              <label style="font-size: 0.88rem; font-weight: 700; color: var(--color-primary); margin-bottom: 8px; display: block;">Select E-Wallet Account:</label>
               
               <div class="ewallet-selector-grid">
                 <button type="button" class="ewallet-option-btn active" onclick="selectEWallet('gopay', this)">GoPay</button>
@@ -1598,10 +1598,10 @@
               </div>
 
               <div class="form-group">
-                <label>Nomor HP / Akun E-Wallet Terdaftar</label>
+                <label>Registered Phone Number / E-Wallet ID</label>
                 <input type="tel" id="ewallet-phone-input" class="form-input" value="0812-8921-3401" placeholder="0812-xxxx-xxxx">
                 <small style="color: var(--color-text-muted); font-size: 0.75rem; display: block; margin-top: 6px;">
-                  Notifikasi konfirmasi pembayaran akan dikirimkan langsung ke aplikasi e-wallet Anda saat menekan tombol pesan.
+                  A push confirmation notification will be sent directly to your e-wallet app when you place the order.
                 </small>
               </div>
             </div>
@@ -1614,34 +1614,34 @@
                 <div class="card-preview-number" id="card-preview-num">4532 •••• •••• 8892</div>
                 <div class="card-preview-details">
                   <div>
-                    <small style="opacity: 0.7; font-size: 0.65rem;">PEMEGANG KARTU</small>
+                    <small style="opacity: 0.7; font-size: 0.65rem;">CARD HOLDER</small>
                     <div id="card-preview-holder">MAYA SARTIKA</div>
                   </div>
                   <div>
-                    <small style="opacity: 0.7; font-size: 0.65rem;">BERLAKU S/D</small>
+                    <small style="opacity: 0.7; font-size: 0.65rem;">EXPIRES END</small>
                     <div id="card-preview-exp">12/28</div>
                   </div>
                 </div>
               </div>
 
               <div class="form-group">
-                <label>Nomor Kartu (Visa, Mastercard, GPN)</label>
+                <label>Card Number (Visa, Mastercard, Amex)</label>
                 <input type="text" class="form-input" placeholder="4532 8890 1234 5678" maxlength="19" oninput="formatCreditCardNumber(this)">
               </div>
 
               <div class="form-grid-2">
                 <div class="form-group">
-                  <label>Masa Berlaku (BB/TT)</label>
+                  <label>Expiration Date (MM/YY)</label>
                   <input type="text" class="form-input" placeholder="12/28" maxlength="5" oninput="formatCardExpiry(this)">
                 </div>
                 <div class="form-group">
-                  <label>Kode Keamanan CVV</label>
+                  <label>CVV Security Code</label>
                   <input type="password" class="form-input" placeholder="•••" maxlength="4">
                 </div>
               </div>
 
               <div class="form-group">
-                <label>Nama Sesuai Kartu</label>
+                <label>Cardholder Name</label>
                 <input type="text" class="form-input" value="Maya Sartika" oninput="updateCardName(this)">
               </div>
             </div>
@@ -1651,18 +1651,18 @@
               <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--color-secondary); color: #fff; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22v-8.3"/><path d="M12 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/><path d="m21 16-5.5 3-3.5-2-3.5 2L3 16"/></svg>
               </div>
-              <h4 style="font-size: 1.05rem; margin-bottom: 6px; color: var(--color-primary);">Bayar Tunai di Tempat (COD)</h4>
+              <h4 style="font-size: 1.05rem; margin-bottom: 6px; color: var(--color-primary);">Cash on Delivery (COD)</h4>
               <p style="color: var(--color-text-muted); font-size: 0.82rem; line-height: 1.5; max-width: 380px; margin: 0 auto;">
-                Siapkan uang pas saat kurir SiCepat / J&T tiba di alamat Anda. Pesanan Anda tetap dikemas dalam kardus ramah lingkungan 100% aman dan rahasia.
+                Please prepare exact cash when your EcoFleet courier arrives. Your package is discreetly packed in 100% recyclable materials.
               </p>
             </div>
 
             <!-- Complete Order CTA -->
             <button id="complete-order-btn" class="btn btn-primary btn-block btn-lg" style="margin-top: 24px;" onclick="submitCheckoutOrder(event)">
-              Bayar Sekarang & Selesaikan Pesanan
+              Pay Now & Complete Order
             </button>
             <div style="text-align: center; font-size: 0.75rem; color: var(--color-text-muted); margin-top: 10px;">
-              Enkripsi 256-Bit SSL Standar Perbankan • Garansi 30 Hari Pengembalian
+              256-Bit SSL Bank-Grade Encryption • 30-Day Money Back Guarantee
             </div>
           </div>
 
@@ -1671,7 +1671,7 @@
         <!-- Order Summary Column -->
         <div>
           <div class="order-summary-card">
-            <h3 style="font-size: 1.3rem; margin-bottom: 18px; color: var(--color-primary);">Ringkasan Belanja</h3>
+            <h3 style="font-size: 1.3rem; margin-bottom: 18px; color: var(--color-primary);">Order Summary</h3>
             
             <div class="summary-items-list" id="checkout-summary-items">
               <!-- Populated by JavaScript -->
@@ -1679,19 +1679,19 @@
 
             <!-- Coupon Code Field -->
             <div class="coupon-input-group">
-              <input type="text" id="checkout-coupon-input" placeholder="KODE PROMO (ECOPERIOD)" class="form-input" style="flex-grow: 1; font-size: 0.85rem; text-transform: uppercase;">
-              <button class="btn btn-secondary btn-sm" onclick="applyPromoCode()">Gunakan</button>
+              <input type="text" id="checkout-coupon-input" placeholder="PROMO CODE (ECOPERIOD)" class="form-input" style="flex-grow: 1; font-size: 0.85rem; text-transform: uppercase;">
+              <button class="btn btn-secondary btn-sm" onclick="applyPromoCode()">Apply</button>
             </div>
 
             <!-- Add-ons in checkout -->
             <div style="margin-bottom: 16px; display: flex; flex-direction: column; gap: 8px; font-size: 0.82rem;">
               <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
                 <input type="checkbox" onchange="toggleTreeDonation(this.checked)">
-                <span>Tanam 1 Bibit Pohon Mangrove (+Rp 15.000 menyerap 12kg CO2)</span>
+                <span>Plant 1 Mangrove Tree Seedling (+$1.00 / Rp 15,000 offsets 12kg CO2)</span>
               </label>
               <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
                 <input type="checkbox" onchange="toggleGiftWrapping(this.checked)">
-                <span>Kotak Kado Ramah Lingkungan & Kartu Ucapan (+Rp 20.000)</span>
+                <span>Eco Gift Box Packaging & Greeting Card (+$1.50 / Rp 20,000)</span>
               </label>
             </div>
 
@@ -2132,9 +2132,9 @@
       <!-- Simplified Tracker Header Banner -->
       <div class="cycle-hero-banner">
         <span class="section-tag">Cycle Science & Natural Care</span>
-        <h1 class="section-title">Kalender & Siklus Menstruasi</h1>
+        <h1 class="section-title">Menstrual Cycle & Health Calendar</h1>
         <p class="section-subtitle">
-          Hitung dan pelajari 4 fase biologis tubuh Anda dengan perhitungan medis yang akurat. Klik tanggal mana pun pada kalender untuk mencatat aliran, gejala, atau catatan pribadi.
+          Track and understand the 4 biological phases of your body with accurate medical algorithms. Click any date on the calendar to log flow intensity, physical symptoms, or personal journal notes.
         </p>
       </div>
 
@@ -2144,33 +2144,33 @@
           <div class="cycle-form-grid">
             
             <div class="form-group">
-              <label class="form-label" for="cycle-start-date-input">Hari Pertama Haid Terakhir</label>
+              <label class="form-label" for="cycle-start-date-input">First Day of Last Period</label>
               <input type="date" id="cycle-start-date-input" class="form-input" required>
-              <span class="form-hint">Awal keluarnya darah haid terakhir</span>
+              <span class="form-hint">Start date of your most recent period</span>
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="cycle-avg-length-input">Panjang Siklus (Hari)</label>
+              <label class="form-label" for="cycle-avg-length-input">Cycle Length (Days)</label>
               <div style="display: flex; align-items: center; gap: 8px;">
                 <input type="number" id="cycle-avg-length-input" min="20" max="45" value="28" class="form-input" style="width: 80px; text-align: center; font-weight: 700;" required>
-                <span class="badge-subtle">Normal: 21-35 hari</span>
+                <span class="badge-subtle">Normal: 21-35 days</span>
               </div>
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="cycle-duration-input">Lama Haid (Hari)</label>
+              <label class="form-label" for="cycle-duration-input">Period Duration (Days)</label>
               <div style="display: flex; align-items: center; gap: 8px;">
                 <input type="number" id="cycle-duration-input" min="2" max="10" value="5" class="form-input" style="width: 80px; text-align: center; font-weight: 700;" required>
-                <span class="badge-subtle">Normal: 3-7 hari</span>
+                <span class="badge-subtle">Normal: 3-7 days</span>
               </div>
             </div>
 
             <div class="form-group" style="display: flex; gap: 8px; align-items: flex-end;">
               <button type="submit" class="btn btn-primary" style="flex: 1;">
-                Hitung Siklus
+                Calculate Cycle
               </button>
-              <button type="button" class="btn btn-outline" onclick="prefillCycleDemoData()" title="Muat contoh siklus 28 hari">
-                Contoh
+              <button type="button" class="btn btn-outline" onclick="prefillCycleDemoData()" title="Load 28-day demo cycle">
+                Demo
               </button>
             </div>
 
@@ -2178,10 +2178,10 @@
 
           <!-- Quick Preset Chips -->
           <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--color-border);">
-            <small style="font-size: 0.72rem; font-weight: 800; color: var(--color-text-muted); text-transform: uppercase;">Pilih Cepat:</small>
-            <button type="button" class="btn btn-outline btn-sm" onclick="setCyclePreset(28, 5)" style="padding: 4px 10px; font-size: 0.74rem;">28 Hari Normal</button>
-            <button type="button" class="btn btn-outline btn-sm" onclick="setCyclePreset(30, 6)" style="padding: 4px 10px; font-size: 0.74rem;">30 Hari (6 Hari Haid)</button>
-            <button type="button" class="btn btn-outline btn-sm" onclick="setCyclePreset(25, 4)" style="padding: 4px 10px; font-size: 0.74rem;">25 Hari Singkat</button>
+            <small style="font-size: 0.72rem; font-weight: 800; color: var(--color-text-muted); text-transform: uppercase;">Quick Presets:</small>
+            <button type="button" class="btn btn-outline btn-sm" onclick="setCyclePreset(28, 5)" style="padding: 4px 10px; font-size: 0.74rem;">28 Days Normal</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="setCyclePreset(30, 6)" style="padding: 4px 10px; font-size: 0.74rem;">30 Days (6 Period Days)</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="setCyclePreset(25, 4)" style="padding: 4px 10px; font-size: 0.74rem;">25 Days Short</button>
           </div>
         </form>
       </div>
@@ -2197,24 +2197,24 @@
         <div class="calendar-card">
           
           <div class="calendar-header">
-            <button class="cal-nav-btn" onclick="changeCalendarMonth(-1)" title="Bulan Sebelumnya">
+            <button class="cal-nav-btn" onclick="changeCalendarMonth(-1)" title="Previous Month">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
             </button>
             <div class="cal-month-display">
-              <h2 id="calendar-month-year-label" class="cal-month-title">Agustus 2026</h2>
-              <span id="calendar-phase-pill" class="cal-phase-pill">Prediksi Siklus Aktif</span>
+              <h2 id="calendar-month-year-label" class="cal-month-title">August 2026</h2>
+              <span id="calendar-phase-pill" class="cal-phase-pill">Active Cycle Prediction</span>
             </div>
             <div style="display: flex; gap: 6px;">
-              <button class="cal-nav-btn" onclick="changeCalendarMonth(1)" title="Bulan Berikutnya">
+              <button class="cal-nav-btn" onclick="changeCalendarMonth(1)" title="Next Month">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
               </button>
-              <button class="btn btn-outline btn-sm" onclick="goToCurrentMonth()" style="padding: 6px 12px; font-size: 0.72rem;">Hari Ini</button>
+              <button class="btn btn-outline btn-sm" onclick="goToCurrentMonth()" style="padding: 6px 12px; font-size: 0.72rem;">Today</button>
             </div>
           </div>
 
           <!-- Weekdays Header -->
           <div class="calendar-weekdays">
-            <span>Sen</span> <span>Sel</span> <span>Rab</span> <span>Kam</span> <span>Jum</span> <span>Sab</span> <span>Min</span>
+            <span>Mon</span> <span>Tue</span> <span>Wed</span> <span>Thu</span> <span>Fri</span> <span>Sat</span> <span>Sun</span>
           </div>
 
           <!-- Calendar Days Grid -->
@@ -2224,15 +2224,15 @@
 
           <!-- Clear Minimalist Legend Bar -->
           <div class="calendar-legend">
-            <div class="legend-item"><span class="legend-dot period-dot"></span><span>Menstruasi (Hari 1-5)</span></div>
-            <div class="legend-item"><span class="legend-dot follicular-dot"></span><span>Folikular (Estrogen Naik)</span></div>
-            <div class="legend-item"><span class="legend-dot fertile-dot"></span><span>Ovulasi</span></div>
-            <div class="legend-item"><span class="legend-dot luteal-dot"></span><span>Luteal / PMS (Progesteron)</span></div>
-            <div class="legend-item"><span class="legend-dot note-dot"></span><span>Catatan Tercatat</span></div>
+            <div class="legend-item"><span class="legend-dot period-dot"></span><span>Menstrual (Days 1-5)</span></div>
+            <div class="legend-item"><span class="legend-dot follicular-dot"></span><span>Follicular (Estrogen Rise)</span></div>
+            <div class="legend-item"><span class="legend-dot fertile-dot"></span><span>Ovulation</span></div>
+            <div class="legend-item"><span class="legend-dot luteal-dot"></span><span>Luteal / PMS (Progesterone)</span></div>
+            <div class="legend-item"><span class="legend-dot note-dot"></span><span>Logged Note</span></div>
           </div>
 
           <div class="calendar-click-hint">
-            <span>Klik pada tanggal mana pun di atas untuk membuka pop-up pencatatan pendarahan (flow), gejala tubuh, dan catatan harian Anda.</span>
+            <span>Click any date above to open the interactive logger for flow intensity, physical symptoms, and personal journal notes.</span>
           </div>
 
         </div>
@@ -2248,10 +2248,10 @@
           <!-- Sticky Modal Header -->
           <div class="popup-modal-header">
             <div>
-              <span class="popup-phase-pill" id="popup-phase-badge">Fase Menstruasi • Hari ke-1</span>
-              <h3 class="popup-modal-title" id="popup-date-title">Rabu, 12 Agustus 2026</h3>
+              <span class="popup-phase-pill" id="popup-phase-badge">Menstrual Phase • Day 1</span>
+              <h3 class="popup-modal-title" id="popup-date-title">Wednesday, August 12, 2026</h3>
             </div>
-            <button type="button" class="popup-close-btn" onclick="closeCycleDatePopup()" title="Tutup Pop-up (Esc)">
+            <button type="button" class="popup-close-btn" onclick="closeCycleDatePopup()" title="Close Popup (Esc)">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
             </button>
           </div>
@@ -2262,29 +2262,29 @@
             <!-- Section 1: Flow Intensity Selector -->
             <div class="popup-section">
               <div class="popup-section-header">
-                <label class="popup-section-label">Tingkat Pendarahan (Flow)</label>
-                <span class="popup-live-tag" id="popup-flow-selected-label">Tidak Haid</span>
+                <label class="popup-section-label">Flow Intensity</label>
+                <span class="popup-live-tag" id="popup-flow-selected-label">No Flow</span>
               </div>
               <div class="popup-flow-grid" id="popup-flow-grid">
                 <button type="button" class="flow-pill-btn" data-flow="none" onclick="setPopupFlow('none')">
                   <span class="flow-dot flow-none-dot"></span>
-                  <span>Tidak Haid</span>
+                  <span>No Flow</span>
                 </button>
                 <button type="button" class="flow-pill-btn" data-flow="spotting" onclick="setPopupFlow('spotting')">
                   <span class="flow-dot flow-spotting-dot"></span>
-                  <span>Flek</span>
+                  <span>Spotting</span>
                 </button>
                 <button type="button" class="flow-pill-btn" data-flow="light" onclick="setPopupFlow('light')">
                   <span class="flow-dot flow-light-dot"></span>
-                  <span>Ringan</span>
+                  <span>Light</span>
                 </button>
                 <button type="button" class="flow-pill-btn" data-flow="medium" onclick="setPopupFlow('medium')">
                   <span class="flow-dot flow-medium-dot"></span>
-                  <span>Sedang</span>
+                  <span>Medium</span>
                 </button>
                 <button type="button" class="flow-pill-btn" data-flow="heavy" onclick="setPopupFlow('heavy')">
                   <span class="flow-dot flow-heavy-dot"></span>
-                  <span>Deras</span>
+                  <span>Heavy</span>
                 </button>
               </div>
             </div>
@@ -2293,25 +2293,25 @@
             <div class="popup-start-btn-row">
               <button type="button" class="popup-set-start-btn" id="popup-set-start-btn" onclick="setPopupDateAsCycleStart()">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                <span>Jadikan Hari Pertama Haid Baru</span>
+                <span>Set as New Period Start Date</span>
               </button>
             </div>
 
             <!-- Section 2: Quick Mood & Energy Selector -->
             <div class="popup-section">
-              <label class="popup-section-label">Kondisi Mood & Energi Tubuh</label>
+              <label class="popup-section-label">Mood & Energy State</label>
               <div class="popup-mood-grid" id="popup-mood-grid">
-                <button type="button" class="mood-pill-btn" data-mood="Energi Tinggi & Produktif" onclick="togglePopupMood('Energi Tinggi & Produktif')">
-                  <span>Energi Tinggi</span>
+                <button type="button" class="mood-pill-btn" data-mood="High Energy & Productive" onclick="togglePopupMood('High Energy & Productive')">
+                  <span>High Energy</span>
                 </button>
-                <button type="button" class="mood-pill-btn" data-mood="Tenang & Rileks" onclick="togglePopupMood('Tenang & Rileks')">
-                  <span>Tenang & Rileks</span>
+                <button type="button" class="mood-pill-btn" data-mood="Calm & Relaxed" onclick="togglePopupMood('Calm & Relaxed')">
+                  <span>Calm & Relaxed</span>
                 </button>
-                <button type="button" class="mood-pill-btn" data-mood="Sensitif & Emosional" onclick="togglePopupMood('Sensitif & Emosional')">
-                  <span>Sensitif / PMS</span>
+                <button type="button" class="mood-pill-btn" data-mood="Sensitive & Emotional" onclick="togglePopupMood('Sensitive & Emotional')">
+                  <span>Sensitive / PMS</span>
                 </button>
-                <button type="button" class="mood-pill-btn" data-mood="Lelah & Butuh Istirahat" onclick="togglePopupMood('Lelah & Butuh Istirahat')">
-                  <span>Lelah / Kram</span>
+                <button type="button" class="mood-pill-btn" data-mood="Tired & Resting" onclick="togglePopupMood('Tired & Resting')">
+                  <span>Tired / Cramps</span>
                 </button>
               </div>
             </div>
@@ -2319,8 +2319,8 @@
             <!-- Section 3: Body Symptoms & Sensations -->
             <div class="popup-section">
               <div class="popup-section-header">
-                <label class="popup-section-label">Gejala & Sensasi Tubuh</label>
-                <span class="popup-sub-hint" id="popup-symptom-count-hint">Klik untuk memilih</span>
+                <label class="popup-section-label">Symptoms & Body Signals</label>
+                <span class="popup-sub-hint" id="popup-symptom-count-hint">Click to select</span>
               </div>
               <div class="popup-symptoms-chips" id="popup-symptoms-chips">
                 <!-- Populated dynamically -->
@@ -2330,10 +2330,10 @@
             <!-- Section 4: Personal Notes & Journal -->
             <div class="popup-section">
               <div class="popup-section-header">
-                <label class="popup-section-label" for="popup-notes-input">Catatan & Jurnal Harian</label>
-                <span class="popup-sub-hint">Disimpan secara lokal di browser</span>
+                <label class="popup-section-label" for="popup-notes-input">Daily Journal Notes</label>
+                <span class="popup-sub-hint">Saved locally in browser</span>
               </div>
-              <textarea id="popup-notes-input" class="popup-notes-textarea" rows="2" placeholder="Tulis catatan tubuh, mood, keluhan fisik, suplemen, atau ritual hangat..." oninput="handlePopupNotesInput()"></textarea>
+              <textarea id="popup-notes-input" class="popup-notes-textarea" rows="2" placeholder="Log physical sensations, mood, warm rituals, or notes..." oninput="handlePopupNotesInput()"></textarea>
             </div>
 
           </div>
@@ -2341,14 +2341,14 @@
           <!-- Sticky Modal Footer with Actions -->
           <div class="popup-modal-footer">
             <button type="button" class="btn btn-outline btn-sm" onclick="clearPopupDateLog()" style="color: var(--color-text-muted); font-size: 0.78rem;">
-              Reset Catatan
+              Reset Log
             </button>
             <div style="display: flex; gap: 8px;">
               <button type="button" class="btn btn-secondary btn-sm" onclick="closeCycleDatePopup()" style="font-size: 0.8rem; padding: 7px 14px;">
-                Tutup
+                Close
               </button>
               <button type="button" class="btn btn-primary btn-sm" onclick="savePopupDataDirectly()" style="padding: 7px 22px; font-size: 0.82rem; font-weight: 800;">
-                Simpan
+                Save Log
               </button>
             </div>
           </div>
@@ -2365,11 +2365,11 @@
           <!-- Sticky Header -->
           <div class="phase-popup-header">
             <div>
-              <span class="phase-popup-badge" id="phase-popup-badge">Hari 1–5</span>
-              <h3 class="phase-popup-title" id="phase-popup-title">Fase Menstruasi</h3>
-              <span class="phase-popup-dates" id="phase-popup-dates">21 Agu – 27 Agu</span>
+              <span class="phase-popup-badge" id="phase-popup-badge">Days 1–5</span>
+              <h3 class="phase-popup-title" id="phase-popup-title">Menstrual Phase</h3>
+              <span class="phase-popup-dates" id="phase-popup-dates">Aug 21 – Aug 27</span>
             </div>
-            <button type="button" class="popup-close-btn" onclick="closePhaseDetailPopup()" title="Tutup (Esc)">
+            <button type="button" class="popup-close-btn" onclick="closePhaseDetailPopup()" title="Close (Esc)">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
             </button>
           </div>
@@ -2382,10 +2382,10 @@
           <!-- Sticky Footer Actions -->
           <div class="phase-popup-footer">
             <button type="button" class="btn btn-outline btn-sm" onclick="highlightAndJumpToCalendar()" style="font-size: 0.8rem;">
-              📅 Sorot Tanggal di Kalender
+              📅 Highlight Date on Calendar
             </button>
             <button type="button" class="btn btn-primary btn-sm" onclick="closePhaseDetailPopup()" style="padding: 8px 24px; font-size: 0.82rem; font-weight: 800;">
-              Selesai Membaca
+              Close Details
             </button>
           </div>
 
@@ -2399,9 +2399,9 @@
         
         <div style="text-align: center; max-width: 680px; margin: 0 auto 24px;">
           <span class="section-tag">Biological Cycle Logic</span>
-          <h2 style="font-size: 1.35rem; color: var(--color-primary); margin-bottom: 6px;">Pola 4 Fase Hormonal Dalam Siklus Anda</h2>
+          <h2 style="font-size: 1.35rem; color: var(--color-primary); margin-bottom: 6px;">The 4 Biological Phases of Your Cycle</h2>
           <p style="font-size: 0.86rem; color: var(--color-text-muted);">
-            Tubuh perempuan mengalami fluktuasi hormon alami setiap siklus. Kenali ritme biologis tubuh Anda untuk energi dan perawatan optimal.
+            Understand your natural hormonal rhythm for optimal wellness, nutrition, and self-care during every phase.
           </p>
         </div>
 
@@ -2414,10 +2414,10 @@
         <div class="conclusion-card" style="margin-top: 24px;">
           <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
             <div>
-              <h3 style="font-size: 1.15rem; color: var(--color-primary); margin-bottom: 2px;">Evaluasi Medis Keteraturan Siklus</h3>
-              <p style="font-size: 0.8rem; color: var(--color-text-muted);">Dianalisis berdasarkan standar kesehatan reproduksi wanita (The American College of Obstetricians and Gynecologists).</p>
+              <h3 style="font-size: 1.15rem; color: var(--color-primary); margin-bottom: 2px;">Medical Evaluation of Cycle Regularity</h3>
+              <p style="font-size: 0.8rem; color: var(--color-text-muted);">Evaluated based on American College of Obstetricians and Gynecologists (ACOG) reproductive wellness standards.</p>
             </div>
-            <span class="conclusion-badge-health" id="cycle-health-status-badge">Siklus Teratur & Sehat</span>
+            <span class="conclusion-badge-health" id="cycle-health-status-badge">Regular & Healthy Cycle</span>
           </div>
           
           <p id="cycle-conclusion-summary" style="font-size: 0.88rem; line-height: 1.7; color: var(--color-text-main); margin-bottom: 18px;">
@@ -2426,28 +2426,28 @@
 
           <div class="analysis-stats-row">
             <div class="analysis-stat-card">
-              <span class="stat-label">Panjang Siklus Anda</span>
-              <strong class="stat-value" id="stat-avg-cycle-len">28 Hari</strong>
-              <span class="stat-sub">Rentang Normal: 21–35 hari</span>
+              <span class="stat-label">Your Cycle Length</span>
+              <strong class="stat-value" id="stat-avg-cycle-len">28 Days</strong>
+              <span class="stat-sub">Normal Range: 21–35 days</span>
             </div>
             <div class="analysis-stat-card">
-              <span class="stat-label">Lama Pendarahan Haid</span>
-              <strong class="stat-value" id="stat-avg-duration">5 Hari</strong>
-              <span class="stat-sub">Rentang Normal: 3–7 hari</span>
+              <span class="stat-label">Period Duration</span>
+              <strong class="stat-value" id="stat-avg-duration">5 Days</strong>
+              <span class="stat-sub">Normal Range: 3–7 days</span>
             </div>
             <div class="analysis-stat-card">
-              <span class="stat-label">Jendela Ovulasi</span>
-              <strong class="stat-value" id="stat-fertile-window">Hari ke-9 s/d 14</strong>
-              <span class="stat-sub">Puncak Ovulasi: Hari ke-14</span>
+              <span class="stat-label">Fertile Window</span>
+              <strong class="stat-value" id="stat-fertile-window">Days 9 to 14</strong>
+              <span class="stat-sub">Peak Ovulation: Day 14</span>
             </div>
           </div>
 
           <div style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
             <button class="btn btn-outline btn-sm" onclick="copyCycleReportToClipboard()">
-              Salin Ringkasan Laporan Siklus
+              Copy Cycle Report Summary
             </button>
             <button class="btn btn-outline btn-sm" onclick="window.print()">
-              Cetak Laporan
+              Print Report
             </button>
           </div>
         </div>
@@ -2456,9 +2456,9 @@
         <div class="matchmaker-full-card" style="margin-top: 24px;">
           <div style="max-width: 680px; margin-bottom: 20px;">
             <span class="section-tag">Cycle-Synced Care Kit</span>
-            <h3 style="font-size: 1.25rem; color: var(--color-primary); margin-bottom: 4px;">Paket Pembalut Organik Sesuai Kebutuhan Siklus Anda</h3>
+            <h3 style="font-size: 1.25rem; color: var(--color-primary); margin-bottom: 4px;">Cycle-Synced Organic Pad Care Suite</h3>
             <p style="font-size: 0.84rem; color: var(--color-text-muted); line-height: 1.6;">
-              Dihitung otomatis sesuai durasi haid dan profil aliran Anda. 100% serat bambu organik, bebas klorin, dan biodegradable.
+              Automatically tailored to your duration and flow profile. 100% organic bamboo fiber, chlorine-free, and biodegradable.
             </p>
           </div>
 
@@ -2468,11 +2468,11 @@
 
           <div class="matchmaker-pricing-row">
             <div>
-              <span style="font-size: 0.76rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.04em;">Total Estimasi Bulanan:</span>
+              <span style="font-size: 0.76rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.04em;">Estimated Monthly Total:</span>
               <div class="matchmaker-price-val" id="matchmaker-bundle-price">Rp 113.000</div>
             </div>
             <button class="btn btn-primary" onclick="addCycleBundleToCart()">
-              Tambah Paket ke Keranjang
+              Add Suite to Cart
             </button>
           </div>
         </div>
@@ -2489,8 +2489,8 @@
     <div class="modal-dialog" style="max-width: 520px;">
       <div class="modal-header">
         <div>
-          <h3 id="date-logger-modal-title" style="font-size: 1.15rem; color: var(--color-primary); margin-bottom: 2px;">Catatan Tanggal</h3>
-          <span id="date-logger-modal-subtitle" style="font-size: 0.8rem; color: var(--color-text-muted);">Pilih intensitas aliran dan gejala yang Anda rasakan</span>
+          <h3 id="date-logger-modal-title" style="font-size: 1.15rem; color: var(--color-primary); margin-bottom: 2px;">Log Date Entry</h3>
+          <span id="date-logger-modal-subtitle" style="font-size: 0.8rem; color: var(--color-text-muted);">Select flow intensity, symptoms, and personal notes</span>
         </div>
         <button class="modal-close-btn" onclick="closeCycleDateLogger()">✕</button>
       </div>
@@ -2499,27 +2499,27 @@
         
         <!-- Flow Intensity -->
         <div class="logger-section">
-          <label class="form-label" style="font-weight: 700; color: var(--color-primary);">Intensitas Aliran Darah (Flow Level)</label>
+          <label class="form-label" style="font-weight: 700; color: var(--color-primary);">Flow Intensity</label>
           <div class="flow-selector-grid">
             <label class="flow-option-label">
               <input type="radio" name="logger-flow-val" value="none" checked>
-              <span>Tidak Ada</span>
+              <span>None</span>
             </label>
             <label class="flow-option-label">
               <input type="radio" name="logger-flow-val" value="spotting">
-              <span>Spotting / Flek</span>
+              <span>Spotting</span>
             </label>
             <label class="flow-option-label">
               <input type="radio" name="logger-flow-val" value="light">
-              <span>Ringan</span>
+              <span>Light</span>
             </label>
             <label class="flow-option-label">
               <input type="radio" name="logger-flow-val" value="medium">
-              <span>Sedang</span>
+              <span>Medium</span>
             </label>
             <label class="flow-option-label">
               <input type="radio" name="logger-flow-val" value="heavy">
-              <span>Deras</span>
+              <span>Heavy</span>
             </label>
           </div>
         </div>
@@ -2527,8 +2527,8 @@
         <!-- Symptoms & Body Signals -->
         <div class="logger-section" style="margin-top: 20px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <label class="form-label" style="font-weight: 700; color: var(--color-primary); margin-bottom: 0;">Gejala & Sensasi Tubuh</label>
-            <span style="font-size: 0.74rem; color: var(--color-text-muted);">Bisa pilih lebih dari satu</span>
+            <label class="form-label" style="font-weight: 700; color: var(--color-primary); margin-bottom: 0;">Symptoms & Body Signals</label>
+            <span style="font-size: 0.74rem; color: var(--color-text-muted);">Select all that apply</span>
           </div>
           <div class="symptoms-chips-grid" id="modal-symptoms-chips-grid">
             <!-- Dynamically populated including custom tags -->
@@ -2537,17 +2537,17 @@
 
         <!-- Daily Personal Note -->
         <div class="logger-section" style="margin-top: 20px;">
-          <label class="form-label" for="date-logger-notes-input" style="font-weight: 700; color: var(--color-primary);">Catatan Harian Pribadi</label>
-          <textarea id="date-logger-notes-input" class="form-input" rows="3" placeholder="Tuliskan catatan harian (misal: minum teh jahe hangat, tidur cukup, suasana hati tenang)..." style="font-size: 0.85rem; border-radius: var(--radius-sm);"></textarea>
+          <label class="form-label" for="date-logger-notes-input" style="font-weight: 700; color: var(--color-primary);">Daily Journal Notes</label>
+          <textarea id="date-logger-notes-input" class="form-input" rows="3" placeholder="Write notes (e.g. drank warm ginger tea, rested well, felt calm)..." style="font-size: 0.85rem; border-radius: var(--radius-sm);"></textarea>
         </div>
 
       </div>
 
       <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-top: 1px solid var(--color-border);">
-        <button type="button" class="btn btn-sm" style="color: var(--color-error);" onclick="deleteCurrentDateLog()">Hapus Catatan</button>
+        <button type="button" class="btn btn-sm" style="color: var(--color-error);" onclick="deleteCurrentDateLog()">Delete Log</button>
         <div style="display: flex; gap: 8px;">
-          <button type="button" class="btn btn-outline btn-sm" onclick="closeCycleDateLogger()">Batal</button>
-          <button type="button" class="btn btn-primary btn-sm" onclick="saveCycleDateLog()">Simpan Catatan</button>
+          <button type="button" class="btn btn-outline btn-sm" onclick="closeCycleDateLogger()">Cancel</button>
+          <button type="button" class="btn btn-primary btn-sm" onclick="saveCycleDateLog()">Save Log</button>
         </div>
       </div>
 

@@ -36,7 +36,7 @@ function handleAdminSignOut() {
 
   store.save();
   if (typeof updateHeaderAuthUI === 'function') updateHeaderAuthUI();
-  showToast('Admin berhasil keluar dari sistem.', 'success');
+  showToast('Admin signed out successfully.', 'success');
   navigateTo('home');
 }
 
@@ -406,7 +406,7 @@ function renderAdminProductsTable() {
         <td>
           <div style="display:flex; gap:6px;">
             <button type="button" class="btn btn-outline btn-sm" onclick="openEditProductModal('${p.id}')">Edit</button>
-            <button type="button" class="btn btn-outline btn-sm" onclick="deleteAdminProduct('${p.id}')" style="color:var(--color-error); border-color:rgba(186,50,50,0.3);">Hapus</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="deleteAdminProduct('${p.id}')" style="color:var(--color-error); border-color:rgba(186,50,50,0.3);">Delete</button>
           </div>
         </td>
       </tr>
@@ -549,11 +549,11 @@ async function saveAdminProductForm(e) {
     renderCatalogGrid();
   }
 
-  showToast('Data produk & gambar berhasil diperbarui dan tersinkronisasi ke katalog customer!', 'success');
+  showToast('Product data & image updated successfully and synced to catalog!', 'success');
 }
 
 async function deleteAdminProduct(productId) {
-  if (confirm('Apakah Anda yakin ingin menghapus produk ini dari katalog?')) {
+  if (confirm('Are you sure you want to remove this product from the catalog?')) {
     store.products = store.products.filter(p => p.id !== productId);
     store.save();
 
@@ -569,7 +569,7 @@ async function deleteAdminProduct(productId) {
     if (typeof renderCatalogGrid === 'function') {
       renderCatalogGrid();
     }
-    showToast('Produk telah dihapus dari katalog!', 'info');
+    showToast('Product removed from catalog!', 'info');
   }
 }
 
@@ -601,7 +601,7 @@ function renderAdminOrdersTable() {
   }
 
   if (orders.length === 0) {
-    container.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:24px; color:var(--color-text-muted);">Tidak ada pesanan ditemukan.</td></tr>`;
+    container.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:24px; color:var(--color-text-muted);">No orders found.</td></tr>`;
     return;
   }
 
@@ -617,10 +617,10 @@ function renderAdminOrdersTable() {
         </td>
         <td>${o.date || new Date().toISOString().split('T')[0]}</td>
         <td>
-          <strong>${o.customerName || 'Pelanggan BYHARIANS'}</strong><br>
+          <strong>${o.customerName || 'BYHARIANS Customer'}</strong><br>
           <small style="color:var(--color-text-muted);">${o.customerPhone || '0812-XXXX-XXXX'}</small>
         </td>
-        <td style="max-width:220px; font-size:0.8rem;">${itemsSummary || 'Pembalut Bambu Organik'}</td>
+        <td style="max-width:220px; font-size:0.8rem;">${itemsSummary || 'Organic Bamboo Pads'}</td>
         <td><strong>${store.formatPrice(o.total)}</strong></td>
         <td>
           <select onchange="adminChangeOrderStatus('${o.id}', this.value)" style="padding:4px 8px; border-radius:var(--radius-md); font-weight:700; font-size:0.78rem;">
@@ -634,10 +634,10 @@ function renderAdminOrdersTable() {
         </td>
         <td>
           <div style="display:flex; gap:6px; flex-wrap:wrap;">
-            <button type="button" class="btn btn-outline btn-sm" onclick="openAdminOrderDetailModal('${o.id}')">Detail</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="openAdminOrderDetailModal('${o.id}')">Details</button>
             <button type="button" class="btn btn-outline btn-sm" onclick="openAdminEditOrderModal('${o.id}')">✏️ Edit</button>
             <button type="button" class="btn btn-secondary btn-sm" onclick="openInvoicePrintModal('${o.id}')">Invoice 🖨️</button>
-            <button type="button" class="btn btn-outline btn-sm" onclick="deleteAdminOrder('${o.id}')" style="color:var(--color-error); border-color:rgba(186,50,50,0.3);">🗑️ Hapus</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="deleteAdminOrder('${o.id}')" style="color:var(--color-error); border-color:rgba(186,50,50,0.3);">🗑️ Delete</button>
           </div>
         </td>
       </tr>
@@ -658,7 +658,7 @@ function openAdminEditOrderModal(orderId) {
   const title = document.getElementById('admin-edit-order-title');
   if (!modal) return;
 
-  if (title) title.innerText = `Edit Pesanan Supabase #${o.id}`;
+  if (title) title.innerText = `Edit Supabase Order #${o.id}`;
 
   const custName = o.customerName || (o.customer && o.customer.name) || '';
   const custPhone = o.customerPhone || (o.customer && o.customer.phone) || '';
@@ -760,11 +760,11 @@ async function saveAdminEditOrderForm(e) {
   closeAdminEditOrderModal();
   renderAdminOrdersTable();
   renderAdminKPIs();
-  showToast(`Pesanan #${id} berhasil diperbarui di Supabase!`, 'success');
+  showToast(`Order #${id} updated successfully in Supabase!`, 'success');
 }
 
 async function deleteAdminOrder(orderId) {
-  if (!confirm(`Apakah Anda yakin ingin menghapus pesanan #${orderId} ini secara permanen dari Supabase & Toko?`)) return;
+  if (!confirm(`Are you sure you want to permanently delete order #${orderId} from Supabase & Store?`)) return;
 
   if (supabaseClient) {
     try {
@@ -784,7 +784,7 @@ async function deleteAdminOrder(orderId) {
   globalOrders = globalOrders.filter(o => o.id !== orderId);
   localStorage.setItem('byharians_global_orders', JSON.stringify(globalOrders));
 
-  showToast(`Pesanan #${orderId} telah dihapus dari Supabase & Toko!`, 'success');
+  showToast(`Order #${orderId} deleted from Supabase & Store!`, 'success');
   renderAdminOrdersTable();
   renderAdminKPIs();
 }
@@ -809,7 +809,7 @@ async function adminChangeOrderStatus(orderId, newStatus) {
     }
   }
 
-  showToast(`Status Order #${orderId} diperbarui ke: ${newStatus.toUpperCase()}`, 'success');
+  showToast(`Order #${orderId} status updated to: ${newStatus.toUpperCase()}`, 'success');
   renderAdminOrdersTable();
 }
 
@@ -824,7 +824,7 @@ function openAdminOrderDetailModal(orderId) {
   const body = document.getElementById('admin-order-detail-body');
   if (!modal || !body) return;
 
-  if (title) title.innerText = `Detail Pesanan #${o.id}`;
+  if (title) title.innerText = `Order Details #${o.id}`;
 
   const itemsHtml = (o.items || []).map(i => `
     <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px dashed var(--color-border); font-size:0.88rem;">
@@ -835,35 +835,35 @@ function openAdminOrderDetailModal(orderId) {
 
   body.innerHTML = `
     <div style="background:var(--color-bg-warm); padding:16px; border-radius:var(--radius-lg); margin-bottom:18px;">
-      <h4 style="font-size:0.95rem; color:var(--color-primary); margin-bottom:8px;">Informasi Pembeli & Alamat</h4>
+      <h4 style="font-size:0.95rem; color:var(--color-primary); margin-bottom:8px;">Customer & Shipping Address Info</h4>
       <p style="margin:0; font-size:0.85rem; line-height:1.5;">
-        <strong>Nama:</strong> ${o.customerName || 'Pelanggan BYHARIANS'}<br>
-        <strong>Telepon:</strong> ${o.customerPhone || '0812-8921-3401'}<br>
-        <strong>Email:</strong> ${o.customerEmail || 'pelanggan@byharians.id'}<br>
-        <strong>Alamat Kirim:</strong> ${o.shippingAddress || 'Jakarta, Indonesia'}
+        <strong>Name:</strong> ${o.customerName || 'BYHARIANS Customer'}<br>
+        <strong>Phone:</strong> ${o.customerPhone || '0812-8921-3401'}<br>
+        <strong>Email:</strong> ${o.customerEmail || 'customer@byharians.id'}<br>
+        <strong>Shipping Address:</strong> ${o.shippingAddress || 'Jakarta, Indonesia'}
       </p>
     </div>
 
     <div style="margin-bottom:18px;">
-      <h4 style="font-size:0.95rem; color:var(--color-primary); margin-bottom:8px;">Rincian Item Produk</h4>
+      <h4 style="font-size:0.95rem; color:var(--color-primary); margin-bottom:8px;">Item Details Breakdown</h4>
       ${itemsHtml || '<p>1x BYHARIANS Ultra-Thin Day Pads</p>'}
       <div style="display:flex; justify-content:space-between; margin-top:12px; font-weight:800; font-size:1.05rem; color:var(--color-primary);">
-        <span>Total Pembayaran:</span>
+        <span>Total Payment:</span>
         <span>${store.formatPrice(o.total)}</span>
       </div>
     </div>
 
     <div style="background:#fff; border:1px solid var(--color-border); padding:16px; border-radius:var(--radius-lg);">
-      <h4 style="font-size:0.95rem; color:var(--color-primary); margin-bottom:10px;">Input Logistik & Nomor Resi</h4>
+      <h4 style="font-size:0.95rem; color:var(--color-primary); margin-bottom:10px;">Logistics Input & Tracking Number</h4>
       <div style="display:flex; gap:10px; align-items:center;">
         <input type="text" id="admin-logistics-tracking-input" class="form-input" value="${o.trackingNumber || 'SIC-ECO-' + Date.now().toString().slice(-4)}" style="font-weight:700;">
-        <button type="button" class="btn btn-primary btn-sm" onclick="saveAdminLogisticsTracking('${o.id}')">Simpan Resi</button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="saveAdminLogisticsTracking('${o.id}')">Save Tracking</button>
       </div>
     </div>
 
     <div style="display:flex; justify-content:space-between; margin-top:20px;">
-      <button type="button" class="btn btn-secondary btn-sm" onclick="openInvoicePrintModal('${o.id}')">🖨️ Cetak Invoice & Packing Slip</button>
-      <button type="button" class="btn btn-outline btn-sm" onclick="closeAdminOrderDetailModal()">Tutup</button>
+      <button type="button" class="btn btn-secondary btn-sm" onclick="openInvoicePrintModal('${o.id}')">🖨️ Print Invoice & Packing Slip</button>
+      <button type="button" class="btn btn-outline btn-sm" onclick="closeAdminOrderDetailModal()">Close</button>
     </div>
   `;
 
@@ -889,7 +889,7 @@ function saveAdminLogisticsTracking(orderId) {
     store.saveGlobalOrder(target);
   }
 
-  showToast(`Nomor resi ${trackingVal} berhasil disimpan!`, 'success');
+  showToast(`Tracking number ${trackingVal} saved successfully!`, 'success');
   closeAdminOrderDetailModal();
   renderAdminOrdersTable();
 }
@@ -916,31 +916,31 @@ function openInvoicePrintModal(orderId) {
   container.innerHTML = `
     <div style="display:flex; justify-content:space-between; margin-bottom:20px; font-size:0.88rem;">
       <div>
-        <strong>DITERBITKAN OLEH:</strong><br>
+        <strong>ISSUED BY:</strong><br>
         BYHARIANS Organic Store<br>
         Jakarta Selatan, DKI Jakarta<br>
         WA: 0812-8921-3401 | care@byharians.id
       </div>
       <div style="text-align:right;">
         <strong>INVOICE NO: #${o.id}</strong><br>
-        Tanggal: ${o.date || new Date().toISOString().split('T')[0]}<br>
-        Resi: <code>${o.trackingNumber || 'SIC-ECO-LIVE'}</code><br>
-        Kurir: ${o.courier || 'SiCepat BEST'}
+        Date: ${o.date || new Date().toISOString().split('T')[0]}<br>
+        Tracking: <code>${o.trackingNumber || 'SIC-ECO-LIVE'}</code><br>
+        Courier: ${o.courier || 'SiCepat BEST'}
       </div>
     </div>
 
     <div style="background:#FBF8EE; border:1px solid #E8E5D8; padding:14px; border-radius:8px; margin-bottom:20px; font-size:0.88rem;">
-      <strong>TUJUAN PENGIRIMAN (PELANGGAN):</strong><br>
-      ${o.customerName || 'Pelanggan BYHARIANS'} (${o.customerPhone || '0812-8921-3401'})<br>
+      <strong>SHIPPING DESTINATION (CUSTOMER):</strong><br>
+      ${o.customerName || 'BYHARIANS Customer'} (${o.customerPhone || '0812-8921-3401'})<br>
       ${o.shippingAddress || 'Jakarta, Indonesia'}
     </div>
 
     <table style="width:100%; border-collapse:collapse; font-size:0.88rem; margin-bottom:20px;">
       <thead>
         <tr style="background:#0F301D; color:#fff;">
-          <th style="padding:8px; text-align:left;">Produk</th>
+          <th style="padding:8px; text-align:left;">Product</th>
           <th style="padding:8px; text-align:center;">Qty</th>
-          <th style="padding:8px; text-align:right;">Harga Unit</th>
+          <th style="padding:8px; text-align:right;">Unit Price</th>
           <th style="padding:8px; text-align:right;">Subtotal</th>
         </tr>
       </thead>
@@ -983,8 +983,8 @@ function renderAdminCustomersTable() {
     container.innerHTML = `
       <tr>
         <td colspan="8" style="text-align:center; padding:32px; color:var(--color-text-muted);">
-          Belum ada transaksi pelanggan terdaftar di database Supabase.<br>
-          <small style="color:var(--color-secondary);">Setiap order yang dibuat oleh customer di toko akan otomatis terdaftar dan terdeteksi di sini secara real-time.</small>
+          No registered customer transactions found in Supabase DB.<br>
+          <small style="color:var(--color-secondary);">Every order placed by customers will automatically populate in real-time.</small>
         </td>
       </tr>
     `;
@@ -996,12 +996,12 @@ function renderAdminCustomersTable() {
       <td><code>${c.id}</code></td>
       <td><strong>${c.name}</strong><br><small style="color:var(--color-text-muted);">${c.phone}</small></td>
       <td>${c.email}</td>
-      <td><strong>${c.totalOrders} Pesanan</strong></td>
+      <td><strong>${c.totalOrders} Orders</strong></td>
       <td style="color:var(--color-primary); font-weight:800;">${store.formatPrice(c.lifetimeSpend)}</td>
-      <td><span class="badge badge-primary">✨ ${c.ecoPoints} Poin</span></td>
+      <td><span class="badge badge-primary">✨ ${c.ecoPoints} Points</span></td>
       <td>${c.joinDate}</td>
       <td>
-        <button type="button" class="btn btn-outline btn-sm" onclick="openCustomerDetailModal('${c.email}')">Riwayat Belanja</button>
+        <button type="button" class="btn btn-outline btn-sm" onclick="openCustomerDetailModal('${c.email}')">Order History</button>
       </td>
     </tr>
   `).join('');
@@ -1020,15 +1020,15 @@ function openCustomerDetailModal(customerEmail) {
   const realCustomers = getCustomersFromSupabaseOrders();
   const targetCust = realCustomers.find(c => c.email.toLowerCase() === customerEmail.toLowerCase());
 
-  if (nameEl) nameEl.innerText = `Profil CRM: ${targetCust ? targetCust.name : customerEmail}`;
+  if (nameEl) nameEl.innerText = `CRM Profile: ${targetCust ? targetCust.name : customerEmail}`;
 
   if (!targetCust || targetCust.orders.length === 0) {
     body.innerHTML = `
       <p style="padding:20px; text-align:center; color:var(--color-text-muted);">
-        Belum ada riwayat pesanan untuk pelanggan ini di database Supabase.
+        No order history found for this customer in Supabase DB.
       </p>
       <div style="display:flex; justify-content:flex-end; margin-top:20px;">
-        <button type="button" class="btn btn-outline btn-sm" onclick="closeAdminCustomerDetailModal()">Tutup</button>
+        <button type="button" class="btn btn-outline btn-sm" onclick="closeAdminCustomerDetailModal()">Close</button>
       </div>
     `;
     modal.style.display = 'flex';
@@ -1048,23 +1048,23 @@ function openCustomerDetailModal(customerEmail) {
 
   body.innerHTML = `
     <div style="background:var(--color-bg-warm); padding:18px; border-radius:var(--radius-lg); margin-bottom:18px; border:1px solid var(--color-border);">
-      <h4 style="font-size:0.95rem; color:var(--color-primary); margin-bottom:8px;">Ringkasan CRM Supabase</h4>
+      <h4 style="font-size:0.95rem; color:var(--color-primary); margin-bottom:8px;">Supabase CRM Summary</h4>
       <p style="margin:0; font-size:0.85rem; line-height:1.6; color:var(--color-primary);">
-        <strong>Nama:</strong> ${targetCust.name}<br>
+        <strong>Name:</strong> ${targetCust.name}<br>
         <strong>Email:</strong> ${targetCust.email}<br>
-        <strong>Telepon:</strong> ${targetCust.phone}<br>
-        <strong>Total Belanja:</strong> ${store.formatPrice(targetCust.lifetimeSpend)} (${targetCust.totalOrders} Pesanan)<br>
-        <strong>Poin Loyalitas Eco-Club:</strong> ✨ ${targetCust.ecoPoints} Poin
+        <strong>Phone:</strong> ${targetCust.phone}<br>
+        <strong>Total Spend:</strong> ${store.formatPrice(targetCust.lifetimeSpend)} (${targetCust.totalOrders} Orders)<br>
+        <strong>Eco-Club Loyalty Points:</strong> ✨ ${targetCust.ecoPoints} Points
       </p>
     </div>
 
-    <h4 style="font-size:0.95rem; color:var(--color-primary); margin-bottom:10px;">Riwayat Transaksi Real di Supabase DB</h4>
+    <h4 style="font-size:0.95rem; color:var(--color-primary); margin-bottom:10px;">Real Order History in Supabase DB</h4>
     <div style="border:1px solid var(--color-border); border-radius:var(--radius-md); overflow:hidden;">
       <table style="width:100%; border-collapse:collapse; font-size:0.84rem;">
         <thead>
           <tr style="background:#FBF8EE; text-align:left; color:var(--color-primary);">
             <th style="padding:10px;">Order ID</th>
-            <th style="padding:10px;">Tanggal</th>
+            <th style="padding:10px;">Date</th>
             <th style="padding:10px;">Total</th>
             <th style="padding:10px;">Status</th>
           </tr>
@@ -1076,7 +1076,7 @@ function openCustomerDetailModal(customerEmail) {
     </div>
 
     <div style="display:flex; justify-content:flex-end; margin-top:20px;">
-      <button type="button" class="btn btn-outline btn-sm" onclick="closeAdminCustomerDetailModal()">Tutup</button>
+      <button type="button" class="btn btn-outline btn-sm" onclick="closeAdminCustomerDetailModal()">Close</button>
     </div>
   `;
 
@@ -1138,12 +1138,12 @@ function saveAdminCouponForm(e) {
   };
 
   store.promotions.unshift(newPromo);
-  store.coupons.push({ code, discountPercent: type === 'percentage' ? value : 15, description: `Diskon ${value}` });
+  store.coupons.push({ code, discountPercent: type === 'percentage' ? value : 15, description: `Discount ${value}` });
   store.save();
 
   closeAdminCouponModal();
   renderAdminPromotionsTable();
-  showToast(`Voucher ${code} berhasil dibuat!`, 'success');
+  showToast(`Voucher ${code} created successfully!`, 'success');
 }
 
 function toggleCouponStatus(couponId) {
@@ -1152,7 +1152,7 @@ function toggleCouponStatus(couponId) {
     p.status = p.status === 'active' ? 'expired' : 'active';
     store.save();
     renderAdminPromotionsTable();
-    showToast(`Status promo ${p.code} diperbarui!`, 'info');
+    showToast(`Promo status ${p.code} updated!`, 'info');
   }
 }
 
@@ -1161,7 +1161,7 @@ function saveBannerAnnouncement() {
   if (bannerInput) {
     store.storeSettings.bannerText = bannerInput.value;
     store.save();
-    showToast('Banner pengumuman storefront diperbarui!', 'success');
+    showToast('Storefront announcement banner updated!', 'success');
   }
 }
 
@@ -1194,7 +1194,7 @@ function saveAdminStoreSettings() {
   };
 
   store.save();
-  showToast('Pengaturan toko & kurir berhasil disimpan!', 'success');
+  showToast('Store & shipping settings saved successfully!', 'success');
 }
 
 // ==========================================
@@ -1242,7 +1242,7 @@ async function renderAdminPackagesTable() {
   }
 
   if (list.length === 0) {
-    container.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:24px; color:var(--color-text-muted);">Tidak ada jadwal paket ditemukan.</td></tr>`;
+    container.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:24px; color:var(--color-text-muted);">No package schedules found.</td></tr>`;
     return;
   }
 
@@ -1251,7 +1251,7 @@ async function renderAdminPackagesTable() {
     let statusLabel = '🔴 PAUSED';
     if (p.status === 'active') {
       badgeClass = 'badge-success';
-      statusLabel = '🟢 AKTIF';
+      statusLabel = '🟢 ACTIVE';
     } else if (p.status === 'dispatched') {
       badgeClass = 'badge-primary';
       statusLabel = '🚚 DISPATCHED TODAY';
@@ -1261,7 +1261,7 @@ async function renderAdminPackagesTable() {
       <tr>
         <td>
           <strong>#${p.id}</strong><br>
-          <small style="color:var(--color-text-muted);">Tgl Buat: ${p.lastDispatched || 'Hari Ini'}</small>
+          <small style="color:var(--color-text-muted);">Created: ${p.lastDispatched || 'Today'}</small>
         </td>
         <td>
           <strong>${p.customerName}</strong><br>
@@ -1285,7 +1285,7 @@ async function renderAdminPackagesTable() {
           <div style="display:flex; gap:6px; flex-wrap:wrap;">
             <button type="button" class="btn btn-primary btn-sm" onclick="adminDispatchPackageNow('${p.id}')">🚚 Dispatch</button>
             <button type="button" class="btn btn-outline btn-sm" onclick="openEditPackageModal('${p.id}')">✏️ Edit</button>
-            <button type="button" class="btn btn-outline btn-sm" onclick="deleteAdminPackage('${p.id}')" style="color:var(--color-error); border-color:rgba(186,50,50,0.3);">🗑️ Hapus</button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="deleteAdminPackage('${p.id}')" style="color:var(--color-error); border-color:rgba(186,50,50,0.3);">🗑️ Delete</button>
           </div>
         </td>
       </tr>
@@ -1302,14 +1302,14 @@ function openCreatePackageModal() {
   const title = document.getElementById('admin-package-modal-title');
   if (!modal) return;
 
-  if (title) title.innerText = 'Buat Jadwal Paket Baru';
+  if (title) title.innerText = 'Create New Package Schedule';
   document.getElementById('admin-pkg-id').value = '';
   document.getElementById('admin-pkg-cust-name').value = '';
   document.getElementById('admin-pkg-cust-email').value = '';
   document.getElementById('admin-pkg-phone').value = '';
-  document.getElementById('admin-pkg-name').value = 'Paket Pembalut Organik Bambu Bulanan';
+  document.getElementById('admin-pkg-name').value = 'Monthly Organic Bamboo Sanitary Pad Suite';
   document.getElementById('admin-pkg-items').value = '1x Day Pads (24-Pcs), 1x Night Pads (16-Pcs)';
-  document.getElementById('admin-pkg-freq').value = 'Setiap 4 Minggu';
+  document.getElementById('admin-pkg-freq').value = 'Every 4 Weeks';
   
   const nextMonth = new Date();
   nextMonth.setDate(nextMonth.getDate() + 7);
@@ -1330,7 +1330,7 @@ function openEditPackageModal(packageId) {
   const title = document.getElementById('admin-package-modal-title');
   if (!modal) return;
 
-  if (title) title.innerText = `Edit Jadwal Paket #${p.id}`;
+  if (title) title.innerText = `Edit Package Schedule #${p.id}`;
   document.getElementById('admin-pkg-id').value = p.id;
   document.getElementById('admin-pkg-cust-name').value = p.customerName;
   document.getElementById('admin-pkg-cust-email').value = p.customerEmail;
@@ -1379,7 +1379,7 @@ async function saveAdminPackageForm(e) {
     trackingNumber,
     shippingAddress,
     status: 'active',
-    statusText: 'Aktif / Berlangganan',
+    statusText: 'Active / Subscribed',
     lastDispatched: new Date().toISOString().split('T')[0]
   };
 
@@ -1398,7 +1398,7 @@ async function saveAdminPackageForm(e) {
         tracking_number: trackingNumber,
         shipping_address: shippingAddress,
         status: 'active',
-        status_text: 'Aktif / Berlangganan',
+        status_text: 'Active / Subscribed',
         last_dispatched: new Date().toISOString().split('T')[0]
       });
     } catch (err) {
@@ -1418,7 +1418,7 @@ async function saveAdminPackageForm(e) {
 
   closeAdminPackageModal();
   renderAdminPackagesTable();
-  showToast(`Jadwal paket #${id} berhasil disimpan ke Supabase!`, 'success');
+  showToast(`Package schedule #${id} saved successfully to Supabase!`, 'success');
 }
 
 async function adminDispatchPackageNow(packageId) {
@@ -1431,7 +1431,7 @@ async function adminDispatchPackageNow(packageId) {
         last_dispatched: today,
         tracking_number: newTracking,
         status: 'dispatched',
-        status_text: 'Telah Dikirim Hari Ini'
+        status_text: 'Dispatched Today'
       }).eq('id', packageId);
     } catch (err) {
       console.warn('Supabase dispatch update warning:', err);
@@ -1448,12 +1448,12 @@ async function adminDispatchPackageNow(packageId) {
     console.warn('Backend dispatch notice:', err);
   }
 
-  showToast(`Paket #${packageId} berhasil didispatch! No. Resi: ${newTracking}`, 'success');
+  showToast(`Package #${packageId} dispatched successfully! Tracking No: ${newTracking}`, 'success');
   renderAdminPackagesTable();
 }
 
 async function deleteAdminPackage(packageId) {
-  if (!confirm(`Apakah Anda yakin ingin menghapus jadwal paket #${packageId}?`)) return;
+  if (!confirm(`Are you sure you want to delete package schedule #${packageId}?`)) return;
 
   if (typeof supabaseClient !== 'undefined' && supabaseClient) {
     try {
@@ -1473,7 +1473,7 @@ async function deleteAdminPackage(packageId) {
     console.warn('Backend delete package notice:', err);
   }
 
-  showToast(`Jadwal paket #${packageId} berhasil dihapus.`, 'info');
+  showToast(`Package schedule #${packageId} deleted successfully.`, 'info');
   renderAdminPackagesTable();
 }
 

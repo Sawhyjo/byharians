@@ -17,7 +17,7 @@ function renderCheckoutView() {
   if (!store.isLoggedIn) {
     store.redirectAfterLogin = 'checkout';
     if (typeof showToast === 'function') {
-      showToast('Silakan Sign In atau masuk akun terlebih dahulu untuk melakukan pembayaran.', 'info');
+      showToast('Please Sign In or register to proceed to payment.', 'info');
     }
     const alertBox = document.getElementById('checkout-auth-alert');
     if (alertBox) alertBox.style.display = 'flex';
@@ -57,7 +57,7 @@ function renderCheckoutSummary() {
         <img src="${item.image}" style="width:40px; height:40px; border-radius:4px; object-fit:cover;">
         <div>
           <div style="font-weight:700; color:var(--color-primary);">${item.name}</div>
-          <div style="color:var(--color-text-muted); font-size:0.75rem;">Jml: ${item.quantity} • ${item.packName}</div>
+          <div style="color:var(--color-text-muted); font-size:0.75rem;">Qty: ${item.quantity} • ${item.packName}</div>
         </div>
       </div>
       <div style="font-weight:700; color:var(--color-primary);">${store.formatPrice(item.unitPrice * item.quantity)}</div>
@@ -65,12 +65,12 @@ function renderCheckoutSummary() {
   `).join('');
 
   totalsEl.innerHTML = `
-    <div class="total-row"><span>Subtotal Produk</span><span>${store.formatPrice(calcs.subtotal)}</span></div>
-    ${calcs.discount > 0 ? `<div class="total-row" style="color:var(--color-success);"><span>Diskon Voucher</span><span>-${store.formatPrice(calcs.discount)}</span></div>` : ''}
-    ${store.plantTree ? `<div class="total-row" style="color:var(--color-success);"><span>Donasi Bibit Mangrove</span><span>${store.formatPrice(15000)}</span></div>` : ''}
-    ${store.giftWrap ? `<div class="total-row"><span>Kotak Kado Ramah Lingkungan</span><span>${store.formatPrice(20000)}</span></div>` : ''}
-    <div class="total-row"><span>Ongkos Kirim Bebas Plastik</span><span>${calcs.shippingCost === 0 ? '<strong style="color:var(--color-success);">GRATIS</strong>' : store.formatPrice(calcs.shippingCost)}</span></div>
-    <div class="total-row grand-total"><span>Total Pembayaran</span><span>${store.formatPrice(calcs.grandTotal)}</span></div>
+    <div class="total-row"><span>Product Subtotal</span><span>${store.formatPrice(calcs.subtotal)}</span></div>
+    ${calcs.discount > 0 ? `<div class="total-row" style="color:var(--color-success);"><span>Voucher Discount</span><span>-${store.formatPrice(calcs.discount)}</span></div>` : ''}
+    ${store.plantTree ? `<div class="total-row" style="color:var(--color-success);"><span>Mangrove Seedling Donation</span><span>${store.formatPrice(15000)}</span></div>` : ''}
+    ${store.giftWrap ? `<div class="total-row"><span>Eco Gift Box Packaging</span><span>${store.formatPrice(20000)}</span></div>` : ''}
+    <div class="total-row"><span>Plastic-Free Shipping</span><span>${calcs.shippingCost === 0 ? '<strong style="color:var(--color-success);">FREE</strong>' : store.formatPrice(calcs.shippingCost)}</span></div>
+    <div class="total-row grand-total"><span>Total Payment</span><span>${store.formatPrice(calcs.grandTotal)}</span></div>
   `;
 }
 
@@ -109,7 +109,7 @@ function copyVirtualAccount() {
   const bankInfo = BANK_VA_DATA[activeBankVA] || BANK_VA_DATA.bca;
   const cleanNum = bankInfo.number.replace(/\s/g, '');
   navigator.clipboard?.writeText(cleanNum);
-  showToast(`Nomor ${bankInfo.name} (${cleanNum}) berhasil disalin!`, 'success');
+  showToast(`${bankInfo.name} number (${cleanNum}) copied!`, 'success');
 }
 
 function selectEWallet(wallet, btn) {
@@ -127,7 +127,7 @@ function startQRISTimer() {
     totalSeconds--;
     if (totalSeconds < 0) {
       clearInterval(qrisTimerInterval);
-      if (timerEl) timerEl.innerText = '00:00 (Kedaluwarsa)';
+      if (timerEl) timerEl.innerText = '00:00 (Expired)';
       return;
     }
     const mins = Math.floor(totalSeconds / 60);
@@ -143,13 +143,13 @@ async function submitCheckoutOrder(e) {
 
   if (!store.isLoggedIn) {
     store.redirectAfterLogin = 'checkout';
-    showToast('Silakan masuk atau daftar sebelum melakukan pembayaran', 'info');
+    showToast('Please sign in or register before completing payment', 'info');
     navigateTo('login');
     return;
   }
 
-  const name = document.getElementById('checkout-name')?.value || store.userAccount.name || 'Pelanggan Setia';
-  const email = document.getElementById('checkout-email')?.value || store.userAccount.email || 'pelanggan@byharians.id';
+  const name = document.getElementById('checkout-name')?.value || store.userAccount.name || 'Valued Customer';
+  const email = document.getElementById('checkout-email')?.value || store.userAccount.email || 'customer@byharians.id';
   const phone = document.getElementById('checkout-phone')?.value || '0812-8921-3401';
   const address = document.getElementById('checkout-address')?.value || 'Jl. Senopati No. 42, Kebayoran Baru';
   const city = document.getElementById('checkout-city')?.value || 'Jakarta Selatan, DKI Jakarta';
@@ -157,7 +157,7 @@ async function submitCheckoutOrder(e) {
   const completeBtn = document.getElementById('complete-order-btn');
   if (completeBtn) {
     completeBtn.disabled = true;
-    completeBtn.innerHTML = `<span>Memverifikasi Pembayaran ${activePaymentMethod.toUpperCase()}...</span>`;
+    completeBtn.innerHTML = `<span>Verifying ${activePaymentMethod.toUpperCase()} Payment...</span>`;
   }
 
   const calcs = getCartCalculations();
@@ -222,9 +222,9 @@ async function submitCheckoutOrder(e) {
 
   if (completeBtn) {
     completeBtn.disabled = false;
-    completeBtn.innerText = 'Bayar Sekarang & Selesaikan Pesanan';
+    completeBtn.innerText = 'Pay Now & Complete Order';
   }
 
-  showToast(`Pesanan ${orderId} berhasil dibuat!`, 'success');
+  showToast(`Order ${orderId} successfully placed!`, 'success');
   navigateTo(`track/${orderId}`);
 }

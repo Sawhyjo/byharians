@@ -101,35 +101,35 @@ function prefillCycleDemoData() {
 function getCyclePhaseForDay(dayInCycle, periodLen) {
   if (dayInCycle <= periodLen) {
     return {
-      name: 'Fase Menstruasi (Pendarahan)',
-      shortName: 'Menstruasi',
+      name: 'Menstrual Phase (Flow)',
+      shortName: 'Menstrual',
       color: '#E35E34',
       badgeClass: 'phase-period',
-      tip: 'Waktu untuk istirahat, hidrasi air hangat, dan perawatan lembut dengan pembalut bambu organik ultra-lembut.'
+      tip: 'Time to rest, hydrate with warm water, and enjoy gentle care with ultra-soft organic bamboo pads.'
     };
   } else if (dayInCycle >= 12 && dayInCycle <= 16) {
     return {
-      name: 'Fase Ovulasi',
-      shortName: 'Ovulasi',
+      name: 'Ovulation Phase',
+      shortName: 'Ovulation',
       color: '#B47C04',
       badgeClass: 'phase-fertile',
-      tip: 'Puncak masa ovulasi & sel telur matang. Energi, suasana hati, dan kepercayaan diri berada di level tertinggi.'
+      tip: 'Peak ovulation window & mature egg release. Energy, mood, and confidence are at their highest level.'
     };
   } else if (dayInCycle > 16) {
     return {
-      name: 'Fase Luteal (Progesteron)',
+      name: 'Luteal Phase (Progesterone)',
       shortName: 'Luteal (PMS)',
       color: '#5B21B6',
       badgeClass: 'phase-luteal',
-      tip: 'Hormon Progesteron mendominasi. Tubuh bersiap untuk siklus berikutnya. Cocok untuk teh hangat & relaksasi.'
+      tip: 'Progesterone hormone dominates. Body prepares for the next cycle. Ideal for warm tea & relaxation.'
     };
   } else {
     return {
-      name: 'Fase Folikular (Estrogen Naik)',
-      shortName: 'Folikular',
+      name: 'Follicular Phase (Estrogen Rise)',
+      shortName: 'Follicular',
       color: '#1E824C',
       badgeClass: 'phase-follicular',
-      tip: 'Hormon Estrogen meningkat pesat. Energi tubuh, stamina olahraga, dan daya fokus Anda berkembang.'
+      tip: 'Estrogen hormone rises rapidly. Energy, workout stamina, and focus expand.'
     };
   }
 }
@@ -161,21 +161,21 @@ function renderTodayStatusBar() {
   statusBar.innerHTML = `
     <div style="background: #FFF9F5; border: 1.5px solid var(--color-border); border-radius: 20px; padding: 22px 26px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; align-items: center; box-shadow: var(--shadow-sm); margin-bottom: 24px;">
       <div style="text-align: center; border-right: 1px solid var(--color-border); padding-right: 14px;">
-        <span style="color: var(--color-text-muted); font-size: 0.74rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.06em;">Hari Dalam Siklus Saat Ini</span>
-        <div style="font-size: 2.2rem; font-weight: 900; color: var(--color-primary); margin-top: 4px;">Hari ke-${currentDay}</div>
-        <small style="color: var(--color-text-muted); font-size: 0.78rem;">dari ${cycleLen} hari siklus</small>
+        <span style="color: var(--color-text-muted); font-size: 0.74rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.06em;">Current Cycle Day</span>
+        <div style="font-size: 2.2rem; font-weight: 900; color: var(--color-primary); margin-top: 4px;">Day ${currentDay}</div>
+        <small style="color: var(--color-text-muted); font-size: 0.78rem;">of ${cycleLen}-day cycle</small>
       </div>
       <div>
-        <span style="color: var(--color-text-muted); font-size: 0.74rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.06em;">Fase Biologis Tubuh</span>
+        <span style="color: var(--color-text-muted); font-size: 0.74rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.06em;">Biological Body Phase</span>
         <div style="font-size: 1.15rem; font-weight: 800; color: ${phaseInfo.color}; margin-top: 6px;">
           ${phaseInfo.name}
         </div>
         <p style="font-size: 0.82rem; color: var(--color-text-muted); margin-top: 6px; line-height: 1.45;">${phaseInfo.tip}</p>
       </div>
       <div style="text-align: center; border-left: 1px solid var(--color-border); padding-left: 14px;">
-        <span style="color: var(--color-text-muted); font-size: 0.74rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.06em;">Prediksi Haid Berikutnya</span>
-        <div style="font-size: 1.2rem; font-weight: 900; color: var(--color-primary); margin-top: 6px;">${daysToNextPeriod} Hari Lagi</div>
-        <small style="color: var(--color-secondary); font-weight: 800; font-size: 0.82rem;">${nextPeriodDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</small>
+        <span style="color: var(--color-text-muted); font-size: 0.74rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.06em;">Next Period Prediction</span>
+        <div style="font-size: 1.2rem; font-weight: 900; color: var(--color-primary); margin-top: 6px;">${daysToNextPeriod} Days Away</div>
+        <small style="color: var(--color-secondary); font-weight: 800; font-size: 0.82rem;">${nextPeriodDate.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</small>
       </div>
     </div>
   `;
@@ -187,8 +187,8 @@ function renderCalendarDaysGrid() {
   if (!grid) return;
 
   const monthNames = [
-    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
   ];
 
   if (label) {
@@ -235,8 +235,8 @@ function renderCalendarDaysGrid() {
     const hasNote = logData.notes || logData.flow || (logData.symptoms && logData.symptoms.length > 0) || logData.mood;
 
     let badgeText = '';
-    if (dayInCycle <= periodLen) badgeText = `Haid ${dayInCycle}`;
-    else if (dayInCycle >= 12 && dayInCycle <= 16) badgeText = 'Ovulasi';
+    if (dayInCycle <= periodLen) badgeText = `Period ${dayInCycle}`;
+    else if (dayInCycle >= 12 && dayInCycle <= 16) badgeText = 'Ovulation';
     else badgeText = phaseInfo.shortName;
 
     html += `
@@ -274,10 +274,10 @@ function renderPhaseTimelineCards() {
   if (!container) return;
 
   const phases = [
-    { title: '1. Fase Menstruasi', days: `Hari 1–${activeCycleConfig.periodLength}`, desc: 'Pendarahan meluruhkan dinding rahim. Istirahat cukup & gunakan pembalut bambu organik hypoallergenic.', color: '#E35E34' },
-    { title: '2. Fase Folikular', days: `Hari ${activeCycleConfig.periodLength + 1}–11`, desc: 'Estrogen naik pesat. Energi tubuh, metabolisme, dan daya fokus berada di puncaknya.', color: '#1E824C' },
-    { title: '3. Ovulasi ', days: 'Hari 12–16', desc: 'Sel telur matang (Ovulasi hari ke-14). Puncak fertilitas dan kepercayaan diri maksimal.', color: '#B47C04' },
-    { title: '4. Fase Luteal (PMS)', days: `Hari 17–${activeCycleConfig.cycleLength}`, desc: 'Progesteron mendominasi. Waktu sempurna untuk teh herbal hangat dan relaksasi alami.', color: '#5B21B6' }
+    { title: '1. Menstrual Phase', days: `Days 1–${activeCycleConfig.periodLength}`, desc: 'Flow sheds uterine lining. Rest well & use hypoallergenic organic bamboo pads.', color: '#E35E34' },
+    { title: '2. Follicular Phase', days: `Days ${activeCycleConfig.periodLength + 1}–11`, desc: 'Estrogen rises rapidly. Physical energy, metabolism, and focus peak.', color: '#1E824C' },
+    { title: '3. Ovulation Phase', days: 'Days 12–16', desc: 'Egg release occurs (Day 14 peak). High fertility window and maximum confidence.', color: '#B47C04' },
+    { title: '4. Luteal Phase (PMS)', days: `Days 17–${activeCycleConfig.cycleLength}`, desc: 'Progesterone dominates. Perfect time for warm herbal tea and gentle relaxation.', color: '#5B21B6' }
   ];
 
   container.innerHTML = phases.map(p => `
@@ -302,15 +302,15 @@ function renderRecommendedPads() {
     <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:14px; margin-bottom:16px;">
       <div style="background:#FFF9F5; padding:16px; border-radius:16px; border:1px solid var(--color-border); text-align:center;">
         <strong style="color:var(--color-primary); display:block; font-size: 0.95rem;">${dayPadsNeeded}x Ultra-Thin Day Pads</strong>
-        <span style="font-size:0.76rem; color:var(--color-text-muted);">Siang & Aktivitas (240mm)</span>
+        <span style="font-size:0.76rem; color:var(--color-text-muted);">Daytime & Active Use (240mm)</span>
       </div>
       <div style="background:#FFF9F5; padding:16px; border-radius:16px; border:1px solid var(--color-border); text-align:center;">
         <strong style="color:var(--color-primary); display:block; font-size: 0.95rem;">${nightPadsNeeded}x Overnight Heavy Pads</strong>
-        <span style="font-size:0.76rem; color:var(--color-text-muted);">Malam & Tidur Nyenyak (330mm)</span>
+        <span style="font-size:0.76rem; color:var(--color-text-muted);">Overnight & Sound Sleep (330mm)</span>
       </div>
       <div style="background:#FFF9F5; padding:16px; border-radius:16px; border:1px solid var(--color-border); text-align:center;">
         <strong style="color:var(--color-primary); display:block; font-size: 0.95rem;">${linersNeeded}x Daily Panty Liners</strong>
-        <span style="font-size:0.76rem; color:var(--color-text-muted);">Flek & Perawatan Harian (155mm)</span>
+        <span style="font-size:0.76rem; color:var(--color-text-muted);">Daily Freshness & Spotting (155mm)</span>
       </div>
     </div>
   `;
@@ -336,7 +336,7 @@ function openCycleDatePopup(dateStr) {
 
   if (title) {
     const d = new Date(dateStr);
-    title.innerText = d.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    title.innerText = d.toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   }
 
   if (phaseBadge) {
@@ -348,7 +348,7 @@ function openCycleDatePopup(dateStr) {
     dayInCycle += 1;
 
     const phaseInfo = getCyclePhaseForDay(dayInCycle, activeCycleConfig.periodLength);
-    phaseBadge.innerText = `${phaseInfo.name} • Hari ke-${dayInCycle}`;
+    phaseBadge.innerText = `${phaseInfo.name} • Day ${dayInCycle}`;
   }
 
   if (notesInput) {
@@ -376,13 +376,13 @@ function setPopupFlow(flow) {
   activeSelectedFlow = flow;
   const flowLabel = document.getElementById('popup-flow-selected-label');
   const flowMap = {
-    none: 'Tidak Haid',
-    spotting: 'Flek / Spotting',
-    light: 'Pendarahan Ringan',
-    medium: 'Pendarahan Sedang',
-    heavy: 'Pendarahan Deras'
+    none: 'No Flow',
+    spotting: 'Spotting',
+    light: 'Light Flow',
+    medium: 'Medium Flow',
+    heavy: 'Heavy Flow'
   };
-  if (flowLabel) flowLabel.innerText = flowMap[flow] || 'Tidak Haid';
+  if (flowLabel) flowLabel.innerText = flowMap[flow] || 'No Flow';
 
   document.querySelectorAll('#popup-flow-grid .flow-pill-btn').forEach(btn => {
     const f = btn.getAttribute('data-flow');
@@ -403,9 +403,9 @@ function renderSymptomsChips() {
   if (!container) return;
 
   const defaultSymptoms = [
-    'Kram Perut', 'Sakit Kepala', 'Jerawat Hormonal',
-    'Nyeri Payudara', 'Kembung / Begah', 'Sensitif / PMS',
-    'Lelah / Pegal', 'Ngidam Makanan Manis', 'Sulit Tidur'
+    'Abdominal Cramps', 'Headache', 'Hormonal Acne',
+    'Breast Tenderness', 'Bloating', 'Sensitive / PMS',
+    'Fatigue / Aches', 'Sweet Cravings', 'Insomnia'
   ];
 
   container.innerHTML = defaultSymptoms.map(sym => {
@@ -446,7 +446,7 @@ function savePopupDataDirectly() {
   closeCycleDatePopup();
   renderCalendarDaysGrid();
   if (typeof showToast === 'function') {
-    showToast('Catatan & gejala harian berhasil disimpan!', 'success');
+    showToast('Daily notes & symptoms saved successfully!', 'success');
   }
 }
 
@@ -457,7 +457,7 @@ function setPopupDateAsCycleStart() {
     updateCycleCalculation();
     closeCycleDatePopup();
     if (typeof showToast === 'function') {
-      showToast(`Hari pertama haid baru diset ke ${activePopupDate}!`, 'success');
+      showToast(`First day of period set to ${activePopupDate}!`, 'success');
     }
   }
 }
@@ -467,7 +467,7 @@ function addCycleBundleToCart() {
     addToCart('byh-pad-day-reg');
     addToCart('byh-pad-night-heavy');
     if (typeof showToast === 'function') {
-      showToast('Paket Pembalut Sesuai Siklus telah ditambahkan ke Keranjang!', 'success');
+      showToast('Cycle-Synced Pad Suite added to Cart!', 'success');
     }
   }
 }

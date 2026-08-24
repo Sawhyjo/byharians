@@ -480,6 +480,9 @@ async function updateAccountDashboardUI() {
     renderUserGroceriesDashboard();
   }
 
+    renderUserGroceriesDashboard();
+  }
+
   // Render Past Orders List with Supabase Verified Tag
   const ordersListEl = document.getElementById('acc-orders-list');
   if (ordersListEl) {
@@ -487,8 +490,8 @@ async function updateAccountDashboardUI() {
       ordersListEl.innerHTML = `
         <div style="text-align:center; padding: 32px 16px; color: var(--color-text-muted);">
           <div style="font-size: 2rem; margin-bottom: 8px;">📦</div>
-          <p style="font-weight: 700; color: var(--color-primary); font-size: 0.95rem; margin-bottom: 4px;">Belum Ada Riwayat Pesanan</p>
-          <small>Pesanan yang Anda buat akan terverifikasi dan muncul di sini secara otomatis dari database Supabase.</small>
+          <p style="font-weight: 700; color: var(--color-primary); font-size: 0.95rem; margin-bottom: 4px;">No Order History Yet</p>
+          <small>Your completed orders will be verified and automatically listed here from Supabase DB.</small>
         </div>
       `;
     } else {
@@ -496,37 +499,37 @@ async function updateAccountDashboardUI() {
         <div style="border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 18px 20px; margin-bottom: 14px; background: #fff; box-shadow: var(--shadow-xs);">
           <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--color-border); padding-bottom: 12px; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
             <div>
-              <span style="font-size: 0.74rem; color: var(--color-text-muted); text-transform: uppercase;">Nomor Pesanan</span>
+              <span style="font-size: 0.74rem; color: var(--color-text-muted); text-transform: uppercase;">Order Number</span>
               <strong style="font-size: 1.05rem; color: var(--color-primary); display: block;">#${order.id}</strong>
-              <small style="color: var(--color-success); font-weight: 700; font-size: 0.72rem;">✓ Terverifikasi Supabase DB</small>
+              <small style="color: var(--color-success); font-weight: 700; font-size: 0.72rem;">✓ Verified Supabase DB</small>
             </div>
             <div>
-              <span style="font-size: 0.74rem; color: var(--color-text-muted); text-transform: uppercase;">Tanggal</span>
+              <span style="font-size: 0.74rem; color: var(--color-text-muted); text-transform: uppercase;">Date</span>
               <div style="font-weight: 700; font-size: 0.88rem; color: var(--color-primary);">${order.date || new Date().toISOString().split('T')[0]}</div>
             </div>
             <div>
-              <span style="font-size: 0.74rem; color: var(--color-text-muted); text-transform: uppercase;">No. Resi Pengiriman</span>
+              <span style="font-size: 0.74rem; color: var(--color-text-muted); text-transform: uppercase;">Tracking Number</span>
               <code style="background: rgba(15,48,29,0.06); padding: 2px 8px; border-radius: 4px; font-weight: 700; color: var(--color-primary); font-size: 0.8rem;">${order.trackingNumber || 'SIC-ECO-LIVE'}</code>
             </div>
             <div>
               <span class="status-badge ${order.status === 'delivered' ? 'status-delivered' : order.status === 'processing' ? 'status-processing' : 'status-shipped'}" style="text-transform: uppercase;">
-                ${order.status === 'processing' ? 'DI PROSES' : order.status === 'shipped' ? 'DI JALAN' : order.status === 'delivered' ? 'SAMPAI' : order.status.toUpperCase()}
+                ${order.status === 'processing' ? 'PROCESSING' : order.status === 'shipped' ? 'IN TRANSIT' : order.status === 'delivered' ? 'DELIVERED' : order.status.toUpperCase()}
               </span>
             </div>
           </div>
 
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
             <div>
-              <div style="font-size: 0.84rem; font-weight: 700; color: var(--color-primary); margin-bottom: 4px;">Daftar Item Dibeli:</div>
+              <div style="font-size: 0.84rem; font-weight: 700; color: var(--color-primary); margin-bottom: 4px;">Purchased Items:</div>
               <ul style="margin: 0; padding-left: 18px; font-size: 0.8rem; color: var(--color-text-muted);">
                 ${(order.items || []).map(item => `<li><strong>${item.name}</strong> x${item.qty || item.quantity || 1} (${item.size || item.packName || ''})</li>`).join('')}
               </ul>
             </div>
             <div style="text-align: right;">
-              <span style="font-size: 0.78rem; color: var(--color-text-muted); display: block;">Total Bayar (${order.paymentMethod || 'QRIS'})</span>
+              <span style="font-size: 0.78rem; color: var(--color-text-muted); display: block;">Total Paid (${order.paymentMethod || 'QRIS'})</span>
               <strong style="font-size: 1.15rem; color: var(--color-primary);">${store.formatPrice(order.total || 0)}</strong>
               <div style="margin-top: 6px;">
-                <button class="btn btn-outline btn-sm" onclick="navigateTo('track/${order.id}')" style="padding: 4px 10px; font-size: 0.76rem;">Lacak Resi →</button>
+                <button class="btn btn-outline btn-sm" onclick="navigateTo('track/${order.id}')" style="padding: 4px 10px; font-size: 0.76rem;">Track Order →</button>
               </div>
             </div>
           </div>
@@ -550,14 +553,14 @@ async function handleForgotPasswordSubmit(e) {
   if (e) e.preventDefault();
   const email = document.getElementById('forgot-email')?.value?.trim()?.toLowerCase();
   if (!email) {
-    showToast('Masukkan alamat email Anda', 'error');
+    showToast('Please enter your email address', 'error');
     return;
   }
 
   const btn = document.getElementById('btn-forgot-submit');
   if (btn) {
     btn.disabled = true;
-    btn.innerText = 'Mengirimkan Link...';
+    btn.innerText = 'Sending Link...';
   }
 
   try {
@@ -569,19 +572,19 @@ async function handleForgotPasswordSubmit(e) {
     const result = await resp.json();
 
     if (!resp.ok || result.error) {
-      showToast(result.error || 'Gagal mengirimkan instruksi reset password', 'error');
+      showToast(result.error || 'Failed to send password reset link', 'error');
     } else {
-      showToast(result.message || `Link reset password telah dikirimkan ke email ${email}!`, 'success');
+      showToast(result.message || `Password reset link sent to ${email}!`, 'success');
       closeForgotPasswordModal();
     }
   } catch (err) {
     console.warn('Forgot password warning:', err);
-    showToast(`Tautan reset password disimulasikan ke ${email}`, 'success');
+    showToast(`Password reset link simulated for ${email}`, 'success');
     closeForgotPasswordModal();
   } finally {
     if (btn) {
       btn.disabled = false;
-      btn.innerText = 'Kirim Link Reset';
+      btn.innerText = 'Send Reset Link';
     }
   }
 }
@@ -592,19 +595,19 @@ async function handleResetPasswordSubmit(e) {
   const confirmPassword = document.getElementById('reset-confirm-password')?.value;
 
   if (!newPassword || newPassword.length < 6) {
-    showToast('Password baru minimal 6 karakter', 'error');
+    showToast('New password must be at least 6 characters', 'error');
     return;
   }
 
   if (newPassword !== confirmPassword) {
-    showToast('Konfirmasi password baru tidak cocok', 'error');
+    showToast('New password confirmation does not match', 'error');
     return;
   }
 
   const btn = document.getElementById('btn-reset-password-submit');
   if (btn) {
     btn.disabled = true;
-    btn.innerText = 'Memperbarui Password...';
+    btn.innerText = 'Updating Password...';
   }
 
   try {
@@ -616,19 +619,19 @@ async function handleResetPasswordSubmit(e) {
     const result = await resp.json();
 
     if (!resp.ok || result.error) {
-      showToast(result.error || 'Gagal memperbarui password', 'error');
+      showToast(result.error || 'Failed to update password', 'error');
     } else {
-      showToast('Password Anda berhasil diperbarui! Silakan masuk kembali.', 'success');
+      showToast('Your password has been updated successfully! Please sign in again.', 'success');
       navigateTo('login');
     }
   } catch (err) {
     console.warn('Reset password error:', err);
-    showToast('Password Anda berhasil diperbarui!', 'success');
+    showToast('Your password has been updated successfully!', 'success');
     navigateTo('login');
   } finally {
     if (btn) {
       btn.disabled = false;
-      btn.innerText = 'Simpan & Perbarui Password';
+      btn.innerText = 'Save & Update Password';
     }
   }
 }
@@ -636,8 +639,8 @@ async function handleResetPasswordSubmit(e) {
 function openEditProfileModal() {
   if (!store.userAccount) {
     store.userAccount = {
-      name: 'Pelanggan BYHARIANS',
-      email: 'pelanggan@byharians.id',
+      name: 'BYHARIANS Customer',
+      email: 'customer@byharians.id',
       phone: '0812-0000-0000',
       ecoPoints: 100,
       padsDiverted: 0
@@ -671,14 +674,14 @@ async function handleUpdateProfileSubmit(e) {
   const phone = document.getElementById('edit-profile-phone')?.value?.trim();
 
   if (!name || !email) {
-    showToast('Nama dan email wajib diisi', 'error');
+    showToast('Name and email are required', 'error');
     return;
   }
 
   const btn = document.getElementById('btn-edit-profile-submit');
   if (btn) {
     btn.disabled = true;
-    btn.innerText = 'Menyimpan Perubahan...';
+    btn.innerText = 'Saving Changes...';
   }
 
   const oldEmail = store.userAccount?.email;
@@ -692,7 +695,7 @@ async function handleUpdateProfileSubmit(e) {
     const result = await resp.json();
 
     if (!resp.ok || result.error) {
-      showToast(result.error || 'Gagal memperbarui profil database', 'error');
+      showToast(result.error || 'Failed to update database profile', 'error');
     } else {
       store.userAccount.name = name;
       store.userAccount.email = email;
@@ -700,7 +703,7 @@ async function handleUpdateProfileSubmit(e) {
       store.save();
       updateHeaderAuthUI();
       updateAccountDashboardUI();
-      showToast('Profil database berhasil diperbarui!', 'success');
+      showToast('Database profile updated successfully!', 'success');
       closeEditProfileModal();
     }
   } catch (err) {
@@ -711,12 +714,12 @@ async function handleUpdateProfileSubmit(e) {
     store.save();
     updateHeaderAuthUI();
     updateAccountDashboardUI();
-    showToast('Profil lokal berhasil diperbarui!', 'success');
+    showToast('Local profile updated successfully!', 'success');
     closeEditProfileModal();
   } finally {
     if (btn) {
       btn.disabled = false;
-      btn.innerText = 'Simpan Perubahan Profil';
+      btn.innerText = 'Save Profile Changes';
     }
   }
 }

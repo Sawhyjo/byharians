@@ -10,7 +10,7 @@ async function lookupOrder(customQuery) {
   const query = (customQuery || input?.value || '').trim().toUpperCase();
 
   if (!query) {
-    if (typeof showToast === 'function') showToast('Masukkan Nomor Pesanan (BYH-XXXX) atau Nomor Resi (SIC-ECO-XXXX)', 'warning');
+    if (typeof showToast === 'function') showToast('Please enter an Order ID (BYH-XXXX) or Tracking Number (SIC-ECO-XXXX)', 'warning');
     return;
   }
 
@@ -46,7 +46,7 @@ async function lookupOrder(customQuery) {
         date: '2026-08-16',
         customer: { name: 'Elena Rostova', email: 'elena@domain.com', phone: '0812-8921-3401', city: 'Jakarta Selatan, DKI Jakarta' },
         items: [
-          { name: 'BYHARIANS Ultra-Thin Bamboo Day Pads', qty: 2, size: '24-Pcs Hemat Duo', price: 78000 },
+          { name: 'BYHARIANS Ultra-Thin Bamboo Day Pads', qty: 2, size: '24-Pcs Duo Pack', price: 78000 },
           { name: 'BYHARIANS Overnight Super Heavy Flow Pads', qty: 1, size: '16-Pcs Night Duo Pack', price: 45000 }
         ],
         total: 123000,
@@ -63,7 +63,7 @@ async function lookupOrder(customQuery) {
   if (!order) {
     if (resultsBox) resultsBox.style.display = 'none';
     if (typeof showToast === 'function') {
-      showToast(`Nomor Resi atau Order ID "${query}" tidak ditemukan di database Supabase. Pastikan format penulisan benar.`, 'error');
+      showToast(`Tracking Number or Order ID "${query}" was not found. Please check your order number format.`, 'error');
     }
     return;
   }
@@ -81,15 +81,15 @@ async function lookupOrder(customQuery) {
 
   if (dispId) dispId.innerText = `#${order.id} (${order.trackingNumber || 'N/A'})`;
   if (dispCourier) dispCourier.innerText = order.courier || 'SiCepat BEST Eco-Fleet';
-  if (dispEta) dispEta.innerText = order.status === 'delivered' ? 'Sudah Tiba' : 'Estimasi: 1-2 Hari Kerja';
+  if (dispEta) dispEta.innerText = order.status === 'delivered' ? 'Arrived' : 'Est: 1-2 Business Days';
 
   // Render Status Badge
   if (dispStatus) {
     const statusTextMap = {
-      processing: 'DI PROSES (DI KEMAS)',
-      shipped: 'DI JALAN (PENGIRIMAN)',
-      delivered: 'SAMPAI (SUDAH DITERIMA)',
-      cancellation_requested: 'PENGAJUAN BATAL'
+      processing: 'PROCESSING (PACKAGING)',
+      shipped: 'IN TRANSIT (DISPATCHED)',
+      delivered: 'DELIVERED (ARRIVED)',
+      cancellation_requested: 'CANCELLATION REQUESTED'
     };
     const statusClassMap = {
       processing: 'status-processing',
@@ -113,15 +113,15 @@ async function lookupOrder(customQuery) {
           <div style="display:flex; justify-space-between; align-items:center; font-size:0.85rem; padding-bottom:8px; border-bottom:1px dashed var(--color-border);">
             <div>
               <strong style="color:var(--color-primary);">${i.name}</strong>
-              <div style="font-size:0.76rem; color:var(--color-text-muted);">Jumlah: ${i.qty || i.quantity || 1} • ${i.size || i.packName || ''}</div>
+              <div style="font-size:0.76rem; color:var(--color-text-muted);">Qty: ${i.qty || i.quantity || 1} • ${i.size || i.packName || ''}</div>
             </div>
             <strong style="color:var(--color-primary);">${store.formatPrice(i.price || (i.unitPrice * i.quantity) || 0)}</strong>
           </div>
         `).join('')}
       </div>
       <div style="font-size:0.82rem; color:var(--color-text-muted); background:var(--color-bg-warm); padding:10px 14px; border-radius:8px;">
-        <strong>Alamat Tujuan:</strong> ${order.customer?.city || 'Jakarta, Indonesia'}<br>
-        <strong>Penerima:</strong> ${order.customer?.name || 'Pelanggan'} (${order.customer?.phone || ''})
+        <strong>Destination Address:</strong> ${order.customer?.city || 'Jakarta, Indonesia'}<br>
+        <strong>Recipient:</strong> ${order.customer?.name || 'Customer'} (${order.customer?.phone || ''})
       </div>
     `;
   }
@@ -143,18 +143,18 @@ function renderTrackingTimeline(status) {
   nodesEl.innerHTML = `
     <div class="timeline-step ${status === 'processing' || status === 'shipped' || status === 'delivered' ? 'completed' : ''}">
       <div class="step-node-icon">📦</div>
-      <div class="step-label">DI PROSES</div>
-      <div class="step-subtext">Pesanan Dikonfirmasi & Dikemas FSC</div>
+      <div class="step-label">PROCESSING</div>
+      <div class="step-subtext">Order Confirmed & FSC Box Packaged</div>
     </div>
     <div class="timeline-step ${status === 'shipped' || status === 'delivered' ? 'completed' : ''}">
       <div class="step-node-icon">🚚</div>
-      <div class="step-label">DI JALAN</div>
-      <div class="step-subtext">Kurir SiCepat EV Mengantar ke Alamat</div>
+      <div class="step-label">IN TRANSIT</div>
+      <div class="step-subtext">EcoFleet EV Courier En Route</div>
     </div>
     <div class="timeline-step ${status === 'delivered' ? 'completed' : ''}">
       <div class="step-node-icon">🏡</div>
-      <div class="step-label">SAMPAI</div>
-      <div class="step-subtext">Tiba di Tujuan & Konfirmasi Diterima</div>
+      <div class="step-label">DELIVERED</div>
+      <div class="step-subtext">Arrived & Package Received</div>
     </div>
   `;
 }
@@ -168,15 +168,15 @@ function renderTrackingActionButtons(order) {
     container.innerHTML = `
       <div style="background: rgba(39, 154, 94, 0.08); border: 1.5px solid var(--color-success); border-radius: var(--radius-lg); padding: 22px; margin-top: 24px;">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:10px;">
-          <h4 style="font-size: 1.05rem; color: var(--color-primary); margin:0;">🏡 Admin / Kurir Melaporkan Barang Telah Sampai</h4>
-          <span class="status-badge status-delivered">SAMPAI DI ALAMAT</span>
+          <h4 style="font-size: 1.05rem; color: var(--color-primary); margin:0;">🏡 Courier / Admin Reported Delivery Arrival</h4>
+          <span class="status-badge status-delivered">DELIVERED</span>
         </div>
         <p style="font-size: 0.84rem; color: var(--color-text-muted); margin-bottom: 16px;">
-          Silakan periksa paket Anda. Jika sudah diterima dengan baik, klik konfirmasi di bawah ini untuk mengklaim <strong>+50 Eco-Points</strong>. Jika terdapat kerusakan, hubungi Admin.
+          Please inspect your parcel. If received in good condition, confirm below to claim <strong>+50 Eco-Points</strong>. If damaged or missing, contact Support.
         </p>
         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-          <button class="btn btn-primary btn-sm" onclick="confirmOrderReceipt()" style="flex: 1; font-weight:800;">✅ Konfirmasi Pesanan Sudah Diterima</button>
-          <button class="btn btn-outline btn-sm" onclick="openDeliveryIssueModal()" style="color: var(--color-error); border-color: rgba(186, 50, 50, 0.35);">⚠️ Barang Belum Sampai / Rusak?</button>
+          <button class="btn btn-primary btn-sm" onclick="confirmOrderReceipt()" style="flex: 1; font-weight:800;">✅ Confirm Delivery Receipt</button>
+          <button class="btn btn-outline btn-sm" onclick="openDeliveryIssueModal()" style="color: var(--color-error); border-color: rgba(186, 50, 50, 0.35);">⚠️ Report Package Issue / Damage</button>
         </div>
       </div>
     `;
@@ -184,24 +184,24 @@ function renderTrackingActionButtons(order) {
     // Condition B: Cancellation pending Admin confirmation
     container.innerHTML = `
       <div style="background: #FEF3C7; border: 1.5px solid #F59E0B; border-radius: var(--radius-lg); padding: 20px; margin-top: 24px;">
-        <h4 style="font-size: 1rem; color: #92400E; margin-bottom: 6px;">⏳ Pengajuan Pembatalan Dalam Proses Verifikasi Admin</h4>
+        <h4 style="font-size: 1rem; color: #92400E; margin-bottom: 6px;">⏳ Cancellation Request Pending Admin Approval</h4>
         <p style="font-size: 0.83rem; color: #78350F; margin-bottom: 14px;">
-          Pengajuan pembatalan pesanan <strong>#${order.id}</strong> telah dikirim ke Admin. Silakan klik di bawah ini untuk konfirmasi cepat via WhatsApp Admin.
+          Cancellation request for order <strong>#${order.id}</strong> submitted. Click below to confirm via WhatsApp Admin.
         </p>
-        <button class="btn btn-secondary btn-sm" onclick="openCancelOrderModal()">💬 Chat Admin WA Konfirmasi Pembatalan</button>
+        <button class="btn btn-secondary btn-sm" onclick="openCancelOrderModal()">💬 Chat Admin WA for Instant Cancellation</button>
       </div>
     `;
   } else {
     // Condition C: Order is 'processing' or 'shipped' (Barang Belum Sampai)
     container.innerHTML = `
       <div style="background: #FFFDF4; border: 1.5px solid var(--color-border); border-radius: var(--radius-lg); padding: 22px; margin-top: 24px;">
-        <h4 style="font-size: 1.05rem; color: var(--color-primary); margin-bottom: 6px;">Bantuan Pemesanan & Pengajuan Pembatalan</h4>
+        <h4 style="font-size: 1.05rem; color: var(--color-primary); margin-bottom: 6px;">Order Support & Cancellation Options</h4>
         <p style="font-size: 0.83rem; color: var(--color-text-muted); margin-bottom: 16px;">
-          Pesanan Anda sedang diproses/dalam pengiriman. Jika terdapat pertanyaan kendala atau ingin membatalkan pesanan, silakan pilih opsi di bawah ini (memerlukan konfirmasi Admin).
+          Your order is processing/in transit. For questions or to request a cancellation, select an option below.
         </p>
         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-          <button class="btn btn-outline btn-sm" onclick="openDeliveryIssueModal()" style="flex: 1; color: var(--color-primary); border-color: var(--color-border);">❓ Tanya Kendala Pemesanan / Chat Admin</button>
-          <button class="btn btn-outline btn-sm" onclick="openCancelOrderModal()" style="color: var(--color-error); border-color: rgba(186, 50, 50, 0.4);">🚫 Pengajuan Pembatalan (Cancel Pesanan)</button>
+          <button class="btn btn-outline btn-sm" onclick="openDeliveryIssueModal()" style="flex: 1; color: var(--color-primary); border-color: var(--color-border);">❓ Order Support / Chat Admin</button>
+          <button class="btn btn-outline btn-sm" onclick="openCancelOrderModal()" style="color: var(--color-error); border-color: rgba(186, 50, 50, 0.4);">🚫 Request Order Cancellation</button>
         </div>
       </div>
     `;
@@ -221,7 +221,7 @@ function confirmOrderReceipt() {
   if (typeof updateAccountDashboardUI === 'function') updateAccountDashboardUI();
 
   if (typeof showToast === 'function') {
-    showToast('Terima kasih! Pesanan dikonfirmasi selesai (+50 Eco-Points ditambahkan).', 'success');
+    showToast('Thank you! Order confirmed delivered (+50 Eco-Points added).', 'success');
   }
 
   openProductReviewModal();
@@ -243,7 +243,7 @@ function submitDeliveryComplaintTicket(e) {
   const issueDesc = document.getElementById('issue-desc-input')?.value?.trim();
 
   if (!issueDesc) {
-    if (typeof showToast === 'function') showToast('Harap jelaskan kendala atau kerusakan yang dialami.', 'error');
+    if (typeof showToast === 'function') showToast('Please describe the issue or damage.', 'error');
     return;
   }
 
@@ -251,12 +251,12 @@ function submitDeliveryComplaintTicket(e) {
   closeDeliveryIssueModal();
 
   if (typeof showToast === 'function') {
-    showToast(`Tiket Bantuan #${ticketId} berhasil dikirim ke Tim Ops Admin BYHARIANS.`, 'success');
+    showToast(`Support Ticket #${ticketId} submitted to BYHARIANS Ops Team.`, 'success');
   }
 
   // Trigger direct WhatsApp support chat
   const orderId = activeTrackingOrder?.id || 'BYH-89421';
-  const waText = encodeURIComponent(`Halo Admin BYHARIANS,\nSaya mau lapor kendala pesanan #${orderId}.\nKendala: ${issueType}\nCatatan: ${issueDesc}`);
+  const waText = encodeURIComponent(`Hello BYHARIANS Admin,\nI would like to report an issue with order #${orderId}.\nIssue Type: ${issueType}\nNotes: ${issueDesc}`);
   window.open(`https://wa.me/6281289213401?text=${waText}`, '_blank');
 }
 
@@ -287,12 +287,12 @@ function submitCancelOrderRequest(e) {
 
   if (typeof renderAdminOrders === 'function') renderAdminOrders();
   if (typeof showToast === 'function') {
-    showToast(`Pengajuan pembatalan pesanan #${activeTrackingOrder.id} telah dikirim ke Admin.`, 'info');
+    showToast(`Cancellation request for order #${activeTrackingOrder.id} submitted to Admin.`, 'info');
   }
 
   // Open WhatsApp Admin chat for cancellation confirmation
   const orderId = activeTrackingOrder.id;
-  const waText = encodeURIComponent(`Halo Admin BYHARIANS,\nSaya ingin mengajukan PEMBATALAN untuk pesanan #${orderId}.\nAlasan: ${reason}\nCatatan: ${note}\nMohon bantuannya untuk memproses konfirmasi pembatalan. Terima kasih!`);
+  const waText = encodeURIComponent(`Hello BYHARIANS Admin,\nI would like to request CANCELLATION for order #${orderId}.\nReason: ${reason}\nNotes: ${note}\nPlease assist with processing the cancellation. Thank you!`);
   window.open(`https://wa.me/6281289213401?text=${waText}`, '_blank');
 }
 
@@ -320,6 +320,6 @@ function submitProductReview(e) {
   closeProductReviewModal();
 
   if (typeof showToast === 'function') {
-    showToast(`Ulasan Bintang ${selectedRatingStars} berhasil dikirim! Terima kasih atas masukan Anda.`, 'success');
+    showToast(`${selectedRatingStars}-Star Review submitted successfully! Thank you for your feedback.`, 'success');
   }
 }
