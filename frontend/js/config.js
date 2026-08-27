@@ -1,7 +1,10 @@
 /**
  * BYHARIANS ECO-COMMERCE CONFIGURATION MODULE
  */
-const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const isLocalDev = window.location.hostname === 'localhost' || 
+                   window.location.hostname === '127.0.0.1' || 
+                   window.location.protocol === 'file:' || 
+                   !window.location.hostname;
 
 const CONFIG = {
   SUPABASE_URL: 'https://pqelwrcierxjrpwcbbxe.supabase.co',
