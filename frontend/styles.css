@@ -599,13 +599,15 @@ h1, h2, h3, h4, h5, h6 {
 
 .editorial-hero-section {
   position: relative;
-  min-height: 82vh;
-  min-height: 82dvh;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 85vh;
+  max-height: 85dvh;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: #081B10;
+  background: #1B3B24;
   color: #FFFFFF;
 }
 
