@@ -5864,6 +5864,68 @@ html, body {
   100% { opacity: 1; }
 }
 
+/* ==========================================
+   FLOATING BOTTOM-RIGHT SPEAKER SOUND WIDGET
+   ========================================== */
+.team-floating-speaker {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(15, 48, 29, 0.92);
+  color: #F7C828;
+  border: 1.5px solid rgba(247, 200, 40, 0.6);
+  border-radius: 50px;
+  padding: 10px 18px 10px 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  user-select: none;
+}
+
+.team-floating-speaker:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 14px 36px rgba(247, 200, 40, 0.4);
+  background: #0F301D;
+}
+
+.team-floating-speaker.playing {
+  background: #F7C828;
+  color: #0F301D;
+  border-color: #0F301D;
+  box-shadow: 0 10px 30px rgba(247, 200, 40, 0.5);
+  animation: speakerPulse 2.5s infinite alternate;
+}
+
+.team-floating-speaker.playing .floating-speaker-label {
+  color: #0F301D;
+}
+
+.floating-speaker-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.floating-speaker-label {
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: #FFFFFF;
+  white-space: nowrap;
+}
+
+@keyframes speakerPulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.04); }
+}
+
 @keyframes preloaderProgressFill {
   0% { width: 0%; }
   60% { width: 70%; }

@@ -82,6 +82,15 @@ function navigateTo(viewId) {
   if (target === 'admin' && typeof switchAdminSubTab === 'function') switchAdminSubTab('all');
   if (target === 'account' && typeof updateAccountDashboardUI === 'function') updateAccountDashboardUI();
 
+  const speakerWidget = document.getElementById('team-floating-speaker');
+  if (speakerWidget) {
+    speakerWidget.style.display = (target === 'team') ? 'flex' : 'none';
+    if (target !== 'team') {
+      const audio = document.getElementById('team-theme-audio');
+      if (audio && !audio.paused) audio.pause();
+    }
+  }
+
   updateHeaderAuthUI();
 }
 
@@ -98,6 +107,31 @@ function handleHeaderAccountClick(e) {
     navigateTo(store.isAdmin ? 'admin' : 'account');
   } else {
     navigateTo('login');
+  }
+}
+
+function toggleFloatingTeamSound() {
+  const audio = document.getElementById('team-theme-audio');
+  const icon = document.getElementById('floating-speaker-icon');
+  const label = document.getElementById('floating-speaker-label');
+  const widget = document.getElementById('team-floating-speaker');
+
+  if (audio) {
+    if (audio.paused) {
+      audio.play().then(() => {
+        if (icon) icon.innerText = '🔊';
+        if (label) label.innerText = 'Sound On';
+        if (widget) widget.classList.add('playing');
+        showToast('🎵 Playing Piano Man Instrumental', 'info');
+      }).catch(err => {
+        console.warn('Audio playback notice:', err);
+      });
+    } else {
+      audio.pause();
+      if (icon) icon.innerText = '🔇';
+      if (label) label.innerText = 'Muted';
+      if (widget) widget.classList.remove('playing');
+    }
   }
 }
 
@@ -160,44 +194,3 @@ window.addEventListener('load', () => {
 
 // Safety fallback in case load event takes too long
 setTimeout(dismissPreloader, 3000);
-
-// ==========================================================================
-// MEET OUR TEAM AUDIO & VIDEO SOUND CONTROLLERS
-// ==========================================================================
-function toggleTeamVideoSound() {
-  const vid = document.getElementById('team-showcase-video');
-  const btn = document.getElementById('team-video-sound-btn');
-  if (vid) {
-    vid.muted = !vid.muted;
-    if (btn) {
-      btn.innerHTML = vid.muted ? '🔇 Unmute Video Sound' : '🔊 Mute Video Sound';
-      btn.style.background = vid.muted ? 'rgba(15, 48, 29, 0.9)' : '#F7C828';
-      btn.style.color = vid.muted ? '#FFFFFF' : '#0F301D';
-    }
-  }
-}
-
-function toggleTeamAudio() {
-  const audio = document.getElementById('team-theme-audio');
-  const btn = document.getElementById('team-audio-btn');
-  if (audio) {
-    if (audio.paused) {
-      audio.play().then(() => {
-        if (btn) {
-          btn.innerHTML = '⏸️ Pause Team Song';
-          btn.style.background = '#F7C828';
-          btn.style.color = '#0F301D';
-        }
-      }).catch(err => {
-        console.warn('Audio playback notice:', err);
-      });
-    } else {
-      audio.pause();
-      if (btn) {
-        btn.innerHTML = '🎵 Play Team Song';
-        btn.style.background = 'rgba(15, 48, 29, 0.9)';
-        btn.style.color = '#FFFFFF';
-      }
-    }
-  }
-}
