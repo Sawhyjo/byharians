@@ -616,8 +616,7 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 1;
 }
 
-.editorial-hero-bg-img,
-.editorial-hero-bg-video {
+.editorial-hero-bg-img {
   width: 100%;
   height: auto;
   display: block;
@@ -625,6 +624,15 @@ h1, h2, h3, h4, h5, h6 {
   object-position: center;
   animation: heroSubtleFloat 9s ease-in-out infinite alternate;
   will-change: transform;
+}
+
+.editorial-hero-bg-video {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  object-position: center;
+  pointer-events: none;
 }
 
 @keyframes heroSubtleFloat {
