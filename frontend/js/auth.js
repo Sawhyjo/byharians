@@ -472,9 +472,6 @@ async function updateAccountDashboardUI() {
     renderUserGroceriesDashboard();
   }
 
-    renderUserGroceriesDashboard();
-  }
-
   // Render Past Orders List with Supabase Verified Tag
   const ordersListEl = document.getElementById('acc-orders-list');
   if (ordersListEl) {
