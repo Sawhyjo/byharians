@@ -170,7 +170,13 @@
     <!-- Hero Banner Section -->
     <section class="editorial-hero-section">
       <div class="editorial-hero-bg-wrap">
-        <picture>
+        <!-- Optional HTML5 Hero Video (Plays automatically if hero_video.mp4 exists) -->
+        <video id="hero-bg-video" autoplay loop muted playsinline class="editorial-hero-bg-video" style="display: none;">
+          <source src="assets/videos/hero_video.mp4" type="video/mp4">
+        </video>
+
+        <!-- Graphic Image Banner with Subtle Motion Animation -->
+        <picture id="hero-bg-picture">
           <source media="(max-width: 768px)" srcset="assets/images/hero_mobile_banner.jpg">
           <img src="assets/images/hero_banner.jpg" alt="BYHARIANS EKAPADS Banana-Based Biomass Sanitary Pad" class="editorial-hero-bg-img">
         </picture>

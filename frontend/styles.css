@@ -616,15 +616,27 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 1;
 }
 
-.editorial-hero-bg-img {
+.editorial-hero-bg-img,
+.editorial-hero-bg-video {
   width: 100%;
   height: auto;
   display: block;
   object-fit: contain;
   object-position: center;
-  transform: none;
-  animation: none;
-  will-change: auto;
+  animation: heroSubtleFloat 9s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes heroSubtleFloat {
+  0% {
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    transform: scale(1.022) translateY(-5px);
+  }
+  100% {
+    transform: scale(1.012) translateY(3px);
+  }
 }
 
 .editorial-hero-overlay {
