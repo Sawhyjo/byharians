@@ -1,0 +1,16 @@
+# ==========================================
+# BYHARIANS ECO-STORE NETLIFY CONFIGURATION
+# ==========================================
+
+[build]
+  publish = "frontend"
+  command = ""
+
+# Single Page Application (SPA) Routing Redirects
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[build.environment]
+  NODE_VERSION = "18"
