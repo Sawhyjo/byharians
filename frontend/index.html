@@ -1116,17 +1116,16 @@
       <div class="auth-card">
         <!-- Auth Card Header -->
         <div class="auth-header">
-          <div class="brand-logo" style="margin-bottom: 12px; display: inline-flex;">
+          <div class="brand-logo" style="margin-bottom: 15px; display: inline-flex;">
             <span class="brand-wordmark" style="font-size: 1.6rem;">BYHARIANS</span>
-            <span class="brand-tagline-small">CUSTOMER PORTAL</span>
           </div>
           <p class="auth-subtitle" id="auth-header-subtitle">Sign in to manage your monthly cycle subscriptions and reward points.</p>
         </div>
 
         <!-- Auth Tabs Switcher -->
         <div class="auth-tabs">
-          <button class="auth-tab-btn active" id="auth-tab-signin-btn" onclick="switchAuthTab('signin')">Sign In</button>
-          <button class="auth-tab-btn" id="auth-tab-signup-btn" onclick="switchAuthTab('signup')">Create Account</button>
+          <button type="button" class="auth-tab-btn active" id="auth-tab-signin-btn" onclick="switchAuthTab('signin'); return false;">Sign In</button>
+          <button type="button" class="auth-tab-btn" id="auth-tab-signup-btn" onclick="switchAuthTab('signup'); return false;">Create Account</button>
         </div>
 
         <!-- 1. Sign In Form -->
