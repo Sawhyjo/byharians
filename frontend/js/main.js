@@ -147,14 +147,17 @@ function dismissPreloader() {
     preloader.classList.add('fade-out');
     setTimeout(() => {
       preloader.style.display = 'none';
-    }, 850);
+      if (preloader.parentNode) {
+        preloader.parentNode.removeChild(preloader);
+      }
+    }, 600);
   }
 }
 
 window.addEventListener('load', () => {
-  setTimeout(dismissPreloader, 2100);
+  setTimeout(dismissPreloader, 1500);
 });
 
 // Safety fallback in case load event takes too long
-setTimeout(dismissPreloader, 3800);
+setTimeout(dismissPreloader, 3000);
 

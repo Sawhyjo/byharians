@@ -931,7 +931,7 @@
     <section class="team-video-showcase-section" style="background: linear-gradient(180deg, #0F301D 0%, #153A24 100%); padding: 50px 0 20px; text-align: center;">
       <div class="container">
         <div style="max-width: 960px; margin: 0 auto; border-radius: var(--radius-xl); overflow: hidden; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35); border: 2px solid rgba(247, 200, 40, 0.35);">
-          <video id="team-showcase-video" autoplay loop muted playsinline controls style="width: 100%; height: auto; display: block; background: #000; border-radius: var(--radius-xl);">
+          <video id="team-showcase-video" autoplay loop muted playsinline controls onended="this.currentTime = 0; this.play();" style="width: 100%; height: auto; display: block; background: #000; border-radius: var(--radius-xl);">
             <source src="assets/videos/meet_our_team.mp4" type="video/mp4">
             <source src="assets/videos/team_video.mp4" type="video/mp4">
           </video>
