@@ -169,15 +169,14 @@
     <!-- Hero Banner Section -->
     <!-- Hero Banner Section -->
     <section class="editorial-hero-section">
-      <div class="editorial--bg-wrap">
-        <!-- Looping HTML5 Hero Video -->
-        <video id="hero-bg-video" autoplay loop muted playsinline class="editorial-hero-bg-video" style="display: block; width: 100%; height: auto;">
+      <div class="editorial-hero-bg-wrap">
+        <!-- Optional HTML5 Hero Video (Plays automatically if hero_video.mp4 exists) -->
+        <video id="hero-bg-video" autoplay loop muted playsinline class="editorial-hero-bg-video" style="display: none;">
           <source src="assets/videos/hero_video.mp4" type="video/mp4">
-          <source src="assets/videos/Hero Video.mp4" type="video/mp4">
         </video>
 
-        <!-- Fallback Graphic Image Banner (Hidden when Video Plays) -->
-        <picture id="hero-bg-picture" style="display: none;">
+        <!-- Graphic Image Banner with Subtle Motion Animation -->
+        <picture id="hero-bg-picture">
           <source media="(max-width: 768px)" srcset="assets/images/hero_mobile_banner.jpg">
           <img src="assets/images/hero_banner.jpg" alt="BYHARIANS EKAPADS Banana-Based Biomass Sanitary Pad" class="editorial-hero-bg-img">
         </picture>
@@ -762,10 +761,10 @@
 
         <!-- Certifications & Movement Badges -->
         <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 24px;">
-          <span style="background: #fff; padding: 10px 20px; border-radius: var(--radius-md); font-weight: 700; font-size: 0.86rem; color: var(--color-primary); border: 1px solid var(--color-border);">Banana Pseudostem Cellulose Core</span>
-          <span style="background: #fff; padding: 10px 20px; border-radius: var(--radius-md); font-weight: 700; font-size: 0.86rem; color: var(--color-primary); border: 1px solid var(--color-border);">Kenaf Fiber ADL Layer</span>
-          <span style="background: #fff; padding: 10px 20px; border-radius: var(--radius-md); font-weight: 700; font-size: 0.86rem; color: var(--color-primary); border: 1px solid var(--color-border);">Biodegradable Starter Pouch</span>
-          <span style="background: #fff; padding: 10px 20px; border-radius: var(--radius-md); font-weight: 700; font-size: 0.86rem; color: var(--color-primary); border: 1px solid var(--color-border);">100% Soil Biodegradable</span>
+          <span style="background: #fff; padding: 10px 20px; border-radius: var(--radius-md); font-weight: 700; font-size: 0.86rem; color: var(--color-primary); border: 1px solid var(--color-border);">🍌 Banana Pseudostem Cellulose Core</span>
+          <span style="background: #fff; padding: 10px 20px; border-radius: var(--radius-md); font-weight: 700; font-size: 0.86rem; color: var(--color-primary); border: 1px solid var(--color-border);">🌾 Kenaf Fiber ADL Layer</span>
+          <span style="background: #fff; padding: 10px 20px; border-radius: var(--radius-md); font-weight: 700; font-size: 0.86rem; color: var(--color-primary); border: 1px solid var(--color-border);">📦 Biodegradable Starter Pouch</span>
+          <span style="background: #fff; padding: 10px 20px; border-radius: var(--radius-md); font-weight: 700; font-size: 0.86rem; color: var(--color-primary); border: 1px solid var(--color-border);">🌱 100% Soil Biodegradable</span>
         </div>
       </div>
     </section>
@@ -784,7 +783,7 @@
             Existing biodegradable pads mainly focus on material substitution while disposal practices remain unchanged. EKAPADS goes beyond by engineering <strong>banana pseudostem cellulose</strong> into an ultra-absorbent core and <strong>kenaf fiber</strong> into an Acquisition Distribution Layer (ADL) for rapid fluid distribution and leak protection.
           </p>
           <div style="background: #fff; border-radius: var(--radius-lg); padding: 24px; border: 1px solid var(--color-border); box-shadow: var(--shadow-xs);">
-            <strong style="color: var(--color-primary); display: block; margin-bottom: 8px; font-size: 1.05rem;">Two-Fold Disposal Innovation:</strong>
+            <strong style="color: var(--color-primary); display: block; margin-bottom: 8px; font-size: 1.05rem;">🌾 Two-Fold Disposal Innovation:</strong>
             <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0; line-height: 1.6;">
               1. <strong>Biodegradable Disposal Pouch:</strong> Functions as a decomposition starter, eliminating extra plastic wrapping.<br>
               2. <strong>Zero Microplastic Soil Return:</strong> Used pads break down naturally without polluting local landfills or rivers.
@@ -792,36 +791,22 @@
           </div>
         </div>
 
-        <div style="background: #0F301D; color: #FAF5EA; border-radius: var(--radius-xl); padding: 36px 32px; border: 1px solid rgba(247, 200, 40, 0.25); box-shadow: 0 16px 40px rgba(15, 48, 29, 0.25);">
-          <span style="display: inline-block; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #F7C828; margin-bottom: 8px;">ZERO-WASTE LIFESTYLE</span>
-          <h3 style="font-family: 'Cormorant Garamond', 'Playfair Display', serif; font-size: 1.85rem; margin-bottom: 24px; color: #FAF5EA; font-weight: 600; line-height: 1.2;">The "Nature to Nature" Lifecycle</h3>
+        <div class="story-card-box" style="background: #fff; padding: 36px;">
+          <h3 style="font-size: 1.4rem; margin-bottom: 24px; color: var(--color-primary);">The "Nature to Nature" Lifecycle</h3>
           
-          <div style="display: flex; flex-direction: column; gap: 20px;">
-            
-            <div style="display: flex; gap: 16px; align-items: flex-start; background: rgba(255, 255, 255, 0.05); padding: 16px 18px; border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.08);">
-              <span style="font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 700; color: #F7C828; line-height: 1; flex-shrink: 0; min-width: 28px;">01</span>
-              <div>
-                <strong style="color: #FAF5EA; font-size: 0.96rem; display: block; margin-bottom: 4px;">Local Farmer Harvest</strong>
-                <p style="font-size: 0.84rem; color: #B4C5B9; margin: 0; line-height: 1.6;">Sourcing banana pseudostem and kenaf fibers directly from local Indonesian farming communities after crop harvesting.</p>
-              </div>
-            </div>
+          <div class="story-timeline-item">
+            <strong style="color: var(--color-primary);">1. Agricultural Waste Feedstock</strong>
+            <p style="font-size: 0.85rem; color: var(--color-text-muted);">Sourcing post-harvest banana pseudostem and kenaf fibers in partnership with local Indonesian farmers.</p>
+          </div>
 
-            <div style="display: flex; gap: 16px; align-items: flex-start; background: rgba(255, 255, 255, 0.05); padding: 16px 18px; border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.08);">
-              <span style="font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 700; color: #F7C828; line-height: 1; flex-shrink: 0; min-width: 28px;">02</span>
-              <div>
-                <strong style="color: #FAF5EA; font-size: 0.96rem; display: block; margin-bottom: 4px;">Gentle Plant Fiber Refining</strong>
-                <p style="font-size: 0.84rem; color: #B4C5B9; margin: 0; line-height: 1.6;">Extracting natural plant cellulose into ultra-soft, highly absorbent layers without chlorine bleaching or synthetic binders.</p>
-              </div>
-            </div>
+          <div class="story-timeline-item">
+            <strong style="color: var(--color-primary);">2. Multilayer Biomaterial Engineering</strong>
+            <p style="font-size: 0.85rem; color: var(--color-text-muted);">Cellulose extraction and non-woven processing creating high-retention absorbent core and fluid-distribution ADL.</p>
+          </div>
 
-            <div style="display: flex; gap: 16px; align-items: flex-start; background: rgba(255, 255, 255, 0.05); padding: 16px 18px; border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.08);">
-              <span style="font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 700; color: #F7C828; line-height: 1; flex-shrink: 0; min-width: 28px;">03</span>
-              <div>
-                <strong style="color: #FAF5EA; font-size: 0.96rem; display: block; margin-bottom: 4px;">Natural Soil Return</strong>
-                <p style="font-size: 0.84rem; color: #B4C5B9; margin: 0; line-height: 1.6;">Disposed pads in starter pouches break down naturally in soil within months, leaving zero microplastics and returning organic nutrients to earth.</p>
-              </div>
-            </div>
-
+          <div class="story-timeline-item">
+            <strong style="color: var(--color-primary);">3. 100% Soil Biodegradation</strong>
+            <p style="font-size: 0.85rem; color: var(--color-text-muted);">Used pads in starter pouches decompose naturally in soil within months, returning plant nutrients back to the earth.</p>
           </div>
         </div>
       </div>
@@ -949,7 +934,7 @@
     </audio>
 
     <!-- Floating Bottom-Right Speaker Sound Toggle Widget -->
-    <div id="team-floating-speaker" class="team-floating-speaker" onclick="toggleFloatingTeamSound()" title="Klik untuk memutar / mematikan lagu">
+    <div id="team-floating-speaker" class="team-floating-speaker" onclick="toggleFloatingTeamSound()" title="Klik untuk memutar / mematikan lagu" style="display: none;">
       <span id="floating-speaker-icon" class="floating-speaker-icon">🔇</span>
       <span id="floating-speaker-label" class="floating-speaker-label">Muted</span>
     </div>
@@ -961,6 +946,7 @@
           <video id="team-showcase-video" autoplay loop muted playsinline controls onended="this.currentTime = 0; this.play();" style="width: 100%; height: auto; display: block; background: #000; border-radius: var(--radius-xl);">
             <source src="assets/videos/meet_our_team.mp4" type="video/mp4">
             <source src="assets/videos/team_video.mp4" type="video/mp4">
+            <source src="assets/videos/hero_video.mp4" type="video/mp4">
           </video>
         </div>
       </div>
@@ -990,62 +976,75 @@
         <!-- Team Member 1: Andi Khansa Hakim -->
         <div style="background: #fff; border-radius: var(--radius-xl); padding: 32px; border: 1px solid var(--color-border); box-shadow: var(--shadow-xs); text-align: center;">
           <div style="width: 84px; height: 84px; border-radius: 50%; background: linear-gradient(135deg, rgba(15, 48, 29, 0.15) 0%, rgba(247, 200, 40, 0.25) 100%); color: var(--color-primary); font-size: 1.8rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; border: 2px solid var(--color-border);">
-            AK
+            Ancis
           </div>
-          <h3 style="font-size: 1.3rem; color: var(--color-primary); margin-bottom: 4px; font-weight: 700;">Andi Khansa Hakim</h3>
-          <span style="display: block; font-size: 0.82rem; color: var(--color-secondary); font-weight: 700; text-transform: uppercase; margin-bottom: 14px; letter-spacing: 0.05em;">Chief Executive Officer</span>
-          <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6; margin: 0;">
-            Spearheading EKAPADS' organizational strategy, overarching vision, and cross-sector partnerships with local farmers, material suppliers, and educational institutions to eliminate plastic menstrual waste.
+           <h2 style="font-size: 1.6rem; color: var(--color-primary); margin-bottom: 16px; font-weight: 800;">Andi Khansa Hakim</h2>
+          <span style="display: block; font-size: 0.88rem; color: var(--color-secondary); font-weight: 700; text-transform: uppercase; margin-bottom: 14px; letter-spacing: 0.05em;">Chief Executive Officer</span>
+          <p style="font-size: 1.0rem; color: var(--color-text-muted); line-height: 1.6; margin: 0;">
+            "vini vidi vici" - I came, I saw, I conquered.
+          </p>
+           An Highschool student from SMAN 81 Jakarta, from XII-9. She is the CEO of BYHARIANS, Leading the team in developing EKAPADS.
           </p>
         </div>
 
         <!-- Team Member 2: Nalini Danisha Nugraha -->
         <div style="background: #fff; border-radius: var(--radius-xl); padding: 32px; border: 1px solid var(--color-border); box-shadow: var(--shadow-xs); text-align: center;">
           <div style="width: 84px; height: 84px; border-radius: 50%; background: linear-gradient(135deg, rgba(15, 48, 29, 0.15) 0%, rgba(247, 200, 40, 0.25) 100%); color: var(--color-primary); font-size: 1.8rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; border: 2px solid var(--color-border);">
-            ND
+            Nunung
           </div>
-          <h3 style="font-size: 1.3rem; color: var(--color-primary); margin-bottom: 4px; font-weight: 700;">Nalini Danisha Nugraha</h3>
-          <span style="display: block; font-size: 0.82rem; color: var(--color-secondary); font-weight: 700; text-transform: uppercase; margin-bottom: 14px; letter-spacing: 0.05em;">Financial Controller</span>
-          <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6; margin: 0;">
-            Managing unit economics, budget allocation, cost-benefit analysis of banana pseudostem feedstock, and sustainable financial forecasting for community and school scalability.
+           <h2 style="font-size: 1.6rem; color: var(--color-primary); margin-bottom: 16px; font-weight: 800;">Nalini Danisha Nugraha</h2>
+          <span style="display: block; font-size: 0.88rem; color: var(--color-secondary); font-weight: 700; text-transform: uppercase; margin-bottom: 14px; letter-spacing: 0.05em;">Financial Manager</span>
+          <p style="font-size: 1.0rem; color: var(--color-text-muted); line-height: 1.6; margin: 0;">
+            "vini vidi vici" - I came, I saw, I conquered.
+          </p>
+           An Highschool student from SMAN 81 Jakarta, from XII-1. She is the Financial Manager of BYHARIANS, Leading the team in managing the company's finances and budgeting for EKAPADS.
           </p>
         </div>
+
 
         <!-- Team Member 3: Malika Alisha Ayu Wiryawan -->
         <div style="background: #fff; border-radius: var(--radius-xl); padding: 32px; border: 1px solid var(--color-border); box-shadow: var(--shadow-xs); text-align: center;">
           <div style="width: 84px; height: 84px; border-radius: 50%; background: linear-gradient(135deg, rgba(15, 48, 29, 0.15) 0%, rgba(247, 200, 40, 0.25) 100%); color: var(--color-primary); font-size: 1.8rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; border: 2px solid var(--color-border);">
-            MA
+            Malica
           </div>
-          <h3 style="font-size: 1.3rem; color: var(--color-primary); margin-bottom: 4px; font-weight: 700;">Malika Alisha Ayu Wiryawan</h3>
-          <span style="display: block; font-size: 0.82rem; color: var(--color-secondary); font-weight: 700; text-transform: uppercase; margin-bottom: 14px; letter-spacing: 0.05em;">Visual Designer</span>
-          <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6; margin: 0;">
-            Designing intuitive product branding, biodegradable packaging graphics, decomposition starter pouch aesthetics, and educational visual communication that drives sustainable behavioral change.
+           <h2 style="font-size: 1.6rem; color: var(--color-primary); margin-bottom: 16px; font-weight: 800;">Malika Alisha Ayu Wiryawan</h2>
+          <span style="display: block; font-size: 0.88rem; color: var(--color-secondary); font-weight: 700; text-transform: uppercase; margin-bottom: 14px; letter-spacing: 0.05em;">Visual Designer</span>
+          <p style="font-size: 1.0rem; color: var(--color-text-muted); line-height: 1.6; margin: 0;">
+            "vini vidi vici" - I came, I saw, I conquered.
+          </p>
+           An Highschool student from SMAN 81 Jakarta, from XII-7. She is the visual designer of BYHARIANS, Leading the visual identity and design for EKAPADS.
           </p>
         </div>
+
 
         <!-- Team Member 4: Robith Zakki Haydar -->
         <div style="background: #fff; border-radius: var(--radius-xl); padding: 32px; border: 1px solid var(--color-border); box-shadow: var(--shadow-xs); text-align: center;">
           <div style="width: 84px; height: 84px; border-radius: 50%; background: linear-gradient(135deg, rgba(15, 48, 29, 0.15) 0%, rgba(247, 200, 40, 0.25) 100%); color: var(--color-primary); font-size: 1.8rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; border: 2px solid var(--color-border);">
-            RZ
+            RBL
           </div>
-          <h3 style="font-size: 1.3rem; color: var(--color-primary); margin-bottom: 4px; font-weight: 700;">Robith Zakki Haydar</h3>
-          <span style="display: block; font-size: 0.82rem; color: var(--color-secondary); font-weight: 700; text-transform: uppercase; margin-bottom: 14px; letter-spacing: 0.05em;">Marketing Manager</span>
-          <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6; margin: 0;">
-            Leading community engagement, school outreach programs, environmental awareness campaigns, and consumer behavior transformation from synthetic pads to circular sanitary solutions.
+           <h2 style="font-size: 1.6rem; color: var(--color-primary); margin-bottom: 16px; font-weight: 800;">Robith Zakki Haydar</h2>
+          <span style="display: block; font-size: 0.88rem; color: var(--color-secondary); font-weight: 700; text-transform: uppercase; margin-bottom: 14px; letter-spacing: 0.05em;">Marketing Manager</span>
+          <p style="font-size: 1.0rem; color: var(--color-text-muted); line-height: 1.6; margin: 0;">
+            "ꦲꦶꦁꦔꦂꦱꦱꦸꦁꦠꦸꦭꦝ" - Be a role model for others.
+          </p>
+           An Highschool student from SMAN 81 Jakarta, from XII-7. He is the Marketing Manager of BYHARIANS, Leading communication and marketing strategy for EKAPADS.
+        </div>
+
+
+        <!-- Team Member 5: Muhammad Safriansyah Wirawan -->
+       <div style="background: #fff; border-radius: var(--radius-xl); padding: 32px; border: 1px solid var(--color-border); box-shadow: var(--shadow-xs); text-align: center;">
+          <div style="width: 84px; height: 84px; border-radius: 50%; background: linear-gradient(135deg, rgba(15, 48, 29, 0.15) 0%, rgba(247, 200, 40, 0.25) 100%); color: var(--color-primary); font-size: 1.8rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; border: 2px solid var(--color-border);">
+            WIN
+          </div>
+           <h2 style="font-size: 1.6rem; color: var(--color-primary); margin-bottom: 16px; font-weight: 800;">Muhammad Safriansyah Wirawan</h2>
+          <span style="display: block; font-size: 0.88rem; color: var(--color-secondary); font-weight: 700; text-transform: uppercase; margin-bottom: 14px; letter-spacing: 0.05em;">Project Manager</span>
+          <p style="font-size: 1.0rem; color: var(--color-text-muted); line-height: 1.6; margin: 0;">
+            "مَنْ جَدّ وَجَدَ" - whoever strives finds.
+          </p>
+           An Highschool student from SMAN 81 Jakarta, from XII-6. He is the Project Manager of BYHARIANS, Leading the team in project management and execution for EKAPADS.
           </p>
         </div>
 
-        <!-- Team Member 5: Muhammad Safriansyah Wirawan -->
-        <div style="background: #fff; border-radius: var(--radius-xl); padding: 32px; border: 1px solid var(--color-border); box-shadow: var(--shadow-xs); text-align: center;">
-          <div style="width: 84px; height: 84px; border-radius: 50%; background: linear-gradient(135deg, rgba(15, 48, 29, 0.15) 0%, rgba(247, 200, 40, 0.25) 100%); color: var(--color-primary); font-size: 1.8rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; border: 2px solid var(--color-border);">
-            MS
-          </div>
-          <h3 style="font-size: 1.3rem; color: var(--color-primary); margin-bottom: 4px; font-weight: 700;">Muhammad Safriansyah Wirawan</h3>
-          <span style="display: block; font-size: 0.82rem; color: var(--color-secondary); font-weight: 700; text-transform: uppercase; margin-bottom: 14px; letter-spacing: 0.05em;">Project Manager</span>
-          <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6; margin: 0;">
-            Overseeing end-to-end prototyping schedules, material supply coordination (banana pseudostem & kenaf), STEAM testing protocols, and sustainable distribution logistics.
-          </p>
-        </div>
 
       </div>
 
