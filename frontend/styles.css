@@ -5931,3 +5931,141 @@ html, body {
   60% { width: 70%; }
   100% { width: 100%; }
 }
+
+/* ==========================================================================
+   ULTRA-RESPONSIVE MOBILE & TABLET OVERHAUL (SMARTPHONE + LAPTOP FULL FIT)
+   ========================================================================== */
+
+/* Universal Overflow & Resizing Protection */
+html, body {
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+  -webkit-text-size-adjust: 100%;
+}
+
+img, video, iframe, picture {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+/* Tablet & Mobile Layout Adjustments (max-width: 991px) */
+@media (max-width: 991px) {
+  .hero-banner-wrap,
+  .editorial-hero-section {
+    min-height: auto !important;
+    padding: 16px 0 !important;
+  }
+
+  .editorial-hero-bg-video,
+  .editorial-hero-bg-img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 480px !important;
+    object-fit: contain !important;
+  }
+
+  .team-video-showcase-section {
+    padding: 24px 12px !important;
+  }
+
+  .story-hero {
+    padding: 30px 16px !important;
+  }
+
+  .story-hero h1 {
+    font-size: 2.1rem !important;
+  }
+}
+
+/* Mobile Smartphone Optimization (max-width: 768px) */
+@media (max-width: 768px) {
+  /* Prevent horizontal scroll on containers */
+  .container,
+  .view-section,
+  main {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Team Floating Speaker positioned above mobile bottom bar */
+  .team-floating-speaker {
+    bottom: 76px !important;
+    right: 16px !important;
+    padding: 8px 14px !important;
+    font-size: 0.75rem !important;
+  }
+
+  .floating-speaker-label {
+    font-size: 0.75rem !important;
+  }
+
+  .floating-speaker-icon {
+    font-size: 1.1rem !important;
+  }
+
+  /* Hero Section scaling */
+  .editorial-hero-title {
+    font-size: 1.85rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .editorial-hero-subtitle {
+    font-size: 0.88rem !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Grid collapse for mobile */
+  .products-grid,
+  .kits-grid,
+  .blog-grid,
+  .story-grid,
+  .analysis-stats-row,
+  .cycle-main-grid,
+  .account-dashboard-grid,
+  .checkout-container-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* Form & card padding */
+  .auth-card,
+  .checkout-card,
+  .cart-drawer,
+  .story-card-box {
+    padding: 20px 16px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Typography responsive scaling */
+  h1 { font-size: 2rem !important; }
+  h2 { font-size: 1.6rem !important; }
+  h3 { font-size: 1.25rem !important; }
+}
+
+/* Small Smartphone Optimization (max-width: 480px) */
+@media (max-width: 480px) {
+  .site-header {
+    padding: 6px 0 !important;
+  }
+
+  .brand-wordmark {
+    font-size: 1.15rem !important;
+  }
+
+  .team-floating-speaker {
+    bottom: 72px !important;
+    right: 12px !important;
+    padding: 6px 12px !important;
+  }
+
+  .floating-speaker-label {
+    display: none !important;
+  }
+
+  .floating-speaker-icon {
+    font-size: 1.25rem !important;
+  }
+}
