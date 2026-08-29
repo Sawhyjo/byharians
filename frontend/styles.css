@@ -5943,9 +5943,26 @@ html, body {
   -webkit-text-size-adjust: 100%;
 }
 
-img, video, iframe, picture {
+/* Content Images & Video Resizing Protection */
+.hero-image,
+.editorial-hero-bg-img,
+.editorial-hero-bg-video,
+.product-card-img,
+.blog-card-img,
+.ugc-card-img,
+.story-image,
+.gallery-img,
+.article-featured-img {
   max-width: 100% !important;
   height: auto !important;
+}
+
+/* Brand Logo Strict Dimension Constraints */
+.brand-logo-img {
+  height: 40px !important;
+  max-height: 40px !important;
+  width: auto !important;
+  object-fit: contain !important;
 }
 
 /* Tablet & Mobile Layout Adjustments (max-width: 991px) */
@@ -5979,6 +5996,12 @@ img, video, iframe, picture {
 
 /* Mobile Smartphone Optimization (max-width: 768px) */
 @media (max-width: 768px) {
+  .brand-logo-img {
+    height: 32px !important;
+    max-height: 32px !important;
+    width: auto !important;
+  }
+
   /* Prevent horizontal scroll on containers */
   .container,
   .view-section,
