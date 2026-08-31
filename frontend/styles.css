@@ -6092,3 +6092,149 @@ html, body {
     font-size: 1.25rem !important;
   }
 }
+
+/* ==========================================
+   MEET OUR TEAM MEMBERS LUXURY CARDS SYSTEM
+   ========================================== */
+.team-members-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  align-items: stretch;
+}
+
+@media (max-width: 1024px) {
+  .team-members-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 24px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .team-members-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+}
+
+.team-member-card {
+  background: #FFFFFF;
+  border-radius: var(--radius-xl);
+  padding: 36px 28px 30px;
+  border: 1px solid rgba(15, 48, 29, 0.1);
+  box-shadow: 0 10px 30px rgba(15, 48, 29, 0.05);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.team-member-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #0F301D 0%, #279A5E 50%, #F7C828 100%);
+  opacity: 0.85;
+  transition: height 0.3s ease;
+}
+
+.team-member-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 22px 48px rgba(15, 48, 29, 0.12);
+  border-color: rgba(247, 200, 40, 0.5);
+}
+
+.team-member-card:hover::before {
+  height: 7px;
+}
+
+.team-avatar-circle {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0F301D 0%, #1A4D31 100%);
+  color: #F7C828;
+  font-size: 1.8rem;
+  font-weight: 800;
+  font-family: var(--font-serif);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  border: 3px solid #F7C828;
+  box-shadow: 0 8px 24px rgba(15, 48, 29, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.team-member-card:hover .team-avatar-circle {
+  transform: scale(1.08) rotate(-3deg);
+}
+
+.team-member-name {
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  margin-bottom: 6px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.team-member-role {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--color-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 16px;
+  padding: 4px 14px;
+  background: rgba(39, 154, 94, 0.08);
+  border-radius: 20px;
+}
+
+.team-member-quote {
+  font-family: var(--font-serif);
+  font-size: 1.02rem;
+  color: var(--color-primary);
+  line-height: 1.5;
+  margin: 0 0 12px;
+  font-style: italic;
+}
+
+.team-member-desc {
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+  line-height: 1.65;
+  margin: 0 0 22px;
+  flex-grow: 1;
+}
+
+.team-instagram-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: auto;
+  padding: 9px 20px;
+  background: rgba(15, 48, 29, 0.05);
+  color: var(--color-primary);
+  border: 1.5px solid rgba(15, 48, 29, 0.15);
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.team-instagram-btn:hover {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%) !important;
+  color: #FFFFFF !important;
+  border-color: transparent !important;
+  box-shadow: 0 8px 20px rgba(220, 39, 67, 0.35);
+  transform: translateY(-2px);
+}
