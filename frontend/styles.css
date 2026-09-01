@@ -600,8 +600,8 @@ h1, h2, h3, h4, h5, h6 {
 .editorial-hero-section {
   position: relative;
   width: 100%;
-  height: auto;
-  min-height: auto;
+  max-height: 480px;
+  height: 480px;
   display: block;
   overflow: hidden;
   background: #80B127;
@@ -611,16 +611,19 @@ h1, h2, h3, h4, h5, h6 {
 .editorial-hero-bg-wrap {
   position: relative;
   width: 100%;
-  height: auto;
+  max-height: 480px;
+  height: 480px;
   display: block;
   z-index: 1;
+  overflow: hidden;
 }
 
 .editorial-hero-bg-img {
   width: 100%;
-  height: auto;
+  max-height: 480px;
+  height: 480px;
   display: block;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   animation: heroSubtleFloat 9s ease-in-out infinite alternate;
   will-change: transform;
@@ -628,9 +631,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .editorial-hero-bg-video {
   width: 100%;
-  height: auto;
+  max-height: 480px;
+  height: 480px;
   display: block;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   pointer-events: none;
 }
@@ -661,12 +665,7 @@ h1, h2, h3, h4, h5, h6 {
   left: 0;
   right: 0;
   z-index: 5;
-  padding: 20px 24px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+  padding: 16px 24px;
   text-align: center;
   display: flex;
   flex-direction: column;
