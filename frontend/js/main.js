@@ -21,6 +21,22 @@ function createToastContainer() {
   return div;
 }
 
+function toggleMobileDrawer() {
+  const drawer = document.getElementById('mobile-drawer-menu');
+  const backdrop = document.getElementById('mobile-drawer-backdrop');
+  if (drawer) {
+    const isOpen = drawer.classList.toggle('open');
+    if (backdrop) backdrop.style.display = isOpen ? 'block' : 'none';
+  }
+}
+
+function closeMobileDrawer() {
+  const drawer = document.getElementById('mobile-drawer-menu');
+  const backdrop = document.getElementById('mobile-drawer-backdrop');
+  if (drawer) drawer.classList.remove('open');
+  if (backdrop) backdrop.style.display = 'none';
+}
+
 function navigateTo(viewId) {
   let target = viewId || 'home';
   let param = null;
@@ -29,6 +45,11 @@ function navigateTo(viewId) {
     const parts = target.split('/');
     target = parts[0];
     param = parts[1];
+  }
+
+  // Alias mappings for About Us / Mission
+  if (target === 'about' || target === 'about-us' || target === 'story' || target === 'visi-misi') {
+    target = 'mission';
   }
 
   if (target === 'admin') {

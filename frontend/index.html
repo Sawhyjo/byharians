@@ -130,7 +130,7 @@
         </button>
 
         <!-- Mobile Menu Toggle -->
-        <button class="action-btn menu-toggle" id="menu-toggle">
+        <button class="action-btn menu-toggle" id="menu-toggle" onclick="toggleMobileDrawer()" title="Menu">
           <span>☰</span>
         </button>
 
@@ -138,24 +138,27 @@
     </div>
   </header>
 
+  <!-- Mobile Drawer Backdrop -->
+  <div id="mobile-drawer-backdrop" class="mobile-drawer-backdrop" onclick="closeMobileDrawer()"></div>
+
   <!-- Mobile Drawer Menu -->
   <div class="mobile-drawer-menu" id="mobile-drawer-menu">
-    <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; border-bottom: 1px solid var(--color-border); margin-bottom: 20px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid var(--color-border); margin-bottom: 20px;">
       <div class="brand-wordmark" style="font-size: 1.4rem;">BYHARIANS</div>
-      <button class="modal-close-btn" style="position: static;" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')">✕</button>
+      <button class="modal-close-btn" style="position: static; cursor: pointer;" onclick="closeMobileDrawer()">✕</button>
     </div>
-    <div style="display: flex; flex-direction: column; gap: 16px; font-size: 0.95rem; font-weight: 600;">
-      <a href="#home" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')">Home</a>
-      <a href="#shop" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')">Our Products</a>
-      <a href="#cycle-tracker" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')" style="color: var(--color-primary); font-weight: 800;">Cycle Tracker</a>
-      <a href="#cart" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')" style="color: var(--color-primary); font-weight: 700;">Shopping Cart</a>
-      <a href="#checkout" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')" style="color: var(--color-secondary);">Checkout</a>
-      <a href="#mission" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')">Mission</a>
-      <a href="#sustainability" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')">Sustainability Initiative</a>
-      <a href="#team" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')">Meet Our Team</a>
-      <a href="#track" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')">Track Order</a>
-      <a href="#login" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')">Sign In / Register</a>
-      <a href="#account" onclick="document.getElementById('mobile-drawer-menu').classList.remove('open')">My Eco-Account</a>
+    <div style="display: flex; flex-direction: column; gap: 16px; font-size: 0.98rem; font-weight: 600;">
+      <a href="#home" onclick="navigateTo('home'); closeMobileDrawer();">Beranda (Home)</a>
+      <a href="#shop" onclick="navigateTo('shop'); closeMobileDrawer();">Koleksi Produk EKAPADS</a>
+      <a href="#mission" onclick="navigateTo('mission'); closeMobileDrawer();" style="color: var(--color-primary); font-weight: 800;">About Us — Visi & Misi</a>
+      <a href="#sustainability" onclick="navigateTo('sustainability'); closeMobileDrawer();">Sustainability Initiative</a>
+      <a href="#team" onclick="navigateTo('team'); closeMobileDrawer();" style="color: var(--color-secondary); font-weight: 800;">Meet Our Team</a>
+      <a href="#cycle-tracker" onclick="navigateTo('cycle-tracker'); closeMobileDrawer();" style="color: var(--color-primary); font-weight: 700;">Kalender Siklus (Cycle Tracker)</a>
+      <a href="#cart" onclick="navigateTo('cart'); closeMobileDrawer();">Keranjang Belanja (Cart)</a>
+      <a href="#checkout" onclick="navigateTo('checkout'); closeMobileDrawer();">Checkout & Pembayaran</a>
+      <a href="#track" onclick="navigateTo('track'); closeMobileDrawer();">Lacak Pesanan (Track Order)</a>
+      <a href="#login" onclick="navigateTo('login'); closeMobileDrawer();">Sign In / Register</a>
+      <a href="#account" onclick="navigateTo('account'); closeMobileDrawer();">My Eco-Account</a>
     </div>
   </div>
 
