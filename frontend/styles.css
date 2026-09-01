@@ -6238,3 +6238,144 @@ html, body {
   box-shadow: 0 8px 20px rgba(220, 39, 67, 0.35);
   transform: translateY(-2px);
 }
+
+/* ==========================================================================
+   COMPREHENSIVE MOBILE SMARTPHONE & TABLET RESPONSIVE OVERHAUL
+   (Ensures 100% proper fit on phone screens without altering PC/Laptop layout)
+   ========================================================================== */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  *, *::before, *::after {
+    max-width: 100%;
+  }
+
+  img, video, iframe, svg, canvas {
+    max-width: 100% !important;
+    height: auto;
+  }
+
+  .container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Grid collapse for all 2-col, 3-col & multi-column layouts on mobile */
+  .responsive-2col,
+  .cart-page-layout,
+  .form-grid-3,
+  .team-members-grid,
+  .products-grid,
+  .kits-grid,
+  .blog-grid,
+  .story-grid,
+  .cycle-main-grid,
+  .account-dashboard-grid,
+  .checkout-container-grid,
+  .review-cards-grid,
+  .ugc-grid,
+  .impact-results-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* Hero & Showcase Video Mobile Optimization */
+  .editorial-hero-bg-video,
+  .editorial-hero-bg-img {
+    height: 240px !important;
+    object-fit: cover !important;
+    border-radius: var(--radius-md) !important;
+  }
+
+  .team-video-showcase-section {
+    padding: 18px 8px !important;
+  }
+
+  #team-showcase-video {
+    max-height: 240px !important;
+    object-fit: cover !important;
+    border-radius: var(--radius-md) !important;
+  }
+
+  /* Team Cards Mobile Fitting */
+  .team-member-card {
+    padding: 24px 18px 20px !important;
+    border-radius: var(--radius-lg) !important;
+  }
+
+  .team-avatar-circle {
+    width: 72px !important;
+    height: 72px !important;
+    font-size: 1.4rem !important;
+    margin-bottom: 14px !important;
+  }
+
+  .team-member-name {
+    font-size: 1.28rem !important;
+  }
+
+  .team-member-role {
+    font-size: 0.72rem !important;
+    padding: 3px 10px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .team-member-quote {
+    font-size: 0.9rem !important;
+    line-height: 1.45 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .team-member-desc {
+    font-size: 0.84rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 16px !important;
+  }
+
+  .team-instagram-btn {
+    padding: 7px 16px !important;
+    font-size: 0.8rem !important;
+  }
+
+  /* Mobile Bottom Nav Spacing */
+  .site-footer {
+    padding-bottom: 84px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-header {
+    padding: 6px 0 !important;
+  }
+
+  .brand-logo-img {
+    height: 28px !important;
+    max-height: 28px !important;
+  }
+
+  .brand-wordmark {
+    font-size: 1.05rem !important;
+  }
+
+  .header-search-box {
+    display: none !important;
+  }
+
+  .section-tag {
+    font-size: 0.65rem !important;
+    padding: 4px 10px !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  h1 { font-size: 1.7rem !important; }
+  h2 { font-size: 1.4rem !important; }
+  h3 { font-size: 1.15rem !important; }
+}
