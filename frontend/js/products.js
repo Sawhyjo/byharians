@@ -138,8 +138,6 @@ function openProductDetailModal(productId) {
   const flowEl = document.getElementById('modal-product-flow');
   const descEl = document.getElementById('modal-product-desc');
   const specsContainer = document.getElementById('modal-product-specs');
-  const compContainer = document.getElementById('modal-product-composition');
-  const packContainer = document.getElementById('modal-pack-options');
 
   if (imgEl) {
     imgEl.src = p.image;
@@ -175,15 +173,6 @@ function openProductDetailModal(productId) {
         <span class="spec-value">100% Biodegradable • 0% Chlorine & Bleach-Free</span>
       </div>
     `;
-  }
-
-  // Render Pack Options
-  if (packContainer && p.packOptions) {
-    packContainer.innerHTML = p.packOptions.map((opt, idx) => `
-      <button type="button" class="pack-opt-btn ${idx === 0 ? 'active' : ''}" onclick="selectDetailPackOption(${idx})">
-        ${opt.name}
-      </button>
-    `).join('');
   }
 
   updateModalTotalPrice();
