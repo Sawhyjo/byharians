@@ -6317,7 +6317,8 @@ html, body {
     padding: 18px 8px !important;
   }
 
-  #team-showcase-video {
+  #team-showcase-video,
+  #mission-hero-video {
     max-height: 240px !important;
     object-fit: cover !important;
     border-radius: var(--radius-md) !important;
