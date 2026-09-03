@@ -212,14 +212,14 @@ function renderFullCartPage() {
 
   container.innerHTML = `
     <div style="background:#fff; border-radius:var(--radius-xl); padding:28px; border:1px solid var(--color-border); box-shadow:var(--shadow-sm);">
-      <h3 style="font-size:1.3rem; color:var(--color-primary); margin-bottom:20px; border-bottom:1px solid var(--color-border); padding-bottom:12px;">Item Keranjang (${store.cart.reduce((s, i) => s + i.quantity, 0)})</h3>
+      <h3 style="font-size:1.3rem; color:var(--color-primary); margin-bottom:20px; border-bottom:1px solid var(--color-border); padding-bottom:12px;">Cart Items (${store.cart.reduce((s, i) => s + i.quantity, 0)})</h3>
       <div style="display:flex; flex-direction:column; gap:16px;">
         ${store.cart.map((item, idx) => `
           <div style="display:grid; grid-template-columns:80px 1fr auto; gap:16px; align-items:center; padding-bottom:16px; border-bottom:1px solid var(--color-border);">
             <img src="${item.image}" alt="${item.name}" style="width:80px; height:80px; border-radius:12px; object-fit:cover;">
             <div>
               <h4 style="font-size:1rem; color:var(--color-primary); margin-bottom:4px;">${item.name}</h4>
-              <div style="font-size:0.8rem; color:var(--color-text-muted); margin-bottom:6px;">Varian: ${item.packName} ${item.isSubscription ? '• Subskripsi' : ''}</div>
+              <div style="font-size:0.8rem; color:var(--color-text-muted); margin-bottom:6px;">Variant: ${item.packName} ${item.isSubscription ? '• Subscription' : ''}</div>
               <div style="font-size:0.95rem; font-weight:800; color:var(--color-primary);">${store.formatPrice(item.unitPrice)} per pack</div>
             </div>
             <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
@@ -229,7 +229,7 @@ function renderFullCartPage() {
                 <button class="qty-btn" onclick="updateCartItemQty(${idx}, 1)" style="border:none; background:none; cursor:pointer; font-weight:800; font-size:1.1rem;">+</button>
               </div>
               <div style="font-size:1rem; font-weight:900; color:var(--color-primary);">${store.formatPrice(item.unitPrice * item.quantity)}</div>
-              <button onclick="removeCartItem(${idx})" style="font-size:0.78rem; color:var(--color-error); background:none; border:none; cursor:pointer; font-weight:700;">Hapus Item</button>
+              <button onclick="removeCartItem(${idx})" style="font-size:0.78rem; color:var(--color-error); background:none; border:none; cursor:pointer; font-weight:700;">Remove Item</button>
             </div>
           </div>
         `).join('')}

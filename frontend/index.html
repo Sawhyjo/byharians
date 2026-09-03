@@ -148,15 +148,15 @@
       <button class="modal-close-btn" style="position: static; cursor: pointer;" onclick="closeMobileDrawer()">✕</button>
     </div>
     <div style="display: flex; flex-direction: column; gap: 16px; font-size: 0.98rem; font-weight: 600;">
-      <a href="#home" onclick="navigateTo('home'); closeMobileDrawer();">Beranda (Home)</a>
-      <a href="#shop" onclick="navigateTo('shop'); closeMobileDrawer();">Koleksi Produk EKAPADS</a>
-      <a href="#mission" onclick="navigateTo('mission'); closeMobileDrawer();" style="color: var(--color-primary); font-weight: 800;">About Us — Visi & Misi</a>
+      <a href="#home" onclick="navigateTo('home'); closeMobileDrawer();">Home</a>
+      <a href="#shop" onclick="navigateTo('shop'); closeMobileDrawer();">EKAPADS Product Collection</a>
+      <a href="#mission" onclick="navigateTo('mission'); closeMobileDrawer();" style="color: var(--color-primary); font-weight: 800;">About Us — Mission & Vision</a>
       <a href="#sustainability" onclick="navigateTo('sustainability'); closeMobileDrawer();">Sustainability Initiative</a>
       <a href="#team" onclick="navigateTo('team'); closeMobileDrawer();" style="color: var(--color-secondary); font-weight: 800;">Meet Our Team</a>
-      <a href="#cycle-tracker" onclick="navigateTo('cycle-tracker'); closeMobileDrawer();" style="color: var(--color-primary); font-weight: 700;">Kalender Siklus (Cycle Tracker)</a>
-      <a href="#cart" onclick="navigateTo('cart'); closeMobileDrawer();">Keranjang Belanja (Cart)</a>
-      <a href="#checkout" onclick="navigateTo('checkout'); closeMobileDrawer();">Checkout & Pembayaran</a>
-      <a href="#track" onclick="navigateTo('track'); closeMobileDrawer();">Lacak Pesanan (Track Order)</a>
+      <a href="#cycle-tracker" onclick="navigateTo('cycle-tracker'); closeMobileDrawer();" style="color: var(--color-primary); font-weight: 700;">Cycle Tracker</a>
+      <a href="#cart" onclick="navigateTo('cart'); closeMobileDrawer();">Shopping Cart</a>
+      <a href="#checkout" onclick="navigateTo('checkout'); closeMobileDrawer();">Checkout & Payment</a>
+      <a href="#track" onclick="navigateTo('track'); closeMobileDrawer();">Track Order</a>
       <a href="#login" onclick="navigateTo('login'); closeMobileDrawer();">Sign In / Register</a>
       <a href="#account" onclick="navigateTo('account'); closeMobileDrawer();">My Eco-Account</a>
     </div>
@@ -1467,41 +1467,41 @@
               <div style="display: flex; align-items: center; gap: 10px;">
                 <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--color-success); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700;">✓</div>
                 <div>
-                  <span style="color: var(--color-text-muted);">Akun Terverifikasi:</span>
-                  <strong style="color: var(--color-primary);" id="checkout-auth-user-display">Pelanggan Setia</strong>
+                  <span style="color: var(--color-text-muted);">Verified Account:</span>
+                  <strong style="color: var(--color-primary);" id="checkout-auth-user-display">Valued Customer</strong>
                 </div>
               </div>
-              <a href="javascript:void(0)" onclick="handleSignOut()" style="color: var(--color-error); font-size: 0.78rem; font-weight: 600; text-decoration: underline;">Ganti Akun</a>
+              <a href="javascript:void(0)" onclick="handleSignOut()" style="color: var(--color-error); font-size: 0.78rem; font-weight: 600; text-decoration: underline;">Switch Account</a>
             </div>
 
             <h3 class="checkout-step-title">
               <span class="step-num-badge">1</span>
-              Alamat Pengiriman (Indonesia)
+              Shipping Address (Indonesia & Global)
             </h3>
 
             <div class="form-grid-2">
               <div class="form-group">
-                <label>Nama Lengkap Penerima</label>
-                <input type="text" id="checkout-name" class="form-input" value="Maya Sartika" placeholder="Contoh: Dinda Kirana" required>
+                <label>Recipient Full Name</label>
+                <input type="text" id="checkout-name" class="form-input" value="Maya Sartika" placeholder="e.g. Dinda Kirana" required>
               </div>
               <div class="form-group">
-                <label>Nomor WhatsApp / HP</label>
+                <label>WhatsApp / Phone Number</label>
                 <input type="tel" id="checkout-phone" class="form-input" value="0812-8921-3401" placeholder="0812-xxxx-xxxx" required>
               </div>
             </div>
 
             <div class="form-group">
-              <label>Alamat Lengkap (Nama Jalan, No. Rumah, RT/RW, Kelurahan, Kecamatan)</label>
-              <input type="text" id="checkout-address" class="form-input" value="Jl. Senopati No. 42, RT 02/RW 03, Kebayoran Baru" placeholder="Jl. Mawar No. 12, Kel. Menteng" required>
+              <label>Full Shipping Address (Street Name, House No., District)</label>
+              <input type="text" id="checkout-address" class="form-input" value="Jl. Senopati No. 42, Kebayoran Baru" placeholder="123 Eco Avenue, Menteng" required>
             </div>
 
             <div class="form-grid-2">
               <div class="form-group">
-                <label>Kota / Kabupaten</label>
-                <input type="text" id="checkout-city" class="form-input" value="Jakarta Selatan, DKI Jakarta" placeholder="Jakarta Selatan, Surabaya, Bandung" required>
+                <label>City / Region</label>
+                <input type="text" id="checkout-city" class="form-input" value="Jakarta Selatan, DKI Jakarta" placeholder="Jakarta Selatan, Surabaya, Bali" required>
               </div>
               <div class="form-group">
-                <label>Kode Pos</label>
+                <label>Postal Code</label>
                 <input type="text" id="checkout-zip" class="form-input" value="12190" placeholder="12190" required>
               </div>
             </div>
@@ -1511,7 +1511,7 @@
           <div class="checkout-card">
             <h3 class="checkout-step-title">
               <span class="step-num-badge">2</span>
-              Opsi Ekspedisi Ramah Lingkungan
+              Eco-Friendly Delivery Option
             </h3>
 
             <div style="display: flex; flex-direction: column; gap: 10px;">
@@ -1519,22 +1519,22 @@
                 <div style="display: flex; align-items: center; gap: 10px;">
                   <input type="radio" name="ship_opt" checked onchange="updateShippingOption('reg')">
                   <div>
-                    <strong style="color: var(--color-primary);">Reguler Bebas Plastik (SiCepat / JNE Eco 2-3 Hari)</strong>
-                    <div style="font-size: 0.78rem; color: var(--color-text-muted);">Kemasan 100% kardus kraft daur ulang tanpa selotip plastik</div>
+                    <strong style="color: var(--color-primary);">Plastic-Free Standard (SiCepat / JNE Eco 2-3 Days)</strong>
+                    <div style="font-size: 0.78rem; color: var(--color-text-muted);">100% recycled kraft box packaging without plastic tape</div>
                   </div>
                 </div>
-                <strong style="color: var(--color-success);" id="ship-reg-label">GRATIS (Rp 150rb+)</strong>
+                <strong style="color: var(--color-success);" id="ship-reg-label">FREE (Orders Rp 150k+)</strong>
               </label>
 
               <label style="border: 1.5px solid var(--color-border); background: #fff; padding: 14px 18px; border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
                 <div style="display: flex; align-items: center; gap: 10px;">
                   <input type="radio" name="ship_opt" onchange="updateShippingOption('exp')">
                   <div>
-                    <strong style="color: var(--color-primary);">Express Next-Day (SiCepat BEST / JNE YES 1 Hari Sampai)</strong>
-                    <div style="font-size: 0.78rem; color: var(--color-text-muted);">Pengiriman kilat prioritas armada kendaraan ramah lingkungan</div>
+                    <strong style="color: var(--color-primary);">Express Next-Day (SiCepat BEST / JNE YES 1-Day Delivery)</strong>
+                    <div style="font-size: 0.78rem; color: var(--color-text-muted);">Priority express dispatch via eco-friendly courier fleet</div>
                   </div>
                 </div>
-                <strong>+Rp 25.000</strong>
+                <strong>+Rp 25,000</strong>
               </label>
             </div>
           </div>
@@ -1543,7 +1543,7 @@
           <div class="checkout-card">
             <h3 class="checkout-step-title">
               <span class="step-num-badge">3</span>
-              Metode Pembayaran Resmi Indonesia
+              Payment Gateway & Instant Checkout
             </h3>
 
             <!-- Payment Methods Tabs -->
@@ -1570,21 +1570,21 @@
                 <div class="pm-icon">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
                 </div>
-                <span class="pm-name">Kartu Debit/Kredit</span>
+                <span class="pm-name">Debit / Credit Card</span>
               </div>
               <div class="payment-method-card" data-method="cod" onclick="selectPaymentMethod('cod')">
                 <div class="pm-icon">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22v-8.3"/><path d="M12 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/><path d="m21 16-5.5 3-3.5-2-3.5 2L3 16"/></svg>
                 </div>
-                <span class="pm-name">COD / Bayar di Tempat</span>
+                <span class="pm-name">Cash on Delivery (COD)</span>
               </div>
             </div>
 
             <!-- 1. QRIS Container (Default) -->
             <div id="qris-section" class="qris-container-box">
-              <div class="qris-header-badge">QRIS • PEMBAYARAN CEPAT</div>
+              <div class="qris-header-badge">QRIS • INSTANT PAYMENT</div>
               <div style="font-size: 0.92rem; font-weight: 700; color: var(--color-primary); margin-bottom: 4px;">BYHARIANS OFFICIAL STORE</div>
-              <div style="font-size: 0.76rem; color: var(--color-text-muted);">NMID: ID1020089123445 • Standar Bank Indonesia</div>
+              <div style="font-size: 0.76rem; color: var(--color-text-muted);">NMID: ID1020089123445 • Bank Indonesia Standard</div>
               
               <!-- QR Code Simulation -->
               <div class="qris-qr-code-wrapper">
@@ -1622,7 +1622,7 @@
               </div>
 
               <div style="font-size: 1.15rem; font-weight: 700; color: var(--color-primary);" id="qris-amount-display">
-                Total Tagihan: Rp 149.000
+                Total Invoice: Rp 149,000
               </div>
 
               <div class="qris-timer-pill">
@@ -1915,6 +1915,17 @@
                   <th>Harga Base</th>
                   <th>Unit Terjual</th>
                   <th>Total Omset</th>
+          <h3 style="font-size: 1.15rem; color: var(--color-primary); margin-bottom: 14px;">🔥 Top 5 Best Sellers</h3>
+          <div style="overflow-x: auto;">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Product</th>
+                  <th>Category</th>
+                  <th>Base Price</th>
+                  <th>Units Sold</th>
+                  <th>Total Revenue</th>
                 </tr>
               </thead>
               <tbody id="admin-top-products-tbody">
@@ -1930,18 +1941,18 @@
         <div class="admin-table-card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 12px;">
             <div>
-              <h3 style="font-size: 1.3rem; color: var(--color-primary); margin: 0;">Katalog Produk & Kontrol Stok</h3>
-              <p style="font-size: 0.82rem; color: var(--color-text-muted); margin: 4px 0 0;">Kelola harga, SKU, varian, dan stok fisik secara real-time.</p>
+              <h3 style="font-size: 1.3rem; color: var(--color-primary); margin: 0;">Product Catalog & Inventory Control</h3>
+              <p style="font-size: 0.82rem; color: var(--color-text-muted); margin: 4px 0 0;">Manage pricing, SKU, variants, and stock in real-time.</p>
             </div>
             <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
-              <input type="text" id="admin-product-search" class="form-input" placeholder="Cari nama / SKU..." oninput="filterAdminProductsList()" style="padding: 6px 14px; font-size: 0.82rem; width: 200px; border-radius: var(--radius-full);">
+              <input type="text" id="admin-product-search" class="form-input" placeholder="Search name / SKU..." oninput="filterAdminProductsList()" style="padding: 6px 14px; font-size: 0.82rem; width: 200px; border-radius: var(--radius-full);">
               <select id="admin-product-cat-filter" class="form-input" onchange="filterAdminProductsList()" style="padding: 6px 14px; font-size: 0.82rem; width: 140px;">
-                <option value="all">Semua Kategori</option>
-                <option value="pads">Pembalut Wanita</option>
+                <option value="all">All Categories</option>
+                <option value="pads">Sanitary Pads</option>
                 <option value="liners">Panty Liners</option>
-                <option value="kits">Paket Ritual</option>
+                <option value="kits">Menstrual Kits</option>
               </select>
-              <button class="btn btn-secondary btn-sm" onclick="openCreateProductModal()">+ Buat Produk Baru</button>
+              <button class="btn btn-secondary btn-sm" onclick="openCreateProductModal()">+ Create New Product</button>
             </div>
           </div>
 
@@ -1949,13 +1960,13 @@
             <table class="admin-table">
               <thead>
                 <tr>
-                  <th>Gambar</th>
-                  <th>Nama & SKU Produk</th>
-                  <th>Kategori</th>
-                  <th>Harga Base</th>
-                  <th>Berat</th>
-                  <th>Stok & Status Badge</th>
-                  <th>Aksi Kelola</th>
+                  <th>Image</th>
+                  <th>Product & SKU</th>
+                  <th>Category</th>
+                  <th>Base Price</th>
+                  <th>Weight</th>
+                  <th>Stock & Status</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody id="admin-products-tbody">
@@ -1971,13 +1982,13 @@
         <div class="admin-table-card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 12px;">
             <div>
-              <h3 style="font-size: 1.3rem; color: var(--color-primary); margin: 0;">Manajemen Pesanan & Logistik Pengiriman</h3>
-              <p style="font-size: 0.82rem; color: var(--color-text-muted); margin: 4px 0 0;">Update status pengiriman, masukkan nomor resi, dan cetak invoice / packing slip.</p>
+              <h3 style="font-size: 1.3rem; color: var(--color-primary); margin: 0;">Order Management & Logistics</h3>
+              <p style="font-size: 0.82rem; color: var(--color-text-muted); margin: 4px 0 0;">Update shipping status, enter tracking, and print documents.</p>
             </div>
             <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
-              <input type="text" id="admin-order-search" class="form-input" placeholder="Cari Order ID / Pelanggan..." oninput="filterAdminOrdersList()" style="padding: 6px 14px; font-size: 0.82rem; width: 220px; border-radius: var(--radius-full);">
+              <input type="text" id="admin-order-search" class="form-input" placeholder="Search Order ID / Customer..." oninput="filterAdminOrdersList()" style="padding: 6px 14px; font-size: 0.82rem; width: 220px; border-radius: var(--radius-full);">
               <select id="admin-order-status-filter" class="form-input" onchange="filterAdminOrdersList()" style="padding: 6px 14px; font-size: 0.82rem; width: 150px;">
-                <option value="all">Semua Status</option>
+                <option value="all">All Statuses</option>
                 <option value="pending">Pending</option>
                 <option value="paid">Paid</option>
                 <option value="processing">Processing</option>
@@ -1993,12 +2004,12 @@
               <thead>
                 <tr>
                   <th>Order ID</th>
-                  <th>Tanggal</th>
-                  <th>Pelanggan</th>
-                  <th>Ringkasan Produk</th>
-                  <th>Total Tagihan</th>
-                  <th>Status & Resi Logistik</th>
-                  <th>Aksi Operasional</th>
+                  <th>Date</th>
+                  <th>Customer</th>
+                  <th>Items</th>
+                  <th>Total</th>
+                  <th>Status & Tracking</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody id="admin-orders-tbody">
@@ -2014,18 +2025,18 @@
         <div class="admin-table-card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 12px;">
             <div>
-              <h3 style="font-size: 1.3rem; color: var(--color-primary); margin: 0;">Manajemen Jadwal Paket & Dispatch Refill</h3>
-              <p style="font-size: 0.82rem; color: var(--color-text-muted); margin: 4px 0 0;">Atur pengiriman rutin pelanggan, eksekusi batch dispatch, dan generate nomor resi.</p>
+              <h3 style="font-size: 1.3rem; color: var(--color-primary); margin: 0;">Subscription Dispatch</h3>
+              <p style="font-size: 0.82rem; color: var(--color-text-muted); margin: 4px 0 0;">Manage subscription schedules, batch dispatches, and tracking numbers.</p>
             </div>
             <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
-              <input type="text" id="admin-package-search" class="form-input" placeholder="Cari nama / email / resi..." oninput="filterAdminPackagesList()" style="padding: 6px 14px; font-size: 0.82rem; width: 220px; border-radius: var(--radius-full);">
+              <input type="text" id="admin-package-search" class="form-input" placeholder="Search name / email / tracking..." oninput="filterAdminPackagesList()" style="padding: 6px 14px; font-size: 0.82rem; width: 220px; border-radius: var(--radius-full);">
               <select id="admin-package-status-filter" class="form-input" onchange="filterAdminPackagesList()" style="padding: 6px 14px; font-size: 0.82rem; width: 150px;">
-                <option value="all">Semua Status</option>
-                <option value="active">Aktif 🟢</option>
+                <option value="all">All Statuses</option>
+                <option value="active">Active 🟢</option>
                 <option value="dispatched">Dispatched 🚚</option>
-                <option value="paused">Dijeda 🔴</option>
+                <option value="paused">Paused 🔴</option>
               </select>
-              <button class="btn btn-secondary btn-sm" onclick="openCreatePackageModal()">+ Jadwal Paket Baru</button>
+              <button class="btn btn-secondary btn-sm" onclick="openCreatePackageModal()">+ New Schedule</button>
             </div>
           </div>
 
@@ -2033,13 +2044,13 @@
             <table class="admin-table">
               <thead>
                 <tr>
-                  <th>ID Paket</th>
-                  <th>Pelanggan</th>
-                  <th>Nama Paket & Produk</th>
-                  <th>Frekuensi</th>
-                  <th>Target Pengiriman</th>
-                  <th>Status & Resi</th>
-                  <th>Aksi Operasional</th>
+                  <th>Package ID</th>
+                  <th>Customer</th>
+                  <th>Package Details</th>
+                  <th>Frequency</th>
+                  <th>Target Date</th>
+                  <th>Status & Tracking</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody id="admin-packages-tbody">
@@ -2055,24 +2066,24 @@
         <div class="admin-table-card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 12px;">
             <div>
-              <h3 style="font-size: 1.3rem; color: var(--color-primary); margin: 0;">Database Pelanggan & CRM</h3>
-              <p style="font-size: 0.82rem; color: var(--color-text-muted); margin: 4px 0 0;">Pantau riwayat belanja, preferensi produk, dan poin loyalitas pelanggan.</p>
+              <h3 style="font-size: 1.3rem; color: var(--color-primary); margin: 0;">Customer Database & CRM</h3>
+              <p style="font-size: 0.82rem; color: var(--color-text-muted); margin: 4px 0 0;">Track purchase history, preferences, and loyalty points.</p>
             </div>
-            <input type="text" id="admin-customer-search" class="form-input" placeholder="Cari nama / email..." oninput="filterAdminCustomersList()" style="padding: 6px 14px; font-size: 0.82rem; width: 220px; border-radius: var(--radius-full);">
+            <input type="text" id="admin-customer-search" class="form-input" placeholder="Search name / email..." oninput="filterAdminCustomersList()" style="padding: 6px 14px; font-size: 0.82rem; width: 220px; border-radius: var(--radius-full);">
           </div>
 
           <div style="overflow-x: auto;">
             <table class="admin-table">
               <thead>
                 <tr>
-                  <th>ID Customer</th>
-                  <th>Nama & Kontak</th>
+                  <th>Customer ID</th>
+                  <th>Name & Contact</th>
                   <th>Email</th>
-                  <th>Total Transaksi</th>
-                  <th>Total Belanja (Lifetime Spend)</th>
-                  <th>Poin Loyalitas</th>
-                  <th>Tgl Bergabung</th>
-                  <th>Aksi CRM</th>
+                  <th>Transactions</th>
+                  <th>Lifetime Spend</th>
+                  <th>Loyalty Points</th>
+                  <th>Join Date</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody id="admin-customers-tbody">
@@ -2088,24 +2099,24 @@
         <div class="admin-table-card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 12px;">
             <div>
-              <h3 style="font-size: 1.3rem; color: var(--color-primary); margin: 0;">Manajemen Promosi & Kode Voucher</h3>
-              <p style="font-size: 0.82rem; color: var(--color-text-muted); margin: 4px 0 0;">Atur kupon diskon, kuota pemakaian, dan banner pengumuman toko.</p>
+              <h3 style="font-size: 1.3rem; color: var(--color-primary); margin: 0;">Promotions & Vouchers</h3>
+              <p style="font-size: 0.82rem; color: var(--color-text-muted); margin: 4px 0 0;">Manage coupons, usage limits, and storefront banners.</p>
             </div>
-            <button class="btn btn-secondary btn-sm" onclick="openCreateCouponModal()">+ Buat Voucher Baru</button>
+            <button class="btn btn-secondary btn-sm" onclick="openCreateCouponModal()">+ Create Voucher</button>
           </div>
 
           <div style="overflow-x: auto;">
             <table class="admin-table">
               <thead>
                 <tr>
-                  <th>ID & Kode Promo</th>
-                  <th>Tipe Diskon</th>
-                  <th>Nilai Diskon</th>
-                  <th>Min. Belanja</th>
-                  <th>Kuota Digunakan</th>
-                  <th>Kedaluwarsa</th>
+                  <th>ID & Code</th>
+                  <th>Type</th>
+                  <th>Discount</th>
+                  <th>Min. Order</th>
+                  <th>Usage Limit</th>
+                  <th>Expiry</th>
                   <th>Status</th>
-                  <th>Aksi</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody id="admin-promotions-tbody">
@@ -2117,13 +2128,13 @@
 
         <!-- Banner Manager Block -->
         <div class="admin-table-card" style="margin-top: 24px;">
-          <h4 style="font-size: 1.1rem; color: var(--color-primary); margin-bottom: 12px;">📢 Pengaturan Banner Pengumuman Storefront</h4>
+          <h4 style="font-size: 1.1rem; color: var(--color-primary); margin-bottom: 12px;">📢 Store Announcement Banner</h4>
           <form onsubmit="event.preventDefault(); saveBannerAnnouncement();">
             <div class="form-group">
-              <label class="form-label">Teks Pengumuman Banner Top-Header</label>
-              <input type="text" id="admin-banner-text-input" class="form-input" value="🌿 Sambut Menstruasi Ramah Lingkungan | Diskon 15% Kode Promo: ECOPERIOD">
+              <label class="form-label">Banner Text</label>
+              <input type="text" id="admin-banner-text-input" class="form-input" value="🌿 Welcome to Eco-Friendly Periods | 15% Off Promo Code: ECOPERIOD">
             </div>
-            <button type="submit" class="btn btn-primary btn-sm">Simpan Banner Pengumuman</button>
+            <button type="submit" class="btn btn-primary btn-sm">Save Banner</button>
           </form>
         </div>
       </div>
@@ -2131,68 +2142,68 @@
       <!-- SUB-TAB 6: SYSTEM SETTINGS -->
       <div id="admin-tab-settings" class="admin-tab-content" style="display: none;">
         <div class="admin-table-card">
-          <h3 style="font-size: 1.3rem; color: var(--color-primary); margin-bottom: 18px;">⚙️ Pengaturan Toko & Integrasi System</h3>
+          <h3 style="font-size: 1.3rem; color: var(--color-primary); margin-bottom: 18px;">⚙️ System Settings</h3>
           
           <form onsubmit="event.preventDefault(); saveAdminStoreSettings();">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;" class="responsive-2col">
               <div class="form-group">
-                <label class="form-label">Nama Toko / Brand</label>
+                <label class="form-label">Brand Name</label>
                 <input type="text" id="setting-store-name" class="form-input" value="BYHARIANS Organic Store" required>
               </div>
 
               <div class="form-group">
-                <label class="form-label">Kota Asal Pengiriman (Kalkulasi Ongkir)</label>
+                <label class="form-label">Shipping Origin City</label>
                 <input type="text" id="setting-origin-city" class="form-input" value="Jakarta Selatan, DKI Jakarta" required>
               </div>
 
               <div class="form-group">
-                <label class="form-label">Nomor WhatsApp Operasional</label>
+                <label class="form-label">WhatsApp Number</label>
                 <input type="text" id="setting-phone" class="form-input" value="0812-8921-3401" required>
               </div>
 
               <div class="form-group">
-                <label class="form-label">Email Customer Support</label>
+                <label class="form-label">Support Email</label>
                 <input type="email" id="setting-email" class="form-input" value="care@byharians.id" required>
               </div>
             </div>
 
             <div style="border-top: 1px solid var(--color-border); padding-top: 20px; margin-bottom: 20px;">
-              <h4 style="font-size: 1.05rem; color: var(--color-primary); margin-bottom: 14px;">💳 Metode Pembayaran Aktif</h4>
+              <h4 style="font-size: 1.05rem; color: var(--color-primary); margin-bottom: 14px;">💳 Payment Gateways</h4>
               <div style="display: flex; gap: 24px; flex-wrap: wrap;">
                 <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem;">
                   <input type="checkbox" id="setting-pay-qris" checked>
-                  <span>QRIS Instant (GoPay, OVO, ShopeePay, Dana)</span>
+                  <span>QRIS (E-Wallets)</span>
                 </label>
                 <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem;">
                   <input type="checkbox" id="setting-pay-va" checked>
-                  <span>Transfer Bank Virtual Account (BCA / Mandiri)</span>
+                  <span>Bank Transfers (VA)</span>
                 </label>
                 <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem;">
                   <input type="checkbox" id="setting-pay-cc" checked>
-                  <span>Kartu Kredit / Debit (Midtrans Gateway)</span>
+                  <span>Credit/Debit Cards</span>
                 </label>
               </div>
             </div>
 
             <div style="border-top: 1px solid var(--color-border); padding-top: 20px; margin-bottom: 24px;">
-              <h4 style="font-size: 1.05rem; color: var(--color-primary); margin-bottom: 14px;">🚚 Opsi Logistik & Kurir Aktif</h4>
+              <h4 style="font-size: 1.05rem; color: var(--color-primary); margin-bottom: 14px;">🚚 Logistics</h4>
               <div style="display: flex; gap: 24px; flex-wrap: wrap;">
                 <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem;">
                   <input type="checkbox" id="setting-courier-sicepat" checked>
-                  <span>SiCepat BEST Eco-Fleet</span>
+                  <span>SiCepat</span>
                 </label>
                 <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem;">
                   <input type="checkbox" id="setting-courier-jne" checked>
-                  <span>JNE Reguler / YES</span>
+                  <span>JNE</span>
                 </label>
                 <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem;">
                   <input type="checkbox" id="setting-courier-gojek" checked>
-                  <span>Gojek / Grab SameDay</span>
+                  <span>Gojek/Grab SameDay</span>
                 </label>
               </div>
             </div>
 
-            <button type="submit" class="btn btn-primary">Simpan Pengaturan Toko</button>
+            <button type="submit" class="btn btn-primary">Save Settings</button>
           </form>
         </div>
       </div>
@@ -2837,9 +2848,9 @@
         <div>
           <h4 class="footer-col-title">Shop Collection</h4>
           <div class="footer-links">
-            <a href="#shop" class="footer-link">Semua Koleksi Produk</a>
-            <a href="#shop" class="footer-link" onclick="filterByCategory('pads')">Pembalut Organik Day & Night</a>
-            <a href="#shop" class="footer-link" onclick="filterByCategory('liners')">Panty Liners Bamboo</a>
+            <a href="#shop" class="footer-link">All Product Collections</a>
+            <a href="#shop" class="footer-link" onclick="filterByCategory('pads')">Organic Day & Night Pads</a>
+            <a href="#shop" class="footer-link" onclick="filterByCategory('liners')">Bamboo Panty Liners</a>
             <a href="#shop" class="footer-link" onclick="filterByCategory('kits')">Menstrual Ritual Kits</a>
           </div>
         </div>
@@ -2858,11 +2869,11 @@
         <div>
           <h4 class="footer-col-title">Customer Care</h4>
           <div class="footer-links">
-            <a href="#cart" class="footer-link" style="color: var(--color-banana); font-weight: 700;">Keranjang Saya (Cart)</a>
-            <a href="#checkout" class="footer-link">Lanjut Ke Checkout</a>
-            <a href="#cycle-tracker" class="footer-link">Kalender Siklus (Cycle Tracker)</a>
-            <a href="#track" class="footer-link">Lacak Pesanan (Track Order)</a>
-            <a href="#account" class="footer-link">Akun Saya (My Account)</a>
+            <a href="#cart" class="footer-link" style="color: var(--color-banana); font-weight: 700;">My Cart</a>
+            <a href="#checkout" class="footer-link">Proceed to Checkout</a>
+            <a href="#cycle-tracker" class="footer-link">Cycle Tracker</a>
+            <a href="#track" class="footer-link">Track Order</a>
+            <a href="#account" class="footer-link">My Account</a>
             <a href="#admin-login" class="footer-link" style="opacity: 0.4; font-size: 0.76rem; margin-top: 4px;">Staff / Admin Portal</a>
           </div>
         </div>
@@ -3020,7 +3031,7 @@
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1.5px solid var(--color-border);">
         <div>
           <span class="section-tag" style="margin-bottom: 4px; background: var(--color-banana); color: var(--color-primary);">LIVE TRACKING DISPATCH</span>
-          <h3 id="admin-track-modal-title" style="font-size: 1.3rem; color: var(--color-primary);">Pelacakan Paket #PKG-1001</h3>
+          <h3 id="admin-track-modal-title" style="font-size: 1.3rem; color: var(--color-primary);">Package Tracking #PKG-1001</h3>
         </div>
         <button class="modal-close-btn" onclick="adminCloseTrackPackageModal()">✕</button>
       </div>
@@ -3039,7 +3050,7 @@
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1.5px solid var(--color-border);">
         <div>
           <span class="section-tag" style="margin-bottom: 4px; background: var(--color-secondary); color: #fff;">GROCERY REPLENISHMENT CONTROL</span>
-          <h3 id="admin-groc-modal-title" style="font-size: 1.3rem; color: var(--color-primary);">Edit Belanjaan Pelanggan</h3>
+          <h3 id="admin-groc-modal-title" style="font-size: 1.3rem; color: var(--color-primary);">Edit Customer Refill Basket</h3>
         </div>
         <button class="modal-close-btn" onclick="adminCloseEditGroceryModal()">✕</button>
       </div>
@@ -3049,66 +3060,66 @@
 
         <div class="form-grid-2">
           <div class="form-group">
-            <label for="admin-groc-cust-name">Nama Pelanggan</label>
+            <label for="admin-groc-cust-name">Customer Name</label>
             <input type="text" id="admin-groc-cust-name" class="form-input" required>
           </div>
           <div class="form-group">
-            <label for="admin-groc-cust-email">Email Pelanggan</label>
+            <label for="admin-groc-cust-email">Customer Email</label>
             <input type="email" id="admin-groc-cust-email" class="form-input" required>
           </div>
         </div>
 
         <div class="form-grid-2">
           <div class="form-group">
-            <label for="admin-groc-phone">Nomor WhatsApp Pelanggan</label>
+            <label for="admin-groc-phone">Customer WhatsApp Number</label>
             <input type="tel" id="admin-groc-phone" class="form-input" required>
           </div>
           <div class="form-group">
-            <label for="admin-groc-status">Status Auto-Refill</label>
+            <label for="admin-groc-status">Auto-Refill Status</label>
             <select id="admin-groc-status" class="form-select" required>
-              <option value="active">Aktif (Auto-Refill ON)</option>
-              <option value="paused">Jeda Sementara (Auto-Refill OFF)</option>
-              <option value="dispatched">Refill Hari Ini (In Transit)</option>
+              <option value="active">Active (Auto-Refill ON)</option>
+              <option value="paused">Paused (Auto-Refill OFF)</option>
+              <option value="dispatched">Refill Today (In Transit)</option>
             </select>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="admin-groc-basket-name">Nama Keranjang Belanjaan (*Basket Title*)</label>
-          <input type="text" id="admin-groc-basket-name" class="form-input" placeholder="mis. Belanjaan Bulanan Maya (Pembalut & Wipes)" required>
+          <label for="admin-groc-basket-name">Refill Basket Title</label>
+          <input type="text" id="admin-groc-basket-name" class="form-input" placeholder="e.g. Maya Monthly Organic Care (Pads & Wipes)" required>
         </div>
 
         <div class="form-group">
-          <label for="admin-groc-items">Rincian Item Belanjaan & Kuantitas</label>
-          <textarea id="admin-groc-items" class="form-input" rows="3" placeholder="mis. 2x Day Pads (240mm) Rp 78.000, 1x Night Heavy Rp 45.000, 1x Wipes Rp 25.000" required></textarea>
+          <label for="admin-groc-items">Item Details & Quantities</label>
+          <textarea id="admin-groc-items" class="form-input" rows="3" placeholder="e.g. 2x Day Pads (240mm) Rp 78,000, 1x Night Heavy Rp 45,000" required></textarea>
         </div>
 
         <div class="form-grid-2">
           <div class="form-group">
-            <label for="admin-groc-total-price">Total Tagihan Belanjaan (Rp)</label>
+            <label for="admin-groc-total-price">Total Refill Price (Rp)</label>
             <input type="number" id="admin-groc-total-price" class="form-input" placeholder="148000" required>
           </div>
           <div class="form-group">
-            <label for="admin-groc-freq">Interval Auto-Refill</label>
+            <label for="admin-groc-freq">Auto-Refill Interval</label>
             <select id="admin-groc-freq" class="form-select" required>
-              <option value="Setiap 14 Hari">Setiap 14 Hari (2 Minggu)</option>
-              <option value="Setiap 30 Hari">Setiap 30 Hari (Bulanan)</option>
-              <option value="Setiap 45 Hari">Setiap 45 Hari</option>
-              <option value="Setiap 60 Hari">Setiap 60 Hari (2 Bulan)</option>
+              <option value="Every 14 Days">Every 14 Days (2 Weeks)</option>
+              <option value="Every 30 Days">Every 30 Days (Monthly)</option>
+              <option value="Every 45 Days">Every 45 Days</option>
+              <option value="Every 60 Days">Every 60 Days (2 Months)</option>
             </select>
           </div>
         </div>
 
         <div class="form-grid-2">
           <div class="form-group">
-            <label for="admin-groc-next-date">Tanggal Refill Otomatis Berikutnya</label>
+            <label for="admin-groc-next-date">Next Scheduled Refill Date</label>
             <input type="date" id="admin-groc-next-date" class="form-input" required>
           </div>
           <div class="form-group">
-            <label for="admin-groc-courier">Ekspedisi Kurir Preferensi</label>
+            <label for="admin-groc-courier">Preferred Logistics Courier</label>
             <select id="admin-groc-courier" class="form-select" required>
-              <option value="SiCepat BEST">SiCepat BEST (1 Hari)</option>
-              <option value="JNE YES">JNE YES (1 Hari)</option>
+              <option value="SiCepat BEST">SiCepat BEST (1 Day)</option>
+              <option value="JNE YES">JNE YES (1 Day)</option>
               <option value="GoSend Instant">GoSend Instant</option>
               <option value="J&T Express">J&T Express</option>
             </select>
@@ -3116,7 +3127,7 @@
         </div>
 
         <div class="form-group">
-          <label for="admin-groc-address">Alamat Pengiriman Belanjaan</label>
+          <label for="admin-groc-address">Shipping Address</label>
           <textarea id="admin-groc-address" class="form-input" rows="2" required></textarea>
         </div>
 
@@ -3132,7 +3143,7 @@
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1.5px solid var(--color-border);">
         <div>
           <span class="section-tag" style="margin-bottom: 4px; background: var(--color-primary); color: #fff;">PRODUCT & INVENTORY MANAGER</span>
-          <h3 id="admin-product-modal-title" style="font-size: 1.3rem; color: var(--color-primary);">Form Produk</h3>
+          <h3 id="admin-product-modal-title" style="font-size: 1.3rem; color: var(--color-primary);">Product Form</h3>
         </div>
         <button class="modal-close-btn" onclick="closeAdminProductModal()">✕</button>
       </div>
@@ -3142,74 +3153,74 @@
 
         <div class="form-grid-2">
           <div class="form-group">
-            <label for="admin-prod-name">Nama Produk</label>
-            <input type="text" id="admin-prod-name" class="form-input" placeholder="mis. BYHARIANS Ultra-Thin Day Pads" required>
+            <label for="admin-prod-name">Product Name</label>
+            <input type="text" id="admin-prod-name" class="form-input" placeholder="e.g. BYHARIANS Ultra-Thin Day Pads" required>
           </div>
           <div class="form-group">
-            <label for="admin-prod-sku">SKU / Kode Barang</label>
-            <input type="text" id="admin-prod-sku" class="form-input" placeholder="mis. BYH-PAD-DAY-01" required>
+            <label for="admin-prod-sku">SKU / Product Code</label>
+            <input type="text" id="admin-prod-sku" class="form-input" placeholder="e.g. BYH-PAD-DAY-01" required>
           </div>
         </div>
 
         <div class="form-grid-2">
           <div class="form-group">
-            <label for="admin-prod-cat">Kategori Produk</label>
+            <label for="admin-prod-cat">Product Category</label>
             <select id="admin-prod-cat" class="form-select" required>
-              <option value="pads">Pembalut Wanita Organik (pads)</option>
+              <option value="pads">Organic Sanitary Pads (pads)</option>
               <option value="liners">Panty Liners (liners)</option>
-              <option value="kits">Ritual Menstrual Kit (kits)</option>
+              <option value="kits">Menstrual Ritual Kit (kits)</option>
             </select>
           </div>
           <div class="form-group">
-            <label for="admin-prod-subtype">Label Tipe / Varian Utama</label>
-            <input type="text" id="admin-prod-subtype" class="form-input" placeholder="mis. Regular / Day (240mm)" required>
+            <label for="admin-prod-subtype">Main Variant / Subtype Label</label>
+            <input type="text" id="admin-prod-subtype" class="form-input" placeholder="e.g. Regular / Day (240mm)" required>
           </div>
         </div>
 
         <div class="form-grid-3" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;">
           <div class="form-group">
-            <label for="admin-prod-price">Harga Base (Rp)</label>
+            <label for="admin-prod-price">Base Price (Rp)</label>
             <input type="number" id="admin-prod-price" class="form-input" placeholder="39000" required>
           </div>
           <div class="form-group">
-            <label for="admin-prod-orig-price">Harga Coret (Rp)</label>
+            <label for="admin-prod-orig-price">Original Price (Rp)</label>
             <input type="number" id="admin-prod-orig-price" class="form-input" placeholder="49000">
           </div>
           <div class="form-group">
-            <label for="admin-prod-weight">Berat (Gram)</label>
+            <label for="admin-prod-weight">Weight (Grams)</label>
             <input type="number" id="admin-prod-weight" class="form-input" placeholder="150" value="150" required>
           </div>
         </div>
 
         <div class="form-grid-2">
           <div class="form-group">
-            <label for="admin-prod-stock">Jumlah Stok Fisik</label>
+            <label for="admin-prod-stock">Physical Stock Quantity</label>
             <input type="number" id="admin-prod-stock" class="form-input" placeholder="100" required>
           </div>
           <div class="form-group">
-            <label for="admin-prod-badge">Badge Promosi (Opsional)</label>
-            <input type="text" id="admin-prod-badge" class="form-input" placeholder="mis. Diskon Special / Bundel Hemat">
+            <label for="admin-prod-badge">Promo Badge (Optional)</label>
+            <input type="text" id="admin-prod-badge" class="form-input" placeholder="e.g. Special Offer / Best Value">
           </div>
         </div>
 
         <div class="form-group">
-          <label for="admin-prod-image">URL Gambar Produk / Asset Path</label>
+          <label for="admin-prod-image">Product Image URL / Asset Path</label>
           <input type="text" id="admin-prod-image" class="form-input" placeholder="assets/images/product_day_pads.jpg" required>
         </div>
 
         <div class="form-group">
-          <label for="admin-prod-short-desc">Deskripsi Singkat (*Short Summary*)</label>
-          <input type="text" id="admin-prod-short-desc" class="form-input" placeholder="Ringkasan 1 kalimat untuk katalog..." required>
+          <label for="admin-prod-short-desc">Short Description</label>
+          <input type="text" id="admin-prod-short-desc" class="form-input" placeholder="1-sentence summary for catalog..." required>
         </div>
 
         <div class="form-group">
-          <label for="admin-prod-desc">Deskripsi Lengkap Produk</label>
+          <label for="admin-prod-desc">Full Product Description</label>
           <textarea id="admin-prod-desc" class="form-input" rows="3" required></textarea>
         </div>
 
         <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
-          <button type="button" class="btn btn-outline btn-sm" onclick="closeAdminProductModal()">Batal</button>
-          <button type="submit" class="btn btn-primary btn-sm">Simpan Produk & Inventaris</button>
+          <button type="button" class="btn btn-outline btn-sm" onclick="closeAdminProductModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Save Product & Inventory</button>
         </div>
       </form>
     </div>
@@ -3223,7 +3234,7 @@
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1.5px solid var(--color-border);">
         <div>
           <span class="section-tag" style="margin-bottom: 4px; background: var(--color-primary); color: #fff;">ORDER LOGISTICS MANAGER</span>
-          <h3 id="admin-order-detail-title" style="font-size: 1.3rem; color: var(--color-primary);">Detail Pesanan #BYH-000</h3>
+          <h3 id="admin-order-detail-title" style="font-size: 1.3rem; color: var(--color-primary);">Order Details #BYH-000</h3>
         </div>
         <button class="modal-close-btn" onclick="closeAdminOrderDetailModal()">✕</button>
       </div>
@@ -3246,7 +3257,7 @@
         </div>
         <div style="text-align: right;">
           <button class="btn btn-primary btn-sm no-print" onclick="window.print()" style="margin-bottom: 4px;">🖨️ Print Document</button>
-          <div><button class="btn btn-outline btn-sm no-print" onclick="closeAdminPrintModal()">Batal</button></div>
+          <div><button class="btn btn-outline btn-sm no-print" onclick="closeAdminPrintModal()">Cancel</button></div>
         </div>
       </div>
 
@@ -3264,7 +3275,7 @@
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1.5px solid var(--color-border);">
         <div>
           <span class="section-tag" style="margin-bottom: 4px; background: var(--color-primary); color: #fff;">CUSTOMER CRM PROFILE</span>
-          <h3 id="admin-cust-modal-name" style="font-size: 1.3rem; color: var(--color-primary);">Profil & Riwayat Belanja</h3>
+          <h3 id="admin-cust-modal-name" style="font-size: 1.3rem; color: var(--color-primary);">Customer Profile & Purchase History</h3>
         </div>
         <button class="modal-close-btn" onclick="closeAdminCustomerDetailModal()">✕</button>
       </div>
@@ -3283,7 +3294,7 @@
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1.5px solid var(--color-border);">
         <div>
           <span class="section-tag" style="margin-bottom: 4px; background: var(--color-secondary); color: #fff;">PROMOTIONS MANAGER</span>
-          <h3 id="admin-coupon-modal-title" style="font-size: 1.3rem; color: var(--color-primary);">Buat Kode Voucher Baru</h3>
+          <h3 id="admin-coupon-modal-title" style="font-size: 1.3rem; color: var(--color-primary);">Create New Voucher Code</h3>
         </div>
         <button class="modal-close-btn" onclick="closeAdminCouponModal()">✕</button>
       </div>
@@ -3292,43 +3303,43 @@
         <input type="hidden" id="admin-coupon-id">
 
         <div class="form-group">
-          <label for="admin-coupon-code">Kode Promo / Voucher</label>
-          <input type="text" id="admin-coupon-code" class="form-input" placeholder="mis. ECOPERIOD20" style="text-transform: uppercase; font-weight: 800;" required>
+          <label for="admin-coupon-code">Promo Code / Voucher</label>
+          <input type="text" id="admin-coupon-code" class="form-input" placeholder="e.g. ECOPERIOD20" style="text-transform: uppercase; font-weight: 800;" required>
         </div>
 
         <div class="form-grid-2">
           <div class="form-group">
-            <label for="admin-coupon-type">Tipe Diskon</label>
+            <label for="admin-coupon-type">Discount Type</label>
             <select id="admin-coupon-type" class="form-select" required>
-              <option value="percentage">Persentase (%)</option>
-              <option value="fixed">Nominal Tetap (Rp)</option>
+              <option value="percentage">Percentage (%)</option>
+              <option value="fixed">Fixed Amount (Rp)</option>
             </select>
           </div>
           <div class="form-group">
-            <label for="admin-coupon-val">Nilai Diskon</label>
+            <label for="admin-coupon-val">Discount Value</label>
             <input type="number" id="admin-coupon-val" class="form-input" placeholder="15" required>
           </div>
         </div>
 
         <div class="form-grid-2">
           <div class="form-group">
-            <label for="admin-coupon-min-spend">Min. Belanja (Rp)</label>
+            <label for="admin-coupon-min-spend">Min. Spend (Rp)</label>
             <input type="number" id="admin-coupon-min-spend" class="form-input" value="50000" required>
           </div>
           <div class="form-group">
-            <label for="admin-coupon-quota">Kuota Pemakaian</label>
+            <label for="admin-coupon-quota">Usage Quota</label>
             <input type="number" id="admin-coupon-quota" class="form-input" value="500" required>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="admin-coupon-expiry">Tanggal Kedaluwarsa</label>
+          <label for="admin-coupon-expiry">Expiration Date</label>
           <input type="date" id="admin-coupon-expiry" class="form-input" value="2026-12-31" required>
         </div>
 
         <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
-          <button type="button" class="btn btn-outline btn-sm" onclick="closeAdminCouponModal()">Batal</button>
-          <button type="submit" class="btn btn-secondary btn-sm">Simpan Kode Voucher</button>
+          <button type="button" class="btn btn-outline btn-sm" onclick="closeAdminCouponModal()">Cancel</button>
+          <button type="submit" class="btn btn-secondary btn-sm">Save Voucher Code</button>
         </div>
       </form>
     </div>
@@ -3342,7 +3353,7 @@
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1.5px solid var(--color-border);">
         <div>
           <span class="section-tag" style="margin-bottom: 4px; background: var(--color-primary); color: #fff;">EDIT SUPABASE ORDER</span>
-          <h3 id="admin-edit-order-title" style="font-size: 1.3rem; color: var(--color-primary);">Edit Pesanan Pelanggan</h3>
+          <h3 id="admin-edit-order-title" style="font-size: 1.3rem; color: var(--color-primary);">Edit Customer Order</h3>
         </div>
         <button type="button" class="modal-close-btn" onclick="closeAdminEditOrderModal()">✕</button>
       </div>
@@ -3352,11 +3363,11 @@
 
         <div class="form-grid-2">
           <div class="form-group">
-            <label for="admin-edit-order-display-id">ID Pesanan (Supabase)</label>
+            <label for="admin-edit-order-display-id">Order ID (Supabase)</label>
             <input type="text" id="admin-edit-order-display-id" class="form-input" style="background:#f4f4f4; font-weight:700;" readonly>
           </div>
           <div class="form-group">
-            <label for="admin-edit-order-status">Status Pesanan</label>
+            <label for="admin-edit-order-status">Order Status</label>
             <select id="admin-edit-order-status" class="form-select" required>
               <option value="pending">Pending 🟡</option>
               <option value="paid">Paid 🟢</option>
@@ -3370,45 +3381,45 @@
 
         <div class="form-grid-2">
           <div class="form-group">
-            <label for="admin-edit-order-cust-name">Nama Pelanggan</label>
+            <label for="admin-edit-order-cust-name">Customer Name</label>
             <input type="text" id="admin-edit-order-cust-name" class="form-input" required>
           </div>
           <div class="form-group">
-            <label for="admin-edit-order-cust-phone">Nomor WA / Telepon</label>
+            <label for="admin-edit-order-cust-phone">WA / Phone Number</label>
             <input type="text" id="admin-edit-order-cust-phone" class="form-input" required>
           </div>
         </div>
 
         <div class="form-grid-2">
           <div class="form-group">
-            <label for="admin-edit-order-cust-email">Email Pelanggan</label>
+            <label for="admin-edit-order-cust-email">Customer Email</label>
             <input type="email" id="admin-edit-order-cust-email" class="form-input" required>
           </div>
           <div class="form-group">
-            <label for="admin-edit-order-total">Total Tagihan (Rp)</label>
+            <label for="admin-edit-order-total">Total Invoice (Rp)</label>
             <input type="number" id="admin-edit-order-total" class="form-input" required>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="admin-edit-order-address">Alamat Lengkap Pengiriman</label>
+          <label for="admin-edit-order-address">Full Shipping Address</label>
           <textarea id="admin-edit-order-address" class="form-input" rows="2" required></textarea>
         </div>
 
         <div class="form-grid-2">
           <div class="form-group">
-            <label for="admin-edit-order-tracking">Nomor Resi Logistik</label>
-            <input type="text" id="admin-edit-order-tracking" class="form-input" placeholder="mis. SIC-ECO-8891" required>
+            <label for="admin-edit-order-tracking">Logistics Tracking Number</label>
+            <input type="text" id="admin-edit-order-tracking" class="form-input" placeholder="e.g. SIC-ECO-8891" required>
           </div>
           <div class="form-group">
-            <label for="admin-edit-order-courier">Ekspedisi / Kurir</label>
-            <input type="text" id="admin-edit-order-courier" class="form-input" placeholder="mis. SiCepat BEST" required>
+            <label for="admin-edit-order-courier">Courier Provider</label>
+            <input type="text" id="admin-edit-order-courier" class="form-input" placeholder="e.g. SiCepat BEST" required>
           </div>
         </div>
 
         <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
-          <button type="button" class="btn btn-outline btn-sm" onclick="closeAdminEditOrderModal()">Batal</button>
-          <button type="submit" class="btn btn-primary btn-sm">Simpan Perubahan ke Supabase</button>
+          <button type="button" class="btn btn-outline btn-sm" onclick="closeAdminEditOrderModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Save Order Changes</button>
         </div>
       </form>
     </div>
@@ -3420,19 +3431,19 @@
   <main id="view-reset-password" class="view-section" style="display: none; padding: 60px 0 100px;">
     <div class="container" style="max-width: 500px;">
       <div style="background: #fff; border-radius: var(--radius-xl); padding: 36px; border: 1px solid var(--color-border); box-shadow: var(--shadow-lg);">
-        <h2 style="font-size: 1.6rem; color: var(--color-primary); margin-bottom: 8px; text-align: center;">Reset Password Anda</h2>
-        <p style="font-size: 0.88rem; color: var(--color-text-muted); text-align: center; margin-bottom: 24px;">Silakan buat kata sandi baru untuk akun BYHARIANS Anda.</p>
+        <h2 style="font-size: 1.6rem; color: var(--color-primary); margin-bottom: 8px; text-align: center;">Reset Your Password</h2>
+        <p style="font-size: 0.88rem; color: var(--color-text-muted); text-align: center; margin-bottom: 24px;">Please enter a new password for your BYHARIANS account.</p>
         
         <form onsubmit="handleResetPasswordSubmit(event)">
           <div class="form-group">
-            <label for="reset-new-password">Password Baru</label>
-            <input type="password" id="reset-new-password" class="form-input" placeholder="Minimal 6 karakter" minlength="6" required>
+            <label for="reset-new-password">New Password</label>
+            <input type="password" id="reset-new-password" class="form-input" placeholder="At least 6 characters" minlength="6" required>
           </div>
           <div class="form-group">
-            <label for="reset-confirm-password">Konfirmasi Password Baru</label>
-            <input type="password" id="reset-confirm-password" class="form-input" placeholder="Ulangi password baru" minlength="6" required>
+            <label for="reset-confirm-password">Confirm New Password</label>
+            <input type="password" id="reset-confirm-password" class="form-input" placeholder="Re-enter new password" minlength="6" required>
           </div>
-          <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-reset-password-submit">Simpan & Perbarui Password</button>
+          <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-reset-password-submit">Save & Update Password</button>
         </form>
       </div>
     </div>
@@ -3443,13 +3454,13 @@
        ========================================== -->
   <div id="product-detail-modal" class="modal-backdrop" style="display: none;" onclick="if(event.target === this) closeProductDetailModal()">
     <div class="product-detail-modal-card">
-      <button class="modal-close-btn" onclick="closeProductDetailModal()" aria-label="Tutup modal detail produk">✕</button>
+      <button class="modal-close-btn" onclick="closeProductDetailModal()" aria-label="Close product detail modal">✕</button>
 
       <div class="product-detail-layout">
         <!-- Left Column: Product Image & Badges -->
         <div class="product-detail-media">
           <div class="product-detail-img-box">
-            <img id="modal-product-img" src="" alt="Detail Produk" class="product-detail-img">
+            <img id="modal-product-img" src="" alt="Product Detail" class="product-detail-img">
           </div>
           <div class="product-trust-bullets">
             <div class="trust-bullet-item">
@@ -3457,8 +3468,8 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
               </span>
               <div>
-                <strong>Pengiriman Cepat & Eco-Pack</strong>
-                <p>Dikemas ramah lingkungan & bebas plastik sekali pakai.</p>
+                <strong>Fast Delivery & Eco-Pack</strong>
+                <p>Sustainably packaged & single-use plastic-free.</p>
               </div>
             </div>
             <div class="trust-bullet-item">
@@ -3466,8 +3477,8 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
               </span>
               <div>
-                <strong>100% Produk Original & Bebas Kimia</strong>
-                <p>Bebas klorin, bebas pewangi sintetis & hipoalergenik.</p>
+                <strong>100% Original & Chemical-Free</strong>
+                <p>0% Chlorine, fragrance-free & hypoallergenic.</p>
               </div>
             </div>
             <div class="trust-bullet-item">
@@ -3475,8 +3486,8 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
               </span>
               <div>
-                <strong>Layanan Pelanggan & Garansi</strong>
-                <p>Bantuan CS 24/7 & pengajuan klaim retur mudah.</p>
+                <strong>Customer Care & Warranty</strong>
+                <p>24/7 Support & hassle-free return claims.</p>
               </div>
             </div>
           </div>
@@ -3485,11 +3496,11 @@
         <!-- Right Column: Product Information & Purchase Actions -->
         <div class="product-detail-info">
           <div class="product-detail-header">
-            <span id="modal-product-cat" class="product-detail-cat-pill">Pembalut Wanita Organik</span>
-            <h2 id="modal-product-title" class="product-detail-title">Nama Produk</h2>
+            <span id="modal-product-cat" class="product-detail-cat-pill">Organic Sanitary Pads</span>
+            <h2 id="modal-product-title" class="product-detail-title">Product Name</h2>
             <div class="product-detail-subtitle-row">
               <span id="modal-product-subtype" class="product-detail-subtype">Subtype</span>
-              <span id="modal-product-flow" class="product-detail-flow-pill">Aliran</span>
+              <span id="modal-product-flow" class="product-detail-flow-pill">Flow</span>
             </div>
           </div>
 
@@ -3497,17 +3508,17 @@
           <div class="product-detail-price-box">
             <span id="modal-product-price" class="product-detail-price">Rp 0</span>
             <span id="modal-product-orig-price" class="product-detail-orig-price" style="display: none;">Rp 0</span>
-            <span class="tax-shipping-note">Termasuk PPN • Stok Siap Kirim</span>
+            <span class="tax-shipping-note">VAT Included • Ready to Ship</span>
           </div>
 
           <!-- Short Description -->
           <p id="modal-product-desc" class="product-detail-description">
-            Deskripsi lengkap produk...
+            Full product description...
           </p>
 
           <!-- Specifications Table / Grid -->
           <div class="product-detail-section">
-            <h4 class="detail-section-title">Spesifikasi Produk</h4>
+            <h4 class="detail-section-title">Product Specifications</h4>
             <div id="modal-product-specs" class="specs-grid">
               <!-- Dynamically populated by products.js -->
             </div>
@@ -3516,7 +3527,7 @@
           <!-- Quantity & Action Buttons -->
           <div class="product-detail-actions-box">
             <div class="detail-qty-control">
-              <label for="modal-product-qty" class="qty-label">Jumlah:</label>
+              <label for="modal-product-qty" class="qty-label">Quantity:</label>
               <div class="qty-stepper">
                 <button type="button" class="qty-btn" onclick="decreaseDetailQty()">−</button>
                 <input type="text" id="modal-product-qty" value="1" readonly class="qty-input">
@@ -3526,10 +3537,10 @@
 
             <div class="detail-btn-group">
               <button type="button" class="btn btn-outline btn-lg" onclick="addDetailToCart(false)">
-                Tambah ke Keranjang
+                Add to Cart
               </button>
               <button type="button" class="btn btn-primary btn-lg" onclick="addDetailToCart(true)">
-                Beli Sekarang
+                Buy Now
               </button>
             </div>
           </div>
@@ -3544,19 +3555,19 @@
   <div id="forgot-password-modal" class="modal-backdrop" style="display: none;">
     <div class="modal-card" style="max-width: 440px;">
       <div class="modal-header">
-        <h3 class="modal-title">Lupa Password Akun</h3>
+        <h3 class="modal-title">Forgot Account Password</h3>
         <button class="modal-close-btn" onclick="closeForgotPasswordModal()">×</button>
       </div>
-      <p style="font-size: 0.88rem; color: var(--color-text-muted); margin-bottom: 20px; line-height: 1.5;">Masukkan alamat email terdaftar Anda. Kami akan mengirimkan tautan aman untuk menyetel ulang kata sandi Anda.</p>
+      <p style="font-size: 0.88rem; color: var(--color-text-muted); margin-bottom: 20px; line-height: 1.5;">Enter your registered email address. We will send a secure link to reset your password.</p>
       
       <form onsubmit="handleForgotPasswordSubmit(event)">
         <div class="form-group">
-          <label for="forgot-email">Alamat Email Terdaftar</label>
-          <input type="email" id="forgot-email" class="form-input" placeholder="nama@domain.com" required>
+          <label for="forgot-email">Registered Email Address</label>
+          <input type="email" id="forgot-email" class="form-input" placeholder="name@domain.com" required>
         </div>
         <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
-          <button type="button" class="btn btn-outline btn-sm" onclick="closeForgotPasswordModal()">Batal</button>
-          <button type="submit" class="btn btn-primary btn-sm" id="btn-forgot-submit">Kirim Link Reset</button>
+          <button type="button" class="btn btn-outline btn-sm" onclick="closeForgotPasswordModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm" id="btn-forgot-submit">Send Reset Link</button>
         </div>
       </form>
     </div>
@@ -3568,28 +3579,28 @@
   <div id="edit-profile-modal" class="modal-backdrop" style="display: none;">
     <div class="modal-card" style="max-width: 460px;">
       <div class="modal-header">
-        <h3 class="modal-title">Edit Profil Database Akun</h3>
+        <h3 class="modal-title">Edit Account Profile</h3>
         <button class="modal-close-btn" onclick="closeEditProfileModal()">×</button>
       </div>
-      <p style="font-size: 0.84rem; color: var(--color-text-muted); margin-bottom: 18px;">Perbarui data profil Anda yang tersimpan di database Supabase.</p>
+      <p style="font-size: 0.84rem; color: var(--color-text-muted); margin-bottom: 18px;">Update your profile information stored in our secure database.</p>
       
       <form onsubmit="handleUpdateProfileSubmit(event)">
         <div class="form-group">
-          <label for="edit-profile-name">Nama Lengkap</label>
+          <label for="edit-profile-name">Full Name</label>
           <input type="text" id="edit-profile-name" class="form-input" required>
         </div>
         <div class="form-group">
-          <label for="edit-profile-email">Alamat Email</label>
+          <label for="edit-profile-email">Email Address</label>
           <input type="email" id="edit-profile-email" class="form-input" required>
         </div>
         <div class="form-group">
-          <label for="edit-profile-phone">Nomor Telepon / WhatsApp</label>
+          <label for="edit-profile-phone">Phone / WhatsApp Number</label>
           <input type="tel" id="edit-profile-phone" class="form-input" required>
         </div>
 
         <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
-          <button type="button" class="btn btn-outline btn-sm" onclick="closeEditProfileModal()">Batal</button>
-          <button type="submit" class="btn btn-primary btn-sm" id="btn-edit-profile-submit">Simpan Perubahan Profil</button>
+          <button type="button" class="btn btn-outline btn-sm" onclick="closeEditProfileModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm" id="btn-edit-profile-submit">Save Profile Changes</button>
         </div>
       </form>
     </div>
@@ -3603,32 +3614,32 @@
   <div id="delivery-issue-modal" class="modal-backdrop" style="display: none;">
     <div class="modal-card" style="max-width: 500px;">
       <div class="modal-header">
-        <h3 class="modal-title">⚠️ Laporan Kendala Pengiriman / Produk</h3>
+        <h3 class="modal-title">⚠️ Report Shipping / Product Issue</h3>
         <button class="modal-close-btn" onclick="closeDeliveryIssueModal()">×</button>
       </div>
       <p style="font-size: 0.84rem; color: var(--color-text-muted); margin-bottom: 18px;">
-        Jika barang belum sampai padahal status selesai, kemasan rusak, atau isi barang kurang, silakan laporkan di bawah ini. Tim Admin kami siap membantu 24/7.
+        If your item has not arrived despite status completed, packaging damaged, or item missing, please report below. Our Support Team is ready to help 24/7.
       </p>
 
       <form onsubmit="submitDeliveryComplaintTicket(event)">
         <div class="form-group">
-          <label for="issue-type-select">Jenis Kendala</label>
+          <label for="issue-type-select">Issue Type</label>
           <select id="issue-type-select" class="form-select">
-            <option value="Barang Belum Diterima (Status Selesai)">Barang Belum Diterima (Status Selesai)</option>
-            <option value="Kemasan / Produk Kerusakan Saat Pengiriman">Kemasan / Produk Kerusakan Saat Pengiriman</option>
-            <option value="Varian / Jumlah Barang Tidak Sesuai">Varian / Jumlah Barang Tidak Sesuai</option>
-            <option value="Kurir Tidak Menghubungi / Salah Alamat">Kurir Tidak Menghubungi / Salah Alamat</option>
+            <option value="Item Not Received (Status Completed)">Item Not Received (Status Completed)</option>
+            <option value="Packaging / Product Damaged in Transit">Packaging / Product Damaged in Transit</option>
+            <option value="Incorrect Variant / Item Quantity">Incorrect Variant / Item Quantity</option>
+            <option value="Courier Did Not Contact / Wrong Address">Courier Did Not Contact / Wrong Address</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label for="issue-desc-input">Deskripsi Kendala & Catatan</label>
-          <textarea id="issue-desc-input" class="form-input" rows="3" placeholder="Jelaskan kondisi paket atau kendala yang dialami secara singkat..." required></textarea>
+          <label for="issue-desc-input">Issue Description & Notes</label>
+          <textarea id="issue-desc-input" class="form-input" rows="3" placeholder="Briefly describe the package condition or issue..." required></textarea>
         </div>
 
         <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; flex-wrap: wrap;">
-          <button type="button" class="btn btn-outline btn-sm" onclick="closeDeliveryIssueModal()">Batal</button>
-          <button type="submit" class="btn btn-primary btn-sm">📩 Kirim Tiket & Chat Admin WA</button>
+          <button type="button" class="btn btn-outline btn-sm" onclick="closeDeliveryIssueModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">📩 Submit Ticket & Chat Support</button>
         </div>
       </form>
     </div>
@@ -3640,16 +3651,16 @@
   <div id="product-review-modal" class="modal-backdrop" style="display: none;">
     <div class="modal-card" style="max-width: 480px;">
       <div class="modal-header">
-        <h3 class="modal-title">⭐ Ulasan Produk BYHARIANS</h3>
+        <h3 class="modal-title">⭐ BYHARIANS Product Review</h3>
         <button class="modal-close-btn" onclick="closeProductReviewModal()">×</button>
       </div>
       <p style="font-size: 0.84rem; color: var(--color-text-muted); margin-bottom: 18px;">
-        Bagikan pengalaman Anda menggunakan pembalut organik bambu BYHARIANS untuk mendapatkan <strong>+50 Eco-Points</strong>.
+        Share your experience using BYHARIANS organic bamboo pads to earn <strong>+50 Eco-Points</strong>.
       </p>
 
       <form onsubmit="submitProductReview(event)">
         <div class="form-group" style="text-align: center; margin-bottom: 20px;">
-          <label style="display: block; margin-bottom: 8px;">Rating Pengalaman Anda</label>
+          <label style="display: block; margin-bottom: 8px;">Rate Your Experience</label>
           <div style="display: flex; gap: 8px; justify-content: center; font-size: 1.8rem; cursor: pointer;">
             <span class="review-star-btn" onclick="selectReviewStars(1)" style="color: #F7C828;">★</span>
             <span class="review-star-btn" onclick="selectReviewStars(2)" style="color: #F7C828;">★</span>
@@ -3660,113 +3671,119 @@
         </div>
 
         <div class="form-group">
-          <label for="review-text-input">Ulasan Anda</label>
-          <textarea id="review-text-input" class="form-input" rows="3" placeholder="Bagaimana kelembutan dan kenyamanan produk BYHARIANS menurut Anda?"></textarea>
+          <label for="review-text-input">Your Review</label>
+          <textarea id="review-text-input" class="form-input" rows="3" placeholder="How soft and comfortable did you find BYHARIANS products?"></textarea>
         </div>
 
         <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
-          <button type="button" class="btn btn-outline btn-sm" onclick="closeProductReviewModal()">Batal</button>
-          <button type="submit" class="btn btn-primary btn-sm">Kirim Ulasan & Klaim +50 Pts</button>
+          <button type="button" class="btn btn-outline btn-sm" onclick="closeProductReviewModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Submit Review & Claim +50 Pts</button>
         </div>
       </form>
+    </div>
+  </div>
+
   <!-- ==========================================
        MODAL: ORDER CANCELLATION REQUEST (CONFIRM TO ADMIN)
        ========================================== -->
   <div id="cancel-order-modal" class="modal-backdrop" style="display: none;">
     <div class="modal-card" style="max-width: 480px;">
       <div class="modal-header">
-        <h3 class="modal-title" style="color: var(--color-error);">🚫 Pengajuan Pembatalan Pesanan</h3>
+        <h3 class="modal-title" style="color: var(--color-error);">🚫 Order Cancellation Request</h3>
         <button class="modal-close-btn" onclick="closeCancelOrderModal()">×</button>
       </div>
       <p style="font-size: 0.84rem; color: var(--color-text-muted); margin-bottom: 18px;">
-        Setiap pembatalan pesanan memerlukan verifikasi dan konfirmasi dari Admin Operations. Silakan pilih alasan dan kirim pengajuan ke Admin.
+        Every order cancellation requires verification from Admin Operations. Please select a reason and submit your request.
       </p>
 
       <form onsubmit="submitCancelOrderRequest(event)">
         <div class="form-group">
-          <label for="cancel-reason-select">Alasan Pembatalan</label>
+          <label for="cancel-reason-select">Cancellation Reason</label>
           <select id="cancel-reason-select" class="form-select">
-            <option value="Ingin Mengubah Alamat Pengiriman">Ingin Mengubah Alamat Pengiriman</option>
-            <option value="Salah Memilih Varian / Paket Produk">Salah Memilih Varian / Paket Produk</option>
-            <option value="Ingin Menambah Jumlah Item Belanja">Ingin Menambah Jumlah Item Belanja</option>
-            <option value="Salah Memilih Metode Pembayaran">Salah Memilih Metode Pembayaran</option>
-            <option value="Lainnya (Perlu Konfirmasi Admin)">Lainnya (Perlu Konfirmasi Admin)</option>
+            <option value="Change Shipping Address">Change Shipping Address</option>
+            <option value="Selected Wrong Product Variant / Package">Selected Wrong Product Variant / Package</option>
+            <option value="Add More Items to Order">Add More Items to Order</option>
+            <option value="Selected Wrong Payment Method">Selected Wrong Payment Method</option>
+            <option value="Other (Requires Admin Confirmation)">Other (Requires Admin Confirmation)</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label for="cancel-note-input">Catatan Tambahan untuk Admin</label>
-          <textarea id="cancel-note-input" class="form-input" rows="3" placeholder="Tuliskan catatan tambahan untuk admin terkait pembatalan ini..." required></textarea>
+          <label for="cancel-note-input">Additional Notes for Support</label>
+          <textarea id="cancel-note-input" class="form-input" rows="3" placeholder="Enter additional details regarding this cancellation..." required></textarea>
         </div>
 
         <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; flex-wrap: wrap;">
-          <button type="button" class="btn btn-outline btn-sm" onclick="closeCancelOrderModal()">Batal</button>
-          <button type="submit" class="btn btn-primary btn-sm" style="background: var(--color-error); border-color: var(--color-error);">📩 Kirim Pengajuan & Konfirmasi Admin WA</button>
+          <button type="button" class="btn btn-outline btn-sm" onclick="closeCancelOrderModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm" style="background: var(--color-error); border-color: var(--color-error);">📩 Submit Request & Confirm</button>
         </div>
       </form>
     </div>
+  </div>
+
   <!-- ==========================================
        MODAL: CREATE / CONFIGURE AUTO-REFILL SUBSCRIPTION
        ========================================== -->
   <div id="auto-refill-modal" class="modal-backdrop" style="display: none;">
     <div class="modal-card" style="max-width: 520px;">
       <div class="modal-header">
-        <h3 class="modal-title" style="color: var(--color-primary);">🔄 Langganan Auto-Refill Bulanan</h3>
+        <h3 class="modal-title" style="color: var(--color-primary);">🔄 Monthly Auto-Refill Subscription</h3>
         <button class="modal-close-btn" onclick="closeCreateAutoRefillModal()">×</button>
       </div>
       <div style="background: var(--color-bg-warm); padding: 14px 18px; border-radius: var(--radius-md); border: 1px solid var(--color-border); margin-bottom: 18px;">
-        <strong id="refill-modal-basket-title" style="color: var(--color-primary); display: block; font-size: 1.05rem;">Paket Pembalut Organik Bambu</strong>
+        <strong id="refill-modal-basket-title" style="color: var(--color-primary); display: block; font-size: 1.05rem;">Organic Bamboo Pad Bundle</strong>
         <span id="refill-modal-items-summary" style="font-size: 0.82rem; color: var(--color-text-muted); display: block;">1x Day Pads, 1x Night Pads</span>
-        <span id="refill-modal-price" style="font-size: 0.95rem; font-weight: 800; color: var(--color-primary); display: block; margin-top: 4px;">Rp 84.000 / pengiriman</span>
+        <span id="refill-modal-price" style="font-size: 0.95rem; font-weight: 800; color: var(--color-primary); display: block; margin-top: 4px;">Rp 84,000 / delivery</span>
       </div>
 
       <form onsubmit="submitAutoRefillSubscription(event)">
         <div class="form-grid-2">
           <div class="form-group">
-            <label for="refill-customer-name">Nama Penerima</label>
+            <label for="refill-customer-name">Recipient Name</label>
             <input type="text" id="refill-customer-name" class="form-input" required>
           </div>
           <div class="form-group">
-            <label for="refill-customer-phone">Nomor WA / HP</label>
+            <label for="refill-customer-phone">WA / Phone Number</label>
             <input type="tel" id="refill-customer-phone" class="form-input" required>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="refill-customer-email">Email Terdaftar</label>
+          <label for="refill-customer-email">Registered Email</label>
           <input type="email" id="refill-customer-email" class="form-input" required>
         </div>
 
         <div class="form-grid-2">
           <div class="form-group">
-            <label for="refill-frequency-select">Frekuensi Auto-Refill</label>
+            <label for="refill-frequency-select">Auto-Refill Frequency</label>
             <select id="refill-frequency-select" class="form-select">
-              <option value="Setiap 4 Minggu">Setiap 4 Minggu (Siklus Standar 28 Hari)</option>
-              <option value="Setiap 8 Minggu">Setiap 8 Minggu (Paket 2 Bulan)</option>
-              <option value="Setiap Bulan (Tgl 1)">Setiap Bulan (Tanggal 1)</option>
+              <option value="Every 4 Weeks">Every 4 Weeks (Standard 28-Day Cycle)</option>
+              <option value="Every 8 Weeks">Every 8 Weeks (2-Month Supply)</option>
+              <option value="Monthly (1st of Month)">Monthly (1st of Month)</option>
             </select>
           </div>
           <div class="form-group">
-            <label for="refill-start-date">Tanggal Pengiriman Pertama</label>
+            <label for="refill-start-date">First Delivery Date</label>
             <input type="date" id="refill-start-date" class="form-input" required>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="refill-shipping-address">Alamat Pengiriman Lengkap</label>
+          <label for="refill-shipping-address">Full Shipping Address</label>
           <input type="text" id="refill-shipping-address" class="form-input" required>
         </div>
 
         <div style="font-size: 0.78rem; color: var(--color-text-muted); background: rgba(39, 154, 94, 0.08); padding: 10px 14px; border-radius: var(--radius-md); margin-bottom: 18px; border: 1px solid rgba(39, 154, 94, 0.2);">
-          💡 <strong>Garansi Bebas Jeda:</strong> Subskripsi dapat dijeda atau dibatalkan kapan saja melalui dashboard akun tanpa biaya pembatalan.
+          💡 <strong>Flexibility Guarantee:</strong> Subscriptions can be paused or cancelled anytime from your account dashboard with zero cancellation fees.
         </div>
 
         <div style="display: flex; gap: 10px; justify-content: flex-end;">
-          <button type="button" class="btn btn-outline btn-sm" onclick="closeCreateAutoRefillModal()">Batal</button>
-          <button type="submit" id="btn-submit-refill" class="btn btn-primary btn-sm" style="font-weight: 800;">Konfirmasi & Aktifkan Auto-Refill</button>
+          <button type="button" class="btn btn-outline btn-sm" onclick="closeCreateAutoRefillModal()">Cancel</button>
+          <button type="submit" id="btn-submit-refill" class="btn btn-primary btn-sm" style="font-weight: 800;">Confirm & Activate Auto-Refill</button>
         </div>
       </form>
     </div>
+  </div>
   </div>
 
   <!-- ==========================================

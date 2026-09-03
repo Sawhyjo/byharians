@@ -62,7 +62,7 @@ function updateCycleCalculation() {
 function handleCalculateCycle() {
   updateCycleCalculation();
   if (typeof showToast === 'function') {
-    showToast('Prediksi siklus berhasil diperbarui!', 'success');
+    showToast('Cycle prediction updated successfully!', 'success');
   }
 }
 
@@ -75,7 +75,7 @@ function setCyclePreset(cycleLen, periodLen) {
 
   updateCycleCalculation();
   if (typeof showToast === 'function') {
-    showToast(`Preset ${cycleLen} hari diterapkan!`, 'info');
+    showToast(`${cycleLen}-day cycle preset applied!`, 'info');
   }
 }
 
@@ -94,7 +94,7 @@ function prefillCycleDemoData() {
 
   updateCycleCalculation();
   if (typeof showToast === 'function') {
-    showToast('Contoh siklus 28 hari dimuat!', 'info');
+    showToast('Sample 28-day cycle loaded!', 'info');
   }
 }
 

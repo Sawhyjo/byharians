@@ -452,15 +452,15 @@ async function updateAccountDashboardUI() {
   if (subDetails) {
     const sub = store.userAccount.activeSubscription || {
       productName: 'Custom Bamboo Cycle Pack',
-      interval: 'Setiap 4 Minggu',
-      nextDelivery: '24 Agustus 2026',
-      status: 'Aktif'
+      interval: 'Every 4 Weeks',
+      nextDelivery: 'August 24, 2026',
+      status: 'Active'
     };
     subDetails.innerHTML = `
       <div style="background: var(--color-bg-subtle); padding: 16px 20px; border-radius: var(--radius-md); border: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
         <div>
           <strong style="color: var(--color-primary); font-size: 0.95rem; display: block; margin-bottom: 4px;">${sub.productName}</strong>
-          <span style="font-size: 0.8rem; color: var(--color-text-muted);">Siklus: <strong>${sub.interval}</strong> • Pengiriman Berikutnya: <strong>${sub.nextDelivery}</strong></span>
+          <span style="font-size: 0.8rem; color: var(--color-text-muted);">Cycle: <strong>${sub.interval}</strong> • Next Delivery: <strong>${sub.nextDelivery}</strong></span>
         </div>
         <span class="badge ${sub.status === 'Aktif' || sub.status === 'Active' ? 'badge-success' : 'badge-primary'}" style="text-transform: uppercase;">${sub.status}</span>
       </div>

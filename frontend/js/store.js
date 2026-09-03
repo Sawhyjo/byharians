@@ -182,10 +182,10 @@ class StoreEngine {
       cycleLengthDays: 28,
       periodLengthDays: 5,
       activeSubscription: {
-        productName: 'Paket Pembalut Organik Bambu',
-        interval: 'Setiap 4 Minggu',
+        productName: 'Organic Bamboo Pad Bundle',
+        interval: 'Every 4 Weeks',
         nextDelivery: '2026-08-24',
-        status: 'Aktif'
+        status: 'Active'
       }
     };
 
@@ -196,7 +196,7 @@ class StoreEngine {
       originCity: 'Jakarta Selatan, DKI Jakarta',
       phone: '0812-8921-3401',
       email: 'care@byharians.id',
-      bannerText: '🌿 Sambut Menstruasi Ramah Lingkungan | Diskon 15% Kode Promo: ECOPERIOD',
+      bannerText: '🌿 Welcome to Eco-Friendly Periods | 15% Off Promo Code: ECOPERIOD',
       paymentGateways: {
         qris: true,
         bankTransfer: true,
@@ -301,17 +301,17 @@ class StoreEngine {
     };
   }
 
-  normalizeGrocery(row) {
+  normalizeRefill(row) {
     if (!row) return null;
     return {
       id: row.id || `REFILL-${Date.now()}`,
-      customerName: row.customer_name || row.customerName || 'Pelanggan BYHARIANS',
+      customerName: row.customer_name || row.customerName || 'BYHARIANS Customer',
       customerEmail: (row.customer_email || row.customerEmail || '').toLowerCase().trim(),
       phone: row.phone || '',
-      basketName: row.basket_name || row.basketName || 'Paket Auto-Refill Organik',
-      itemsSummary: row.items_summary || row.itemsSummary || 'Pembalut Bambu Organik',
+      basketName: row.basket_name || row.basketName || 'Organic Auto-Refill Bundle',
+      itemsSummary: row.items_summary || row.itemsSummary || 'Organic Bamboo Pads',
       monthlyPrice: Number(row.monthly_price || row.monthlyPrice || 0),
-      frequency: row.frequency || 'Setiap 4 Minggu',
+      frequency: row.frequency || 'Every 4 Weeks',
       nextRefillDate: row.next_refill_date || row.nextRefillDate || new Date().toISOString().split('T')[0],
       courier: row.courier || 'SiCepat BEST Eco-Fleet',
       shippingAddress: row.shipping_address || row.shippingAddress || 'Jakarta, Indonesia',
@@ -325,18 +325,18 @@ class StoreEngine {
     if (!row) return null;
     return {
       id: row.id || `PKG-${Date.now()}`,
-      customerName: row.customer_name || row.customerName || 'Pelanggan BYHARIANS',
+      customerName: row.customer_name || row.customerName || 'BYHARIANS Customer',
       customerEmail: (row.customer_email || row.customerEmail || '').toLowerCase().trim(),
       phone: row.phone || '',
-      packageName: row.package_name || row.packageName || 'Paket Pembalut Organik Bambu',
+      packageName: row.package_name || row.packageName || 'Organic Bamboo Pad Bundle',
       itemsSummary: row.items_summary || row.itemsSummary || '1x Day Pads, 1x Night Pads',
-      frequency: row.frequency || 'Setiap 4 Minggu',
+      frequency: row.frequency || 'Every 4 Weeks',
       nextDeliveryDate: row.next_delivery_date || row.nextDeliveryDate || new Date().toISOString().split('T')[0],
       courier: row.courier || 'SiCepat BEST Eco-Fleet',
       trackingNumber: row.tracking_number || row.trackingNumber || `SIC-ECO-${row.id || 'LIVE'}`,
       shippingAddress: row.shipping_address || row.shippingAddress || 'Jakarta, Indonesia',
       status: row.status || 'active',
-      statusText: row.status_text || row.statusText || 'Aktif / Berlangganan',
+      statusText: row.status_text || row.statusText || 'Active / Subscribed',
       lastDispatched: row.last_dispatched || row.lastDispatched || new Date().toISOString().split('T')[0]
     };
   }

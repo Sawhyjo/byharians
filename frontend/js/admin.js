@@ -313,7 +313,7 @@ function renderTopSellingProductsTable() {
     container.innerHTML = sortedSales.map((item, idx) => {
       const matchedProd = (store.products || []).find(p => p.name.toLowerCase() === item.name.toLowerCase()) || {};
       const image = matchedProd.image || 'assets/images/product_day_pads.jpg';
-      const categoryName = matchedProd.categoryName || 'Pembalut Wanita Organik';
+      const categoryName = matchedProd.categoryName || 'Organic Sanitary Pads';
       const subType = matchedProd.subType || 'Regular / Day';
 
       return `
@@ -433,10 +433,10 @@ function openCreateProductModal() {
   document.getElementById('admin-prod-orig-price').value = '49000';
   document.getElementById('admin-prod-weight').value = '150';
   document.getElementById('admin-prod-stock').value = '100';
-  document.getElementById('admin-prod-badge').value = 'Produk Baru';
+  document.getElementById('admin-prod-badge').value = 'New Arrival';
   document.getElementById('admin-prod-image').value = 'assets/images/product_day_pads.jpg';
-  document.getElementById('admin-prod-short-desc').value = 'Pembalut organik selembut sutra dari 100% bambu alami.';
-  document.getElementById('admin-prod-desc').value = 'Didesain untuk kenyamanan seharian, terurai 100% dalam 180 hari, 0% klorin, dan 0% mikroplastik.';
+  document.getElementById('admin-prod-short-desc').value = 'Silk-soft organic pads made from 100% natural bamboo.';
+  document.getElementById('admin-prod-desc').value = 'Designed for all-day comfort, 100% biodegradable in 180 days, 0% chlorine, and 0% microplastics.';
 
   modal.style.display = 'flex';
 }
@@ -449,7 +449,7 @@ function openEditProductModal(productId) {
   const title = document.getElementById('admin-product-modal-title');
   if (!modal) return;
 
-  if (title) title.innerText = `Edit Produk: ${p.name}`;
+  if (title) title.innerText = `Edit Product: ${p.name}`;
   document.getElementById('admin-prod-id').value = p.id;
   document.getElementById('admin-prod-name').value = p.name;
   document.getElementById('admin-prod-sku').value = p.sku || p.id.toUpperCase();
@@ -493,9 +493,9 @@ async function saveAdminProductForm(e) {
     image = 'assets/images/product_day_pads.jpg';
   }
 
-  let categoryName = 'Pembalut Wanita Organik';
-  if (category === 'liners') categoryName = 'Panty Liner Organik';
-  if (category === 'kits') categoryName = 'Ritual Menstrual Kit';
+  let categoryName = 'Organic Sanitary Pads';
+  if (category === 'liners') categoryName = 'Organic Panty Liners';
+  if (category === 'kits') categoryName = 'Menstrual Care Kit';
 
   let targetProd = null;
 
