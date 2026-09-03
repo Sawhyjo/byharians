@@ -148,7 +148,7 @@ function openProductDetailModal(productId) {
   if (catEl) catEl.innerText = p.categoryName || 'Organic Sanitary Pads';
   if (titleEl) titleEl.innerText = p.name;
   if (subTypeEl) subTypeEl.innerText = p.subType || '';
-  if (flowEl) flowEl.innerText = `🩸 ${p.flowText || 'Natural Comfort'}`;
+  if (flowEl) flowEl.innerText = p.flowText || 'Natural Comfort';
   if (descEl) descEl.innerText = p.description || p.shortDesc || '';
 
   // Render Specifications Grid
@@ -175,17 +175,6 @@ function openProductDetailModal(productId) {
         <span class="spec-value">100% Biodegradable • 0% Chlorine & Bleach-Free</span>
       </div>
     `;
-  }
-
-  // Render Material Compositions
-  if (compContainer) {
-    if (p.composition && Array.isArray(p.composition)) {
-      compContainer.innerHTML = p.composition.map(c => `
-        <span class="composition-chip">🌱 ${c}</span>
-      `).join('');
-    } else {
-      compContainer.innerHTML = `<span class="composition-chip">🌱 Natural Botanical Fibers</span>`;
-    }
   }
 
   // Render Pack Options

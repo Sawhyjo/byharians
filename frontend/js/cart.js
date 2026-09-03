@@ -196,7 +196,9 @@ function renderFullCartPage() {
   if (store.cart.length === 0) {
     container.innerHTML = `
       <div style="text-align:center; padding: 60px 20px; background:#fff; border-radius:var(--radius-xl); border:1px solid var(--color-border);">
-        <div style="font-size:3rem; margin-bottom:14px;">🛒</div>
+        <div style="width:64px; height:64px; margin: 0 auto 16px; background: rgba(15, 48, 29, 0.06); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--color-primary);">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><path d="M3 6h18"></path><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+        </div>
         <h3 style="font-size:1.4rem; color:var(--color-primary); margin-bottom:8px;">Your Shopping Cart is Empty</h3>
         <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:20px;">Explore our organic bamboo pads & eco-friendly menstrual care kits.</p>
         <button class="btn btn-primary" onclick="navigateTo('shop')">Explore Product Collection</button>
