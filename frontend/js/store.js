@@ -4,7 +4,7 @@
 const INITIAL_PRODUCTS = [
   {
     id: 'byh-pad-day-reg',
-    name: 'BYHARIANS Ultra-Thin Bamboo Day Pads',
+    name: 'EKAPADS Upcycled Banana Fiber Day Pads',
     category: 'pads',
     categoryName: 'Organic Sanitary Pads',
     subType: 'Regular / Day (240mm)',
@@ -29,7 +29,7 @@ const INITIAL_PRODUCTS = [
   },
   {
     id: 'byh-pad-night-heavy',
-    name: 'BYHARIANS Overnight Super Heavy Flow Pads',
+    name: 'EKAPADS Overnight Heavy Flow Pads',
     category: 'pads',
     categoryName: 'Organic Sanitary Pads',
     subType: 'Night / Heavy (330mm)',
@@ -42,19 +42,19 @@ const INITIAL_PRODUCTS = [
     badge: '',
     image: 'assets/images/product_night_pads.jpg',
     shortDesc: '330mm extra-wide protection for 12 hours of leak-free, itch-free sleep.',
-    description: 'Overnight protection with Dual Anti-Leak Barrier technology and 160ml absorbency. Breathable bamboo top sheet keeps intimate skin dry and irritation-free all night.',
+    description: 'Overnight protection with Dual Anti-Leak Barrier technology and 160ml absorbency. Breathable top sheet keeps intimate skin dry and irritation-free all night.',
     packOptions: [
       { name: '8-Pcs Overnight Heavy', count: 8, multiplier: 1 },
       { name: '16-Pcs Night Duo Pack', count: 16, multiplier: 1.95 },
       { name: '32-Pcs 3-Month Supply', count: 32, multiplier: 3.7 }
     ],
-    composition: ['Natural Bamboo Fiber', '330mm Extra-Wide Rear Wings', 'Plastic-Free Cornstarch Membrane', 'Recyclable Paper Wrapper'],
+    composition: ['Banana Cellulose Core', '330mm Extra-Wide Rear Wings', 'Plastic-Free Cornstarch Membrane', 'Recyclable Paper Wrapper'],
     stock: 98,
     isEcoCertified: true
   },
   {
     id: 'byh-liner-daily',
-    name: 'BYHARIANS Ultra-Breathable Panty Liners',
+    name: 'EKAPADS Ultra-Breathable Panty Liners',
     category: 'liners',
     categoryName: 'Organic Panty Liners',
     subType: 'Daily Care (155mm)',
@@ -66,19 +66,19 @@ const INITIAL_PRODUCTS = [
     absorbencyMl: '25ml (Ultra Comfort)',
     badge: '',
     image: 'assets/images/product_panty_liners.jpg',
-    shortDesc: 'Ultra-thin breathable panty liners from organic bamboo for daily freshness and end-of-period days.',
+    shortDesc: 'Ultra-thin breathable panty liners from organic plant fibers for daily freshness.',
     description: 'Feels like wearing nothing. These ultra-thin liners keep you feeling fresh all day without clogging sensitive skin pores.',
     packOptions: [
       { name: '20-Pcs Daily Liners', count: 20, multiplier: 1 },
       { name: '40-Pcs Double Pack', count: 40, multiplier: 1.9 }
     ],
-    composition: ['100% Bamboo Top Sheet', 'Breathable Non-GMO Film', 'Natural Tree Resin Glue'],
+    composition: ['100% Plant Fiber Top Sheet', 'Breathable Non-GMO Film', 'Natural Tree Resin Glue'],
     stock: 210,
     isEcoCertified: true
   },
   {
     id: 'byh-kit-first-period',
-    name: 'BYHARIANS First Period Starter Box',
+    name: 'EKAPADS First Period Starter Box',
     category: 'kits',
     categoryName: 'Menstrual Care Kits',
     subType: 'Teen & Starter Kit',
@@ -101,7 +101,7 @@ const INITIAL_PRODUCTS = [
   },
   {
     id: 'byh-kit-menstrual-ritual',
-    name: 'BYHARIANS Ultimate Menstrual Ritual Box',
+    name: 'EKAPADS Ultimate Menstrual Ritual Box',
     category: 'kits',
     categoryName: 'Menstrual Care Kits',
     subType: 'Self-Care Wellness Ritual',

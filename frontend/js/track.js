@@ -46,8 +46,8 @@ async function lookupOrder(customQuery) {
         date: '2026-08-16',
         customer: { name: 'Elena Rostova', email: 'elena@domain.com', phone: '0812-8921-3401', city: 'Jakarta Selatan, DKI Jakarta' },
         items: [
-          { name: 'BYHARIANS Ultra-Thin Bamboo Day Pads', qty: 2, size: '24-Pcs Duo Pack', price: 78000 },
-          { name: 'BYHARIANS Overnight Super Heavy Flow Pads', qty: 1, size: '16-Pcs Night Duo Pack', price: 45000 }
+          { id: 'byh-pad-day-reg', name: 'EKAPADS Upcycled Banana Fiber Day Pads', qty: 2, size: '24-Pcs Duo Pack', price: 78000 },
+          { id: 'byh-pad-night-heavy', name: 'EKAPADS Overnight Heavy Flow Pads', qty: 1, size: '16-Pcs Night Duo Pack', price: 45000 }
         ],
         total: 123000,
         paymentMethod: 'QRIS',
@@ -109,15 +109,20 @@ async function lookupOrder(customQuery) {
   if (itemsContainer) {
     itemsContainer.innerHTML = `
       <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:14px;">
-        ${(order.items || []).map(i => `
-          <div style="display:flex; justify-space-between; align-items:center; font-size:0.85rem; padding-bottom:8px; border-bottom:1px dashed var(--color-border);">
+        ${(order.items || []).map(i => {
+          const itemProdId = i.id || i.productId || i.product_id;
+          const matchedProd = (typeof store !== 'undefined' && store.products) ? store.products.find(p => p.id === itemProdId) : null;
+          const displayName = matchedProd ? matchedProd.name : (i.name || i.productName || 'EKAPADS Product');
+          return `
+          <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; padding-bottom:8px; border-bottom:1px dashed var(--color-border);">
             <div>
-              <strong style="color:var(--color-primary);">${i.name}</strong>
+              <strong style="color:var(--color-primary);">${displayName}</strong>
               <div style="font-size:0.76rem; color:var(--color-text-muted);">Qty: ${i.qty || i.quantity || 1} • ${i.size || i.packName || ''}</div>
             </div>
-            <strong style="color:var(--color-primary);">${store.formatPrice(i.price || (i.unitPrice * i.quantity) || 0)}</strong>
+            <strong style="color:var(--color-primary);">${store.formatPrice(i.price || (i.unitPrice * (i.qty || i.quantity || 1)) || 0)}</strong>
           </div>
-        `).join('')}
+        `;
+        }).join('')}
       </div>
       <div style="font-size:0.82rem; color:var(--color-text-muted); background:var(--color-bg-warm); padding:10px 14px; border-radius:8px;">
         <strong>Destination Address:</strong> ${order.customer?.city || 'Jakarta, Indonesia'}<br>
