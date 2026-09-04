@@ -168,7 +168,7 @@ async function submitCheckoutOrder(e) {
     id: orderId,
     date: new Date().toISOString().split('T')[0],
     customer: { name, email, phone, city: `${city}, ${address}` },
-    items: store.cart.map(i => ({ name: i.name, qty: i.quantity, size: i.packName, price: i.unitPrice * i.quantity })),
+    items: store.cart.map(i => ({ id: i.id, productId: i.id, name: i.name, qty: i.quantity, size: i.packName, price: i.unitPrice * i.quantity })),
     total: calcs.grandTotal,
     paymentMethod: paymentLabel,
     status: 'processing',

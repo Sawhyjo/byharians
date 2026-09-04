@@ -395,18 +395,29 @@ async function updateAccountDashboardUI() {
     avatar.innerText = initials;
   }
 
-  // 1. Fetch Customer Orders directly from Supabase DB
-  let customerOrders = store.orders || [];
+  // 1. Fetch & Merge Customer Orders from Local Storage and Supabase DB
+  const localOrders = typeof store.getGlobalOrders === 'function' ? store.getGlobalOrders() : (store.orders || []);
+  let customerOrders = [...localOrders];
+
   if (supabaseClient && userEmail) {
     try {
       const { data, error } = await supabaseClient
         .from('orders')
         .select('*')
-        .ilike('customer_email', userEmail)
+        .or(`customer_email.ilike.%${userEmail}%,user_email.ilike.%${userEmail}%`)
         .order('created_at', { ascending: false });
 
       if (!error && Array.isArray(data)) {
-        customerOrders = data.map(row => store.normalizeOrder(row)).filter(Boolean);
+        const dbOrders = data.map(row => store.normalizeOrder(row)).filter(Boolean);
+        const orderMap = new Map();
+        localOrders.forEach(o => { if (o && o.id) orderMap.set(o.id, o); });
+        dbOrders.forEach(o => { if (o && o.id) orderMap.set(o.id, o); });
+        customerOrders = Array.from(orderMap.values());
+        if (userEmail) {
+          customerOrders = customerOrders.filter(o => 
+            !o.customer?.email || o.customer.email.toLowerCase() === userEmail || userEmail === ''
+          );
+        }
         store.orders = customerOrders;
         store.save();
       }
@@ -511,7 +522,12 @@ async function updateAccountDashboardUI() {
             <div>
               <div style="font-size: 0.84rem; font-weight: 700; color: var(--color-primary); margin-bottom: 4px;">Purchased Items:</div>
               <ul style="margin: 0; padding-left: 18px; font-size: 0.8rem; color: var(--color-text-muted);">
-                ${(order.items || []).map(item => `<li><strong>${item.name}</strong> x${item.qty || item.quantity || 1} (${item.size || item.packName || ''})</li>`).join('')}
+                ${(order.items || []).map(item => {
+                  const itemProdId = item.id || item.productId || item.product_id;
+                  const matchedProd = (typeof store !== 'undefined' && store.products) ? store.products.find(p => p.id === itemProdId) : null;
+                  const displayName = matchedProd ? matchedProd.name : (item.name || item.productName || 'EKAPADS Product');
+                  return `<li><strong>${displayName}</strong> x${item.qty || item.quantity || 1} (${item.size || item.packName || ''})</li>`;
+                }).join('')}
               </ul>
             </div>
             <div style="text-align: right;">
