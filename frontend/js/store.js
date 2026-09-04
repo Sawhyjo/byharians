@@ -16,14 +16,14 @@ const INITIAL_PRODUCTS = [
     absorbencyMl: '80ml (3x standard pad absorbency)',
     badge: '',
     image: 'assets/images/product_day_pads.jpg',
-    shortDesc: 'Ultra-thin, cooling day pads with high-absorbency banana pseudostem cellulose & kenaf fibers.',
-    description: 'Designed for all-day comfort, EKAPADS biodegradable organic pads combine a banana pseudostem cellulose core and a kenaf fiber distribution layer. Wrapped in eco-friendly decomposition starter pouches, 100% biodegradable, 0% microplastics, 0% chlorine, and hypoallergenic.',
+    shortDesc: 'Ultra-thin, cooling day pads with high-absorbency banana pseudostem cellulose fibers.',
+    description: 'Designed for all-day comfort, EKAPADS biodegradable organic pads utilize a high-absorbency banana pseudostem cellulose core. Wrapped in eco-friendly decomposition starter pouches, 100% biodegradable, 0% microplastics, 0% chlorine, and hypoallergenic.',
     packOptions: [
       { name: '10-Pcs Regular', count: 10, multiplier: 1 },
       { name: '24-Pcs Duo Pack', count: 24, multiplier: 2.02 },
       { name: '48-Pcs 3-Month Supply', count: 48, multiplier: 3.82 }
     ],
-    composition: ['Banana Pseudostem Cellulose Core', 'Kenaf Fiber Distribution Layer (ADL)', 'Breathable Natural Fiber Top Sheet', 'Decomposition Starter Pouch'],
+    composition: ['Banana Pseudostem Cellulose Core', 'Banana Fiber Distribution Layer (ADL)', 'Breathable Natural Fiber Top Sheet', 'Decomposition Starter Pouch'],
     stock: 145,
     isEcoCertified: true
   },
