@@ -311,10 +311,89 @@
           <h1 class="section-title">Biodegradable Organic Pads Collection</h1>
           <p style="color: var(--color-text-muted);">100% Botanical Materials & Complete Menstrual Care Suites.</p>
         </div>
+        <div class="shop-header-actions" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+          <button type="button" class="btn btn-outline filter-toggle-btn" id="filter-toggle-btn" onclick="toggleShopFilter()" title="Toggle Filters">
+            <svg class="filter-icon-svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="21" y2="21"/><line x1="4" x2="20" y1="14" y2="14"/><line x1="4" x2="20" y1="7" y2="7"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="14" r="2"/><circle cx="10" cy="21" r="2"/></svg>
+            <span id="filter-toggle-btn-text">Hide Filters</span>
+          </button>
 
+          <div class="category-tabs">
+            <button class="cat-tab-btn active" data-category="all" onclick="filterByCategory('all')">All Products</button>
+            <button class="cat-tab-btn" data-category="pads" onclick="filterByCategory('pads')">Sanitary Pads</button>
+            <button class="cat-tab-btn" data-category="kits" onclick="filterByCategory('kits')">Ritual Kits</button>
+          </div>
+        </div>
       </div>
 
-      <div class="shop-layout filter-hidden" id="shop-layout-container" style="grid-template-columns: 1fr;">
+      <div class="shop-layout" id="shop-layout-container">
+        <!-- Filter Sidebar -->
+        <aside class="filter-sidebar" id="shop-filter-sidebar">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
+            <h3 style="font-size: 1.1rem; margin: 0;">Product Filters</h3>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <button type="button" onclick="resetFilters()" style="font-size: 0.78rem; color: var(--color-secondary); font-weight: 700; background: none; border: none; cursor: pointer;">Reset</button>
+              <button type="button" class="filter-sidebar-close-btn" onclick="toggleShopFilter()" title="Hide Filters">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Flow Level Filter -->
+          <div class="filter-group">
+            <h4 class="filter-title">Absorbency & Flow</h4>
+            <div class="filter-options">
+              <label class="filter-label">
+                <input type="radio" name="flow-filter" value="all" checked onchange="filterByFlow('all')">
+                <span>All Flow Levels</span>
+              </label>
+              <label class="filter-label">
+                <input type="radio" name="flow-filter" value="1" onchange="filterByFlow('1')">
+                <span>Light / Daily (155mm)</span>
+              </label>
+              <label class="filter-label">
+                <input type="radio" name="flow-filter" value="3" onchange="filterByFlow('3')">
+                <span>Regular / Day (240mm)</span>
+              </label>
+              <label class="filter-label">
+                <input type="radio" name="flow-filter" value="5" onchange="filterByFlow('5')">
+                <span>Heavy & Night (330mm-360mm)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Max Price Slider -->
+          <div class="filter-group">
+            <h4 class="filter-title">Maximum Price</h4>
+            <input type="range" id="price-slider-input" min="25000" max="350000" value="350000" step="5000" class="price-slider" oninput="filterByPrice(this.value)">
+            <div class="price-range-display">
+              <span>Rp 25.000</span>
+              <span id="price-val-display" style="color: var(--color-secondary);">Rp 350.000</span>
+            </div>
+          </div>
+
+          <!-- Sort By -->
+          <div class="filter-group">
+            <h4 class="filter-title">Sort By</h4>
+            <select class="form-select" onchange="sortProducts(this.value)" style="width: 100%; font-size: 0.85rem;">
+              <option value="featured">Featured & Best Selling</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="rating">Highest Customer Rating</option>
+            </select>
+          </div>
+
+          <!-- Sustainability Certifications Checkbox -->
+          <div class="filter-group">
+            <h4 class="filter-title">Product Standards</h4>
+            <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.8rem; color: var(--color-primary);">
+              <div>✓ 100% Plant-Based Biomaterials</div>
+              <div>✓ Upcycled Banana Pseudostem Waste</div>
+              <div>✓ 0% Crude Oil Plastics</div>
+              <div>✓ 0% Chlorine & Bleach-Free</div>
+            </div>
+          </div>
+        </aside>
+
         <!-- Product Grid Container -->
         <main class="product-grid" id="products-grid-container">
           <!-- Populated by JavaScript -->
