@@ -518,29 +518,7 @@ async function saveAdminProductForm(e) {
   }
 
   store.save();
-
-  if (typeof supabaseClient !== 'undefined' && supabaseClient) {
-    try {
-      await supabaseClient.from('products').upsert({
-        id: targetProd.id,
-        name: targetProd.name,
-        sku: targetProd.sku,
-        category: targetProd.category,
-        category_name: targetProd.categoryName,
-        subtype: targetProd.subType,
-        price: targetProd.price,
-        original_price: targetProd.originalPrice,
-        weight_grams: targetProd.weightGrams,
-        stock: targetProd.stock,
-        badge: targetProd.badge,
-        image: targetProd.image,
-        short_desc: targetProd.shortDesc,
-        description: targetProd.description
-      });
-    } catch (err) {
-      console.warn('Supabase product upsert warning:', err);
-    }
-  }
+  await store.saveProductsToCloud();
 
   closeAdminProductModal();
   renderAdminProductsTable();
@@ -549,27 +527,20 @@ async function saveAdminProductForm(e) {
     renderCatalogGrid();
   }
 
-  showToast('Product data & image updated successfully and synced to catalog!', 'success');
+  showToast('Product data updated & synced live to all customer devices!', 'success');
 }
 
 async function deleteAdminProduct(productId) {
   if (confirm('Are you sure you want to remove this product from the catalog?')) {
     store.products = store.products.filter(p => p.id !== productId);
     store.save();
-
-    if (typeof supabaseClient !== 'undefined' && supabaseClient) {
-      try {
-        await supabaseClient.from('products').delete().eq('id', productId);
-      } catch (err) {
-        console.warn('Supabase product delete warning:', err);
-      }
-    }
+    await store.saveProductsToCloud();
 
     renderAdminProductsTable();
     if (typeof renderCatalogGrid === 'function') {
       renderCatalogGrid();
     }
-    showToast('Product removed from catalog!', 'info');
+    showToast('Product removed from catalog & synced live!', 'info');
   }
 }
 

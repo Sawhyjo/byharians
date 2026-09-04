@@ -103,6 +103,30 @@ CREATE TABLE IF NOT EXISTS public.contact_messages (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
+-- 7. PRODUCTS CATALOG TABLE
+CREATE TABLE IF NOT EXISTS public.products (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    sku TEXT,
+    category TEXT DEFAULT 'pads',
+    category_name TEXT DEFAULT 'Organic Sanitary Pads',
+    subtype TEXT,
+    price NUMERIC NOT NULL,
+    original_price NUMERIC,
+    weight_grams INT DEFAULT 150,
+    stock INT DEFAULT 100,
+    badge TEXT,
+    image TEXT,
+    short_desc TEXT,
+    description TEXT,
+    rating NUMERIC DEFAULT 5.0,
+    reviews_count INT DEFAULT 1,
+    flow_level INT DEFAULT 3,
+    is_eco_certified BOOLEAN DEFAULT true,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
 -- ============================================================================
 -- ROW LEVEL SECURITY (RLS) POLICIES
 -- ============================================================================
@@ -112,6 +136,7 @@ ALTER TABLE public.cart_items ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.customer_packages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.customer_groceries ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.contact_messages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.products ENABLE ROW LEVEL SECURITY;
 
 -- Allow public & authenticated users full CRUD for app functionality
 CREATE POLICY "Public Read Profiles" ON public.profiles FOR SELECT USING (true);
@@ -136,6 +161,11 @@ CREATE POLICY "Public Insert Groceries" ON public.customer_groceries FOR INSERT 
 CREATE POLICY "Public Update Groceries" ON public.customer_groceries FOR UPDATE USING (true);
 
 CREATE POLICY "Public Insert Messages" ON public.contact_messages FOR INSERT WITH CHECK (true);
+
+CREATE POLICY "Public Read Products" ON public.products FOR SELECT USING (true);
+CREATE POLICY "Public Insert Products" ON public.products FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public Update Products" ON public.products FOR UPDATE USING (true);
+CREATE POLICY "Public Delete Products" ON public.products FOR DELETE USING (true);
 
 -- ============================================================================
 -- AUTO-PROFILE TRIGGER FOR NEW USER SIGNUPS
@@ -167,3 +197,4 @@ GRANT ALL ON TABLE public.cart_items TO anon, authenticated, service_role;
 GRANT ALL ON TABLE public.customer_packages TO anon, authenticated, service_role;
 GRANT ALL ON TABLE public.customer_groceries TO anon, authenticated, service_role;
 GRANT ALL ON TABLE public.contact_messages TO anon, authenticated, service_role;
+GRANT ALL ON TABLE public.products TO anon, authenticated, service_role;

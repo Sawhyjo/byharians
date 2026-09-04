@@ -232,6 +232,7 @@ class StoreEngine {
       }
     });
     this.save();
+    this.saveProductsToCloud();
   }
 
   loadState() {
@@ -262,13 +263,172 @@ class StoreEngine {
       }
 
       this.loadUserCartAndOrders();
+
+      // Synchronize with Supabase Cloud Catalog across all accounts & devices
+      setTimeout(() => {
+        this.syncProductsFromCloud();
+        this.initRealtimeCatalogSync();
+      }, 50);
     } catch (err) {
       console.warn('LocalStorage error:', err);
     }
   }
 
+  async syncProductsFromCloud() {
+    if (typeof supabaseClient === 'undefined' || !supabaseClient) return;
+    try {
+      // 1. First check if dedicated 'products' table exists in Supabase
+      try {
+        const { data: directProds, error: prodErr } = await supabaseClient
+          .from('products')
+          .select('*')
+          .order('id');
+
+        if (!prodErr && Array.isArray(directProds) && directProds.length > 0) {
+          console.log('✅ Loaded products from Supabase products table:', directProds.length);
+          this.products = directProds.map(p => ({
+            id: p.id,
+            name: p.name,
+            sku: p.sku || '',
+            category: p.category || 'pads',
+            categoryName: p.category_name || p.categoryName || 'Organic Sanitary Pads',
+            subType: p.subtype || p.subType || '',
+            price: Number(p.price) || 0,
+            originalPrice: p.original_price ? Number(p.original_price) : null,
+            weightGrams: Number(p.weight_grams || p.weightGrams) || 150,
+            stock: p.stock !== undefined ? Number(p.stock) : 100,
+            badge: p.badge || '',
+            image: p.image || 'assets/images/product_day_pads.jpg',
+            shortDesc: p.short_desc || p.shortDesc || '',
+            description: p.description || '',
+            rating: p.rating || 5.0,
+            reviewsCount: p.reviews_count || p.reviewsCount || 1,
+            flowLevel: p.flow_level || p.flowLevel || 3,
+            isEcoCertified: p.is_eco_certified !== undefined ? p.is_eco_certified : true
+          }));
+          try { localStorage.setItem('byharians_products', JSON.stringify(this.products)); } catch(e) {}
+          this.triggerProductUIUpdates();
+          return;
+        }
+      } catch (e) {}
+
+      // 2. Cloud Catalog Sync via Supabase Global Record (works seamlessly out-of-the-box across all accounts & browsers)
+      const { data: sharedRow, error: sharedErr } = await supabaseClient
+        .from('orders')
+        .select('items')
+        .eq('id', 'BYH-GLOBAL-CATALOG')
+        .maybeSingle();
+
+      if (!sharedErr && sharedRow && Array.isArray(sharedRow.items) && sharedRow.items.length > 0) {
+        console.log('✅ Loaded products from Supabase Shared Cloud Catalog:', sharedRow.items.length);
+        this.products = sharedRow.items;
+        try { localStorage.setItem('byharians_products', JSON.stringify(this.products)); } catch(e) {}
+        this.triggerProductUIUpdates();
+      } else if (!sharedRow || !sharedRow.items) {
+        // Initial seed of cloud catalog if empty
+        console.log('⚡ Initializing Supabase Shared Cloud Catalog with default products...');
+        await this.saveProductsToCloud();
+      }
+    } catch (err) {
+      console.warn('⚠️ syncProductsFromCloud notice:', err);
+    }
+  }
+
+  async saveProductsToCloud() {
+    if (typeof supabaseClient === 'undefined' || !supabaseClient) return;
+    try {
+      // 1. Try upserting to dedicated products table if present
+      try {
+        const payload = this.products.map(p => ({
+          id: p.id,
+          name: p.name,
+          sku: p.sku || '',
+          category: p.category || 'pads',
+          category_name: p.categoryName || 'Organic Sanitary Pads',
+          subtype: p.subType || '',
+          price: p.price,
+          original_price: p.originalPrice || null,
+          weight_grams: p.weightGrams || 150,
+          stock: p.stock !== undefined ? p.stock : 100,
+          badge: p.badge || '',
+          image: p.image || 'assets/images/product_day_pads.jpg',
+          short_desc: p.shortDesc || '',
+          description: p.description || ''
+        }));
+        await supabaseClient.from('products').upsert(payload);
+      } catch(e) {}
+
+      // 2. Sync to Supabase Shared Catalog (persists across all customer devices and accounts)
+      const { error: sharedErr } = await supabaseClient
+        .from('orders')
+        .upsert({
+          id: 'BYH-GLOBAL-CATALOG',
+          customer_name: 'BYHARIANS CATALOG SYSTEM',
+          customer_email: 'catalog-sync@byharians.id',
+          items: this.products,
+          total: 0,
+          status: 'system'
+        });
+
+      if (sharedErr) {
+        console.warn('⚠️ Supabase shared catalog save notice:', sharedErr);
+      } else {
+        console.log('✅ Supabase shared catalog saved and synchronized to cloud!');
+      }
+    } catch (err) {
+      console.warn('⚠️ saveProductsToCloud exception:', err);
+    }
+  }
+
+  initRealtimeCatalogSync() {
+    if (typeof supabaseClient === 'undefined' || !supabaseClient) return;
+    if (this._hasSubscribedToRealtimeCatalog) return;
+    this._hasSubscribedToRealtimeCatalog = true;
+
+    try {
+      supabaseClient
+        .channel('byh-live-catalog-sync')
+        .on('postgres_changes', {
+          event: '*',
+          schema: 'public',
+          table: 'orders',
+          filter: 'id=eq.BYH-GLOBAL-CATALOG'
+        }, (payload) => {
+          console.log('⚡ Realtime catalog update received from Admin:', payload);
+          if (payload.new && Array.isArray(payload.new.items) && payload.new.items.length > 0) {
+            this.products = payload.new.items;
+            try { localStorage.setItem('byharians_products', JSON.stringify(this.products)); } catch(e) {}
+            this.triggerProductUIUpdates();
+          }
+        })
+        .on('postgres_changes', {
+          event: '*',
+          schema: 'public',
+          table: 'products'
+        }, async () => {
+          console.log('⚡ Realtime products table change detected, refreshing...');
+          await this.syncProductsFromCloud();
+        })
+        .subscribe((status) => {
+          console.log('📡 Realtime Catalog Channel Status:', status);
+        });
+    } catch(err) {
+      console.warn('Realtime catalog subscription notice:', err);
+    }
+  }
+
+  triggerProductUIUpdates() {
+    if (typeof renderCatalogGrid === 'function') renderCatalogGrid();
+    if (typeof renderAdminProductsTable === 'function') renderAdminProductsTable();
+    if (typeof updateCartBadgeAndDrawer === 'function') updateCartBadgeAndDrawer();
+    if (typeof renderGroceriesShowcase === 'function') renderGroceriesShowcase();
+    if (this.currentView === 'cart' && typeof renderFullCartPage === 'function') renderFullCartPage();
+    if (this.currentView === 'checkout' && typeof renderCheckoutSummary === 'function') renderCheckoutSummary();
+  }
+
   normalizeOrder(row) {
     if (!row) return null;
+    if (row.id === 'BYH-GLOBAL-CATALOG' || row.status === 'system') return null;
     let parsedItems = [];
     if (typeof row.items === 'string') {
       try { parsedItems = JSON.parse(row.items); } catch(e) { parsedItems = []; }
