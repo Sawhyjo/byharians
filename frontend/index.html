@@ -549,32 +549,37 @@
           </p>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;" class="responsive-2col">
           
           <!-- Theme 1: Responsible Consumption -->
-          <div style="background: #fff; border-radius: var(--radius-xl); padding: 28px; border: 1px solid var(--color-border); box-shadow: var(--shadow-xs);">
-            <span style="background: rgba(191, 139, 46, 0.12); color: #BF8B2E; font-weight: 800; padding: 3px 10px; border-radius: 4px; font-size: 0.76rem;">PRIMARY THEME 1</span>
-            <h3 style="font-size: 1.2rem; color: var(--color-primary); font-weight: 700; margin: 12px 0 8px;">Responsible Consumption</h3>
-            <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6; margin: 0;">
-              Promoting eco-friendly school habits, low-impact products, and digital awareness tools that shift consumer choices away from single-use synthetic pads.
-            </p>
+          <div style="background: #fff; border-radius: var(--radius-xl); padding: 28px; border: 1px solid var(--color-border); box-shadow: var(--shadow-xs); display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span style="background: rgba(191, 139, 46, 0.12); color: #BF8B2E; font-weight: 800; padding: 4px 12px; border-radius: 20px; font-size: 0.76rem; display: inline-block;">PRIMARY THEME 1</span>
+              <h3 style="font-size: 1.25rem; color: var(--color-primary); font-weight: 700; margin: 14px 0 10px;">Responsible Consumption</h3>
+              <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6; margin: 0;">
+                Promoting eco-friendly school habits, low-impact products, and digital awareness tools that shift consumer choices away from single-use synthetic pads.
+              </p>
+            </div>
           </div>
 
           <!-- Theme 2: Circular Economy & Waste Reduction -->
-          <div style="background: #fff; border-radius: var(--radius-xl); padding: 28px; border: 1px solid var(--color-border); box-shadow: var(--shadow-xs);">
-            <span style="background: rgba(39, 154, 94, 0.12); color: var(--color-success); font-weight: 800; padding: 3px 10px; border-radius: 4px; font-size: 0.76rem;">PRIMARY THEME 2</span>
-            <h3 style="font-size: 1.2rem; color: var(--color-primary); font-weight: 700; margin: 12px 0 8px;">Circular Economy & Waste Reduction</h3>
-            <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6; margin: 0;">
-              Upcycling agricultural banana pseudostem and kenaf waste, giving biomaterials a second life, and replacing single-use plastic habits through clever design.
-            </p>
+          <div style="background: #fff; border-radius: var(--radius-xl); padding: 28px; border: 1px solid var(--color-border); box-shadow: var(--shadow-xs); display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span style="background: rgba(39, 154, 94, 0.12); color: var(--color-success); font-weight: 800; padding: 4px 12px; border-radius: 20px; font-size: 0.76rem; display: inline-block;">PRIMARY THEME 2</span>
+              <h3 style="font-size: 1.25rem; color: var(--color-primary); font-weight: 700; margin: 14px 0 10px;">Circular Economy & Waste Reduction</h3>
+              <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6; margin: 0;">
+                Upcycling agricultural banana pseudostem waste, giving biomaterials a second life, and replacing single-use plastic habits through clever design.
+              </p>
+            </div>
           </div>
 
           <!-- SDG 12 -->
           <div style="background: #fff; border-radius: var(--radius-xl); padding: 28px; border: 1px solid var(--color-border); box-shadow: var(--shadow-xs); display: flex; gap: 18px; align-items: flex-start;">
-            <img src="assets/images/sdg_12.png" alt="SDG 12 Responsible Consumption & Production" style="width: 64px; height: 64px; border-radius: 12px; object-fit: contain; flex-shrink: 0; box-shadow: var(--shadow-xs);">
+            <img src="assets/images/sdg_12.png" alt="SDG 12 Responsible Consumption & Production" style="width: 58px; height: 58px; border-radius: 12px; object-fit: contain; flex-shrink: 0; box-shadow: var(--shadow-xs);">
             <div>
-              <h3 style="font-size: 1.15rem; color: var(--color-primary); font-weight: 700; margin-bottom: 6px;">Responsible Consumption & Production</h3>
-              <p style="font-size: 0.86rem; color: var(--color-text-muted); line-height: 1.6; margin: 0;">
+              <span style="background: rgba(15, 48, 29, 0.08); color: var(--color-primary); font-weight: 800; padding: 4px 12px; border-radius: 20px; font-size: 0.76rem; display: inline-block;">UN SDG 12</span>
+              <h3 style="font-size: 1.2rem; color: var(--color-primary); font-weight: 700; margin: 10px 0 8px;">Responsible Consumption & Production</h3>
+              <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6; margin: 0;">
                 Transforming agricultural waste into 100% biodegradable pads and eliminating single-use plastic pollution.
               </p>
             </div>
@@ -582,10 +587,11 @@
 
           <!-- SDG 5 -->
           <div style="background: #fff; border-radius: var(--radius-xl); padding: 28px; border: 1px solid var(--color-border); box-shadow: var(--shadow-xs); display: flex; gap: 18px; align-items: flex-start;">
-            <img src="assets/images/sdg_5.png" alt="SDG 5 Gender Equality" style="width: 64px; height: 64px; border-radius: 12px; object-fit: contain; flex-shrink: 0; box-shadow: var(--shadow-xs);">
+            <img src="assets/images/sdg_5.png" alt="SDG 5 Gender Equality" style="width: 58px; height: 58px; border-radius: 12px; object-fit: contain; flex-shrink: 0; box-shadow: var(--shadow-xs);">
             <div>
-              <h3 style="font-size: 1.15rem; color: var(--color-primary); font-weight: 700; margin-bottom: 6px;">Gender Equality</h3>
-              <p style="font-size: 0.86rem; color: var(--color-text-muted); line-height: 1.6; margin: 0;">
+              <span style="background: rgba(15, 48, 29, 0.08); color: var(--color-primary); font-weight: 800; padding: 4px 12px; border-radius: 20px; font-size: 0.76rem; display: inline-block;">UN SDG 5</span>
+              <h3 style="font-size: 1.2rem; color: var(--color-primary); font-weight: 700; margin: 10px 0 8px;">Gender Equality</h3>
+              <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6; margin: 0;">
                 Empowering women and youth with menstrual health education, reproductive wellness information, cycle tracking, and period dignity.
               </p>
             </div>
@@ -613,7 +619,7 @@
         <!-- Certifications & Movement Badges -->
         <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 24px;">
           <span style="background: #fff; padding: 10px 20px; border-radius: var(--radius-md); font-weight: 700; font-size: 0.86rem; color: var(--color-primary); border: 1px solid var(--color-border);">Banana Pseudostem Cellulose Core</span>
-          <span style="background: #fff; padding: 10px 20px; border-radius: var(--radius-md); font-weight: 700; font-size: 0.86rem; color: var(--color-primary); border: 1px solid var(--color-border);">Kenaf Fiber ADL Layer</span>
+          <span style="background: #fff; padding: 10px 20px; border-radius: var(--radius-md); font-weight: 700; font-size: 0.86rem; color: var(--color-primary); border: 1px solid var(--color-border);">Banana Fiber ADL Layer</span>
           <span style="background: #fff; padding: 10px 20px; border-radius: var(--radius-md); font-weight: 700; font-size: 0.86rem; color: var(--color-primary); border: 1px solid var(--color-border);">Biodegradable Starter Pouch</span>
           <span style="background: #fff; padding: 10px 20px; border-radius: var(--radius-md); font-weight: 700; font-size: 0.86rem; color: var(--color-primary); border: 1px solid var(--color-border);">100% Soil Biodegradable</span>
         </div>
